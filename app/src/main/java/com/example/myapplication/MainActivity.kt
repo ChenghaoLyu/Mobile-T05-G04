@@ -19,7 +19,7 @@ class MainActivity : Activity() {
             try {
                 val client = OkHttpClient()
                 val request = Request.Builder()
-                    .url("http://10.0.2.2:5000/") // 注意: 10.0.2.2 是Android模拟器访问本地服务器的地址
+                    .url("http://10.0.2.2:5001/") // 注意: 10.0.2.2 是Android模拟器访问本地服务器的地址
                     .build()
 
                 val response = client.newCall(request).execute()
