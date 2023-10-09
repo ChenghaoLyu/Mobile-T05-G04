@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="#FF5780FA"/> <!-- 您的背景颜色 -->
+            <corners android:radius="50sp"/> <!-- 圆角的大小 -->
+        </shape>
+    </item>
+</selector>
