@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">G04-Project</string>
+    <string name="my_app_api_key">AIzaSyDJJxnIV4hTDFGd3g8fWkNCLoNyX8GyqCc</string>
+    <string-array name="spinner_location">
+        <item>Choose Place</item>
+        <item>unimelb</item>
+        <item>Monash</item>
+        <item>location 3</item>
+    </string-array>
 </resources>

@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="16sp">
+    <!--    Top line   -->
+    <LinearLayout
+        android:id="@+id/topline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:padding="8sp">
+        <!--       back button     -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back"
+            android:layout_width="75sp"
+            android:layout_height="40sp"
+            android:onClick="open_activity_main"
+            android:text="Back"
+            android:textSize="12sp"
+            app:backgroundTint="#FF5780FA" />
+        <!--       Text Create Room     -->
+        <TextView
+            android:id="@+id/CreateRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Room"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="15sp"
+            android:textSize="34sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+    <!--    Scroll View  -->
+    <ScrollView
+        android:id="@+id/my_scroll_view"
+        android:layout_below="@id/topline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <!-- Choose Element -->
+        <LinearLayout
+            android:id="@+id/choose_element"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25sp"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:padding="15dp">
+            <!--        Choose Game Mode   -->
+            <LinearLayout
+                android:id="@+id/choose_game_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@android:color/white">
+                <!--       Text Game mode     -->
+                <TextView
+                    android:id="@+id/gamemode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Game Mode: "
+                    android:textSize="20sp"
+                    android:layout_below="@id/back" />
+                <!--       classical zombie button     -->
+                <RadioGroup
+                    android:id="@+id/modelGroup"
+                    android:layout_width="200sp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="20sp">
+                    <RadioButton
+                        android:id="@+id/classic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Classic" />
+                    <RadioButton
+                        android:id="@+id/zombie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Zombie" />
+
+                </RadioGroup>
+            </LinearLayout>
+            <!--        Choose Player Number   -->
+            <LinearLayout
+                android:id="@+id/choose_player_number"
+                android:layout_below="@id/choose_game_mode"
+                android:layout_marginTop="25sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@android:color/white">
+
+                <TextView
+                    android:id="@+id/player_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Player Number: "
+                    android:textSize="20sp"
+                    android:layout_below="@id/back" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/plus_minus_player_number"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="30sp">
+
+                    <ImageButton
+                        android:id="@+id/btn_player_decrease"
+                        android:background="@drawable/buttonstyle"
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:src="@drawable/minus_foreground"
+                        android:scaleType="fitCenter"/>
+
+                    <TextView
+                        android:id="@+id/tv_player_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:textSize="24sp"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_player_increase"
+                        android:background="@drawable/buttonstyle"
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:src="@drawable/plus_foreground"
+                        android:scaleType="fitCenter"/>
+                </LinearLayout>
+            </LinearLayout>
+            <!--        Choose Cat Mouse Number   -->
+            <LinearLayout
+                android:id="@+id/choose_cat_mouse_number"
+                android:layout_below="@id/choose_player_number"
+                android:layout_marginTop="25sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@android:color/white"
+                android:visibility="gone">
+                <!--            Cat image           -->
+                <LinearLayout
+                    android:id="@+id/choose_cat_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleX="1.2"
+                        android:scaleY="1.2"
+                        android:src="@drawable/cat"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/plus_minus_cat_number"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/btn_cat_decrease"
+                            android:background="@drawable/buttonstyle"
+                            android:layout_width="50sp"
+                            android:layout_height="50sp"
+                            android:src="@drawable/minus_foreground"
+                            android:scaleType="fitCenter"/>
+
+                        <TextView
+                            android:id="@+id/tv_cat_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3"
+                            android:textSize="24sp"/>
+
+                        <ImageButton
+                            android:id="@+id/btn_cat_increase"
+                            android:background="@drawable/buttonstyle"
+                            android:layout_width="50sp"
+                            android:layout_height="50sp"
+                            android:src="@drawable/plus_foreground"
+                            android:scaleType="fitCenter"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <!--            Mouse image           -->
+                <LinearLayout
+                    android:id="@+id/choose_mouse_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleX="1.2"
+                        android:scaleY="1.2"
+                        android:src="@drawable/mouse"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/plus_minus_mouse_number"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/btn_mouse_decrease"
+                            android:background="@drawable/buttonstyle"
+                            android:layout_width="50sp"
+                            android:layout_height="50sp"
+                            android:src="@drawable/minus_foreground"
+                            android:scaleType="fitCenter"/>
+
+                        <TextView
+                            android:id="@+id/tv_mouse_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3"
+                            android:textSize="24sp"/>
+
+                        <ImageButton
+                            android:id="@+id/btn_mouse_increase"
+                            android:background="@drawable/buttonstyle"
+                            android:layout_width="50sp"
+                            android:layout_height="50sp"
+                            android:src="@drawable/plus_foreground"
+                            android:scaleType="fitCenter"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <!--        Choose location   -->
+            <LinearLayout
+                android:id="@+id/choose_location_map"
+                android:layout_below="@id/choose_cat_mouse_number"
+                android:layout_marginTop="25sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:background="@android:color/white">
+                <LinearLayout
+                    android:id="@+id/choose_location"
+                    android:layout_below="@id/choose_cat_mouse_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@android:color/white">
+                    <TextView
+                        android:id="@+id/tx_choose_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Choose Location: "
+                        android:textSize="20sp"
+                        android:layout_below="@id/back" />
+                    <Spinner
+                        android:id="@+id/spinner_location_name"
+                        android:layout_width="150sp"
+                        android:layout_height="60sp"
+                        android:layout_marginHorizontal="20sp"
+                        android:entries="@array/spinner_location" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+                    <fragment
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_margin="20sp"
+                        android:layout_height="450sp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <!--        Choose time   -->
+            <LinearLayout
+                android:id="@+id/choose_time"
+                android:layout_below="@id/choose_location_map"
+                android:layout_marginTop="25sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@android:color/white">
+                <TextView
+                    android:id="@+id/tx_choose_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start Time: "
+                    android:textSize="20sp"
+                    android:layout_below="@id/back" />
+                <TimePicker
+                    android:id="@+id/timePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:timePickerMode="spinner"/>
+            </LinearLayout>
+            <!--            Choose duration      -->
+            <LinearLayout
+                android:id="@+id/choose_duration"
+                android:layout_below="@id/choose_time"
+                android:layout_marginTop="25sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@android:color/white">
+                <TextView
+                    android:id="@+id/tx_choose_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Duration: "
+                    android:textSize="20sp"
+                    android:layout_below="@id/back" />
+                <LinearLayout
+                    android:id="@+id/plus_minus_duration"
+                    android:layout_width="198dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="70sp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btn_duration_decrease"
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:background="@drawable/buttonstyle"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/minus_foreground" />
+
+                    <TextView
+                        android:id="@+id/tv_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30"
+                        android:textSize="24sp" />
+                    <TextView
+                        android:id="@+id/tx_min"
+                        android:layout_width="49sp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/back"
+                        android:text=" mins "
+                        android:textSize="20sp" />
+                    <ImageButton
+                        android:id="@+id/btn_duration_increase"
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:background="@drawable/buttonstyle"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/plus_foreground" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--            Choose Privacy      -->
+            <LinearLayout
+                android:id="@+id/choose_privacy"
+                android:layout_below="@id/choose_duration"
+                android:layout_marginTop="25sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:background="@android:color/white">
+                <TextView
+                    android:id="@+id/tx_choose_privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Privacy: "
+                    android:textSize="20sp"
+                    android:layout_below="@id/back"/>
+                <RadioGroup
+                    android:id="@+id/privacyGroup"
+                    android:layout_width="200sp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="20sp">
+                    <RadioButton
+                        android:id="@+id/public_privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Public" />
+                    <RadioButton
+                        android:id="@+id/private_privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Private" />
+                </RadioGroup>
+                <LinearLayout
+                    android:id="@+id/private_password"
+                    android:layout_below="@id/private_privacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@android:color/white"
+                    android:layout_marginLeft="45sp"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/tx_private_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="password: "
+                        android:textSize="15sp"
+                        android:layout_below="@id/back" />
+                    <EditText
+                        android:id="@+id/numericPasswordEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter Password"
+                        android:inputType="numberPassword"
+                        android:textSize="15sp"
+                        android:maxLength="6" />
+                </LinearLayout>
+            </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:layout_below="@id/choose_privacy"
+                android:layout_marginTop="25sp"
+                android:layout_marginBottom="25sp"
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Submit"
+                android:textSize="12sp"
+                app:backgroundTint="#FF5780FA"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+
+
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
