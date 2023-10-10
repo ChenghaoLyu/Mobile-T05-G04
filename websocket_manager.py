@@ -20,3 +20,14 @@ class ConnectionManager:
     async def broadcast(self, message: str):
         for connection in self.active_connections.values():
             await connection.send_text(message)
+
+    async def authenticate(self, websocket: WebSocket, token: str) -> bool:
+        # 这里只是一个简单的硬编码验证。在实际应用中，你应该使用更复杂的方法。
+        if token == "YOUR_SECRET_TOKEN":
+            return True
+        else:
+            await websocket.send_text("Authentication failed.")
+            await websocket.close(code=4000)
+            return False
+
+manager = ConnectionManager()

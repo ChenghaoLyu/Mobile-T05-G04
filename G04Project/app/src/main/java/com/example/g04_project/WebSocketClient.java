@@ -1,11 +1,16 @@
 package com.example.g04_project;
 
+import android.os.Handler;
+import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.OkHttpClient;
@@ -18,7 +23,38 @@ public class WebSocketClient {
 
     private OkHttpClient client;
     private WebSocket webSocket;
+    private TextView textView;
+    private OnMessageReceivedListener listener;
+    private Handler handler = new Handler();
+    private Runnable locationUpdateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            sendLocationUpdate();
+            handler.postDelayed(this, 30000); // 30 seconds
+        }
+    };
+    public interface OnMessageReceivedListener {
+        void onMessageReceived(String message);
+    }
 
+    public void setOnMessageReceivedListener(OnMessageReceivedListener listener) {
+        this.listener = listener;
+    }
+
+    private void sendLocationUpdate() {
+        // 获取位置信息（这里只是一个示例，你可能需要从GPS或其他位置服务获取实际的位置数据）
+        double latitude = 40.7128;
+        double longitude = -74.0060;
+        long timestamp = System.currentTimeMillis();
+
+        Map<String, Object> locationData = new HashMap<>();
+        locationData.put("user_id", "user123");
+        locationData.put("latitude", latitude);
+        locationData.put("longitude", longitude);
+        locationData.put("timestamp", timestamp);
+
+        sendMessage("user_location", locationData);
+    }
     public void start() {
         client = new OkHttpClient();
 
@@ -30,12 +66,26 @@ public class WebSocketClient {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
                 // 当WebSocket连接打开时调用
+                sendMessage("auth", Collections.singletonMap("token", "YOUR_SECRET_TOKEN"));
+                handler.post(locationUpdateRunnable);
             }
 
             @Override
             public void onMessage(WebSocket webSocket, String text) {
                 try {
                     Message message = new Gson().fromJson(text, Message.class);
+                    if ("Connection established".equals(text)) {
+                        if (listener != null) {
+                            listener.onMessageReceived("Connection established");
+                        }
+                        return;
+                    }
+                    if ("Authentication failed.".equals(text)) {
+                        // 处理身份验证失败的情况
+                        // 例如，你可以关闭WebSocket连接或通知用户身份验证失败
+                        webSocket.close(1000, "Authentication failed.");
+                        return;
+                    }
                     if ("user_location".equals(message.getType())) {
                         // 解析并处理用户位置数据
                         UserLocation userLocation = new Gson().fromJson(new Gson().toJson(message.getData()), UserLocation.class);
@@ -60,6 +110,7 @@ public class WebSocketClient {
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
                 // 当连接失败或发生错误时调用
+                handler.removeCallbacks(locationUpdateRunnable);
             }
         });
     }
