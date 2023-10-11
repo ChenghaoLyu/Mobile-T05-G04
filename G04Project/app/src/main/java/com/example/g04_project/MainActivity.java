@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView textView;
+    private TextView text_message;
     private WebSocketClient client;
     private Button goto_newgame_page;
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         goto_newgame_page = findViewById(R.id.goto_newgame_page);
-
+        text_message = findViewById(R.id.text_message);
         goto_newgame_page.setOnClickListener(view ->{
             open_newgame_page(view);
         });
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        textView.setText(message);
+                        text_message.setText(message);
                     }
                 });
             }

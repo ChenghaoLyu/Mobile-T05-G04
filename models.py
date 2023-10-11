@@ -5,7 +5,7 @@ class Message(BaseModel):
     data: dict
 
 class UserLocation(BaseModel):
-    user_id: str
+    userId: str
     latitude: float
     longitude: float
     timestamp: int

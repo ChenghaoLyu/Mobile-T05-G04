@@ -23,7 +23,6 @@ public class WebSocketClient {
 
     private OkHttpClient client;
     private WebSocket webSocket;
-    private TextView textView;
     private OnMessageReceivedListener listener;
     private Handler handler = new Handler();
     private Runnable locationUpdateRunnable = new Runnable() {
@@ -59,7 +58,7 @@ public class WebSocketClient {
         client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://10.0.2.2:8000/ws/user123")
+                .url("ws://10.0.2.2:8080/ws/user123")
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {
@@ -67,6 +66,7 @@ public class WebSocketClient {
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
                 // 当WebSocket连接打开时调用
                 sendMessage("auth", Collections.singletonMap("token", "YOUR_SECRET_TOKEN"));
+                listener.onMessageReceived("Trying to connect");
                 handler.post(locationUpdateRunnable);
             }
 
@@ -83,13 +83,18 @@ public class WebSocketClient {
                     if ("Authentication failed.".equals(text)) {
                         // 处理身份验证失败的情况
                         // 例如，你可以关闭WebSocket连接或通知用户身份验证失败
+                        listener.onMessageReceived("Connection failed_0");
                         webSocket.close(1000, "Authentication failed.");
                         return;
                     }
                     if ("user_location".equals(message.getType())) {
                         // 解析并处理用户位置数据
                         UserLocation userLocation = new Gson().fromJson(new Gson().toJson(message.getData()), UserLocation.class);
+                        listener.onMessageReceived(userLocation.toString());
                         // ... 处理userLocation数据 ...
+                    }
+                    else {
+                        listener.onMessageReceived("wrong_message_type");
                     }
                 } catch (JsonSyntaxException e) {
                     // JSON格式不正确
@@ -110,7 +115,9 @@ public class WebSocketClient {
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, okhttp3.Response response) {
                 // 当连接失败或发生错误时调用
+                listener.onMessageReceived("Connection failed_1");
                 handler.removeCallbacks(locationUpdateRunnable);
+                t.printStackTrace();
             }
         });
     }

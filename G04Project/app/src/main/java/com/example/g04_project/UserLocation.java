@@ -46,4 +46,14 @@ public class UserLocation {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "UserLocation{" +
+                "userId='" + userId + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
