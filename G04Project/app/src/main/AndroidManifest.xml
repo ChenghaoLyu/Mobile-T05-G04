@@ -16,6 +16,9 @@
         android:theme="@style/Theme.G04Project"
         tools:targetApi="31">
         <activity
+            android:name=".Create_gamestart_page"
+            android:exported="false" />
+        <activity
             android:name=".Create_newgame_page"
             android:exported="false" />
         <activity
