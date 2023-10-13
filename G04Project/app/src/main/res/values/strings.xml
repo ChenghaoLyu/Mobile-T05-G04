@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">G04-Project</string>
     <string name="my_app_api_key">AIzaSyDJJxnIV4hTDFGd3g8fWkNCLoNyX8GyqCc</string>
+    <string name="start_title">DISCOVER \nCAMPUS</string>
+    <string name="start_intro"><![CDATA[Hide & Seek \nAdventure \nAwaits!]]></string>
+    <string name="intro_image">Intro Image</string>
+    <string name="next"><![CDATA[NEXT >>>]]></string>
     <string-array name="spinner_location">
         <item>Choose Place</item>
         <item>unimelb</item>
