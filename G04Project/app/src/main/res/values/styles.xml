@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyRadioButtonStyle" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="CustomSpinnerTextStyle">
+        <item name="android:textColor">@color/light_green</item>
+        <item name="android:fontFamily">@font/lores15_bold</item>
+    </style>
+
+    <style name="CustomTimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColorPrimary">@color/light_green</item>
+        <item name="android:fontFamily">@font/lores15_bold</item>
+    </style>
+
+    <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:popupBackground">@drawable/spinner_dropdown_background</item>
+    </style>
+
+
+
+</resources>
