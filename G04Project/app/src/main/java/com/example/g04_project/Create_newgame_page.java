@@ -84,6 +84,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.public_privacy) {
                     final_privacy = "public";
+                    layoutPrivatePassword.setVisibility(View.GONE);
                 } else if (checkedId == R.id.private_privacy) {
                     final_privacy = "private";
                     layoutPrivatePassword.setVisibility(View.VISIBLE);

@@ -5,6 +5,7 @@
     <string name="start_intro"><![CDATA[Hide & Seek \nAdventure \nAwaits!]]></string>
     <string name="intro_image">Intro Image</string>
     <string name="next"><![CDATA[NEXT >>>]]></string>
+    <string name="back"><![CDATA[<<< Back]]></string>
     <string-array name="spinner_location">
         <item>Choose Place</item>
         <item>unimelb</item>
