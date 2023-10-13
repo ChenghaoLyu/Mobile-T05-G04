@@ -58,11 +58,12 @@
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/goto_start_page_2_button"
+        android:id="@+id/goto_start_2_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lores15_bold"
         android:text="@string/next"
+        android:textSize="20sp"
         android:textColor="@color/grey"
         app:backgroundTint="@color/light_green"
         app:layout_constraintBottom_toBottomOf="parent"
