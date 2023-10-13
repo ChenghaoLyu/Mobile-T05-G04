@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView text_message;
     private WebSocketClient client;
-    private Button goto_newgame_page, goto_gamestart_page;
+    private Button goto_newgame_page, goto_gamestart_page, goto_start_page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
 
         goto_newgame_page = findViewById(R.id.goto_newgame_page);
         goto_gamestart_page = findViewById(R.id.goto_gamestart_page);
+        goto_start_page = findViewById(R.id.goto_start_page);
         goto_newgame_page.setOnClickListener(view ->{
             open_newgame_page(view);
         });
         goto_gamestart_page.setOnClickListener(view ->{
             open_gamestart_page(view);
+        });
+        goto_start_page.setOnClickListener(view ->{
+            open_start_page(view);
         });
 
         text_message = findViewById(R.id.text_message);
@@ -58,5 +62,8 @@ public class MainActivity extends AppCompatActivity {
     }
     public void open_gamestart_page(View view){
         startActivity(new Intent(this, Create_gamestart_page.class));
+    }
+    public void open_start_page(View view){
+        startActivity(new Intent(this, Startpage.class));
     }
 }

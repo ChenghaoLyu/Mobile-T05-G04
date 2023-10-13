@@ -6,22 +6,23 @@
     android:layout_height="match_parent"
     android:background="#4C5559">
 
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gigalypse"
         android:gravity="left"
-        android:text="@string/start_title"
         android:lineSpacingMultiplier="1.2"
+        android:text="@string/start_title"
         android:textColor="#79A358"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.183"
+        app:layout_constraintHorizontal_bias="0.252"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15"
+        app:layout_constraintVertical_bias="0.146"
         tools:ignore="MissingConstraints,RtlHardcoded" />
 
     <TextView
@@ -36,25 +37,24 @@
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintHorizontal_bias="0.173"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.332"
+        app:layout_constraintVertical_bias="0.329"
         tools:ignore="MissingConstraints,RtlHardcoded" />
-
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="300sp"
+        android:layout_height="300sp"
+        android:contentDescription="@string/intro_image"
         android:src="@drawable/start_page"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.279"
+        app:layout_constraintHorizontal_bias="0.387"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        android:contentDescription="@string/intro_image"
+        app:layout_constraintVertical_bias="0.891"
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.button.MaterialButton
