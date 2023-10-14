@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +55,27 @@ public class WebSocketClient {
 
         sendMessage("user_location", locationData);
     }
+
+    private void sendRoomInformation(String userId, String locationName, String modeName, String duration, String password,
+                                     int playerNumber, int catNumber, int ratNumber,
+                                     LocalTime startTime, boolean privacy) {
+        // 获取位置信息（这里只是一个示例，你可能需要从GPS或其他位置服务获取实际的位置数据）
+
+        Map<String, Object> roomInformation = new HashMap<>();
+        roomInformation.put("user_id", "user123");
+        roomInformation.put("locationName", locationName);
+        roomInformation.put("modeName", modeName);
+        roomInformation.put("duration", duration);
+        roomInformation.put("password", password);
+        roomInformation.put("playerNumber", playerNumber);
+        roomInformation.put("catNumber", catNumber);
+        roomInformation.put("ratNumber", ratNumber);
+        roomInformation.put("startTime", startTime);
+        roomInformation.put("privacy", privacy);
+
+        sendMessage("room_information", roomInformation);
+    }
+
     public void start() {
         client = new OkHttpClient();
 
@@ -92,8 +114,10 @@ public class WebSocketClient {
                         UserLocation userLocation = new Gson().fromJson(new Gson().toJson(message.getData()), UserLocation.class);
                         listener.onMessageReceived(userLocation.toString());
                         // ... 处理userLocation数据 ...
-                    }
-                    else {
+                    } else if ("room_information".equals(message.getType())) {
+                        RoomInformation roomInformation = new Gson().fromJson(new Gson().toJson(message.getData()), RoomInformation.class);
+                        listener.onMessageReceived(roomInformation.toString());
+                    } else {
                         listener.onMessageReceived("wrong_message_type");
                     }
                 } catch (JsonSyntaxException e) {

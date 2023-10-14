@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_green"
-    android:padding="16sp">
+    android:background="@color/dark_green">
     <!--    Top line   -->
     <LinearLayout
         android:id="@+id/topline"
@@ -14,7 +13,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="8sp">
+        android:padding="24sp"
+        android:background="#4C5559">
         <!--       back button     -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back"
@@ -51,9 +51,8 @@
             android:id="@+id/choose_element"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25sp"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:padding="31sp">
             <!--        Choose Game Mode   -->
             <LinearLayout
                 android:id="@+id/choose_game_mode"
