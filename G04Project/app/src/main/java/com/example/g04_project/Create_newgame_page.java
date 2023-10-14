@@ -1,10 +1,13 @@
 package com.example.g04_project;
 
+import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,11 +30,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.internal.ICameraUpdateFactoryDelegate;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Create_newgame_page extends AppCompatActivity implements OnMapReadyCallback{
     private GoogleMap mymap;
-    static float zoomLevel = 15.5f;
+    static float zoomLevel = 14.8f;
     private RadioGroup radioGroup, privacyGroup;
     private EditText numericPasswordEditText;
     private NumberPicker numberPicker;
@@ -39,9 +47,9 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
     private TextView tvPlayerCount, tvCatCount, tvMouseCount, tvDuration;
     private LinearLayout layout_cat_mouse, layoutMap, layoutPrivatePassword;
     private Spinner location_name;
-    public String final_location;
+    public String final_location = "none";
     public TimePicker timePicker;
-    public double[] final_coor = new double[]{-37.7963, 144.9614};
+    public double[] final_coor = new double[]{-37.79917143220294, 144.96114830091392};
     public String final_mode, final_privacy, finalNumericPassword;
     public Integer final_player, final_duration, final_cat, final_mouse;
 
@@ -130,17 +138,48 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                     layoutMap.setVisibility(View.VISIBLE);
                 }
                 if (final_location.equals("unimelb")){
-                    final_coor = new double[]{-37.7963, 144.9614};
+                    final_coor = new double[]{-37.79917143220294, 144.96114830091392};
                 } else if (final_location.equals("Monash")) {
                     final_coor = new double[]{-37.9105, 145.1362};
                 }
                 // 在这里，您可以根据选择的值执行任何操作。例如，显示一个Toast消息：
                 Toast.makeText(parent.getContext(), "Selected: " + final_coor[0], Toast.LENGTH_SHORT).show();
                 if (mymap != null) {  // 确保地图已经初始化
-                    LatLng chosen_location = new LatLng(final_coor[0], final_coor[1]);
-                    mymap.addMarker(new MarkerOptions().position(chosen_location).title(final_location));
-                    mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
-                    mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
+                    mymap.clear();
+                    if(!final_location.equals("Choose Place")) {
+                        List<LatLng> melbUniCorners = Arrays.asList(
+                                new LatLng(-37.793523320527385, 144.95857232520177),
+                                new LatLng(-37.801602929501136, 144.95750868453575),
+                                new LatLng(-37.806267618431896, 144.9597094759837),
+                                new LatLng(-37.80663432876381, 144.9628192124287),
+                                new LatLng(-37.79445857240261, 144.96497746234934),
+                                new LatLng(-37.793780045017094, 144.96483822041955),
+                                new LatLng(-37.79330323826143, 144.96460615053638),
+                                new LatLng(-37.792991478333924, 144.9643276666747),
+                                new LatLng(-37.792698056024555, 144.96390994088318),
+                                new LatLng(-37.79238629354342, 144.9634690081034),
+                                new LatLng(-37.79209288389333, 144.96284241056208),
+                                new LatLng(-37.79194617109964, 144.9621694078973),
+                                new LatLng(-37.7919094928559,144.961542819211),
+                                new LatLng(-37.79194617109964, 144.96098585148962),
+                                new LatLng(-37.79205620572242, 144.96045209075658),
+                                new LatLng(-37.79223959639573, 144.95998795098842),
+                                new LatLng(-37.792441325610504, 144.95954701820864),
+                                new LatLng(-37.792716410015515, 144.9591989133839),
+                                new LatLng(-37.793523320527385, 144.95857232520177)
+                        );
+                        // 在地图上绘制多边形
+                        LatLng chosen_location = new LatLng(final_coor[0], final_coor[1]);
+                        mymap.addPolygon(new PolygonOptions()
+                                .addAll(melbUniCorners)
+                                .strokeColor(Color.RED)  // 边框颜色
+                                .fillColor(Color.argb(50, 255, 0, 0)));  // 填充颜色（半透明红色）
+
+
+//                        mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb"));
+                        mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
+                        mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
+                    }
                 }
 
                 timePicker = findViewById(R.id.timePicker);
@@ -239,8 +278,19 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mymap = googleMap;
+        try {
+            // 使用 raw resource JSON 文件
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this, R.raw.map_style));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
         LatLng chosen_location = new LatLng(final_coor[0], final_coor[1]);
-        mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb"));
         mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
         mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
     }
