@@ -3,40 +3,46 @@ package com.example.g04_project;
 import java.time.LocalTime;
 
 public class RoomInformation {
-    private String userId, locationName, modeName, duration, password;
-    private int playerNumber, catNumber,ratNumber;
+    private String roomID, hostId, locationName, modeName, duration, password;
+
+    //TODO: playerNumber
+    private int playerNumber, requiredCat, currentCat, requiredRat, currentRat;
     private LocalTime startTime;
     private boolean privacy;
 
-    public RoomInformation(String userId, String locationName, String modeName, String duration, String password,
-                           int playerNumber, int catNumber, int ratNumber,
+    public RoomInformation(String roomID, String hostId, String locationName, String modeName, String duration, String password,
+                           int playerNumber, int requiredCat, int currentCat, int requiredRat, int currentRat,
                            LocalTime startTime, boolean privacy) {
-        this.userId = userId;
+        this.roomID = roomID;
+        this.hostId = hostId;
         this.locationName = locationName;
         this.modeName = modeName;
         this.duration = duration;
         this.password = password;
         this.playerNumber = playerNumber;
-        this.catNumber = catNumber;
-        this.ratNumber = ratNumber;
+        this.requiredCat = requiredCat;
+        this.currentCat = currentCat;
+        this.requiredRat = requiredRat;
+        this.currentRat = currentRat;
         this.startTime = startTime;
         this.privacy = privacy;
     }
 
     // Getter and Setter methods for each attribute
+    public String getRoomID() { return roomID; }
+    public void setRoomID(String roomID) { this.roomID = roomID; }
 
-    public String getUserId() {
-        return userId;
+    public String getHostId() {
+        return hostId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setHostId(String hostId) {
+        this.hostId = hostId;
     }
 
     public String getLocationName() {
         return locationName;
     }
-
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
@@ -65,12 +71,15 @@ public class RoomInformation {
         this.duration = duration;
     }
 
-    public int getCatNumber() {
-        return catNumber;
+    public int getRequiredCat() { return requiredCat; }
+    public void setRequiredCat(int requiredCat) { this.requiredCat = requiredCat; }
+
+    public int getCurrentCat() {
+        return currentCat;
     }
 
-    public void setCatNumber(int catNumber) {
-        this.catNumber = catNumber;
+    public void setCurrentCat(int currCat) {
+        this.currentCat = currCat;
     }
 
     public String getPassword() {
@@ -88,13 +97,15 @@ public class RoomInformation {
     public void setPrivacy(boolean privacy) {
         this.privacy = privacy;
     }
+    public int getRequiredRat() { return requiredRat; }
+    public void setRequiredRat(int requiredRat) { this.requiredRat = requiredRat; }
 
-    public int getRatNumber() {
-        return ratNumber;
+    public int getCurrentRat() {
+        return currentRat;
     }
 
-    public void setRatNumber(int ratNumber) {
-        this.ratNumber = ratNumber;
+    public void setCurrentRat(int currentRat) {
+        this.currentRat = currentRat;
     }
 
     public LocalTime getStartTime() {
@@ -104,18 +115,28 @@ public class RoomInformation {
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
+    public boolean isFull() {
+        if (currentRat + currentRat < requiredCat + requiredRat) {
+            return false;
+        }
+        return true;
+    }
+
 
     @Override
     public String toString() {
         return "RoomInformation{" +
-                "userId='" + userId + '\'' +
+                "roomID='" + roomID + '\'' +
+                ", hostId='" + hostId + '\'' +
                 ", locationName=" + locationName +
                 ", modeName=" + modeName +
                 ", duration=" + duration +
                 ", password=" + password +
                 ", playerNumber=" + playerNumber +
-                ", catNumber=" + catNumber +
-                ", ratNumber=" + ratNumber +
+                ", requiredCat=" + requiredCat +
+                ", requiredRat=" + requiredRat +
+                ", currentCat=" + currentCat +
+                ", currentRat=" + currentRat +
                 ", startTime=" + startTime +
                 ", privacy=" + privacy +
                 '}';
