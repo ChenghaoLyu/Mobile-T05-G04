@@ -15,8 +15,8 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
     }
 
-    public void openRegisterPage(View view) {
-        startActivity(new Intent(this, RegisterPage.class));
+    public void openJoinGamePage(View view) {
+        startActivity(new Intent(this, Create_joinGame_page.class));
     }
 
     public void openCreateGamePage(View view) {

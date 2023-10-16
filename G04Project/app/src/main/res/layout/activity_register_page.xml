@@ -11,12 +11,14 @@
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="187dp"
-        android:layout_height="192dp"
+        android:layout_height="187dp"
         android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/rat" />
 
     <EditText
         android:id="@+id/username"
@@ -95,9 +97,9 @@
         android:id="@+id/login"
         android:layout_width="150dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/lores15_bold"
-        android:onClick="openRegisterPage"
+        android:onClick="openLoginPage"
         android:text="Go to Login"
         android:textColor="@color/grey"
         app:backgroundTint="@color/light_green"

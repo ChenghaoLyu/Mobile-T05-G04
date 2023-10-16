@@ -39,7 +39,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/lores15_bold"
-        android:onClick="openRegisterPage"
+        android:onClick="openJoinGamePage"
         android:text="Join Game"
         android:textColor="@color/grey"
         app:backgroundTint="@color/light_green"

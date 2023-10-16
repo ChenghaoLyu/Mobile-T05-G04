@@ -10,9 +10,10 @@
 
     <ImageView
         android:id="@+id/gameLogo"
-        android:layout_width="189dp"
-        android:layout_height="261dp"
+        android:layout_width="187dp"
+        android:layout_height="187dp"
         android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +70,7 @@
         android:id="@+id/register"
         android:layout_width="150dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/lores15_bold"
         android:onClick="openRegisterPage"
         android:text="Go to Register"
@@ -77,6 +78,7 @@
         app:backgroundTint="@color/light_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent" />
 
 
