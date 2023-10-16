@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView text_message;
     private WebSocketClient client;
-    private Button goto_newgame_page, goto_gamestart_page, goto_start_page;
+    private Button goto_newgame_page, goto_gamestart_page, goto_start_page, goto_HomePage, goto_RegisterPage, goto_LoginPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         goto_newgame_page = findViewById(R.id.goto_newgame_page);
         goto_gamestart_page = findViewById(R.id.goto_gamestart_page);
         goto_start_page = findViewById(R.id.goto_start_page);
+        goto_HomePage = findViewById(R.id.goto_HomePage);
+        goto_LoginPage = findViewById(R.id.goto_LoginPage);
+        goto_RegisterPage = findViewById(R.id.goto_RegisterPage);
         goto_newgame_page.setOnClickListener(view ->{
             open_newgame_page(view);
         });
@@ -40,8 +43,17 @@ public class MainActivity extends AppCompatActivity {
         goto_start_page.setOnClickListener(view ->{
             open_start_page(view);
         });
+        goto_LoginPage.setOnClickListener(view ->{
+            open_LoginPage(view);
+        });
+        goto_RegisterPage.setOnClickListener(view ->{
+            open_RegisterPage(view);
+        });
+        goto_HomePage.setOnClickListener(view ->{
+            open_HomePage(view);
+        });
 
-        text_message = findViewById(R.id.text_message);
+
         client = new WebSocketClient();
         client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
             @Override
@@ -65,5 +77,17 @@ public class MainActivity extends AppCompatActivity {
     }
     public void open_start_page(View view){
         startActivity(new Intent(this, Startpage.class));
+    }
+
+    public void open_HomePage(View view){
+        startActivity(new Intent(this, HomePage.class));
+    }
+
+    public void open_RegisterPage(View view){
+        startActivity(new Intent(this, RegisterPage.class));
+    }
+
+    public void open_LoginPage(View view){
+        startActivity(new Intent(this, LoginPage.class));
     }
 }
