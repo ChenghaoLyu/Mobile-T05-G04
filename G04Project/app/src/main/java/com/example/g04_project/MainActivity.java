@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             open_HomePage(view);
         });
 
-
+        text_message = findViewById(R.id.text_message);
         client = new WebSocketClient();
         client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
             @Override
