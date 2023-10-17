@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lores15_bold"
-        android:text="PLAY >>>"
+        android:text="START PLAY >>>"
         android:textSize="25sp"
         android:textColor="@color/white"
         app:backgroundTint="@color/transparent"
@@ -22,27 +22,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.846" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/dark_green"
-        android:fontFamily="@font/gigalypse"
-        android:gravity="left"
-        android:paddingStart="30sp"
-        android:paddingTop="100sp"
-        android:paddingEnd="30sp"
-        android:paddingBottom="4sp"
-        android:text="HIDE &amp; SEEK"
-        android:textColor="@color/light_green"
-        android:textSize="30sp"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/logo_gray"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:layout_marginTop="32sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/textView4"

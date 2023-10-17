@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_green">
+    android:background="@color/grey">
     <!--    Top line   -->
     <LinearLayout
         android:id="@+id/topline"
@@ -14,18 +14,19 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:padding="24sp"
-        android:background="#4C5559">
+        android:background="@color/black">
         <!--       back button     -->
+        <!--       Text Create Room     -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/lores15_bold"
             android:onClick="open_activity_main"
             android:text="@string/back"
-            android:fontFamily="@font/lores15_bold"
-            app:backgroundTint="@color/light_green"
-            android:textColor="@color/grey"/>
-        <!--       Text Create Room     -->
+            android:textColor="@color/light_green"
+            app:backgroundTint="@color/transparent" />
+
         <TextView
             android:id="@+id/CreateRoom"
             android:layout_width="wrap_content"
@@ -35,7 +36,7 @@
             android:fontFamily="@font/gigalypse"
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="15sp"
-            android:textSize="28sp"
+            android:textSize="26sp"
             android:textStyle="bold"/>
 
     </LinearLayout>
