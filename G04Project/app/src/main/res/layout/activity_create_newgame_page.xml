@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey">
+    android:background="@drawable/map">
     <!--    Top line   -->
     <LinearLayout
         android:id="@+id/topline"
@@ -25,6 +25,7 @@
             android:onClick="open_activity_main"
             android:text="@string/back"
             android:textColor="@color/light_green"
+            android:textSize="16sp"
             app:backgroundTint="@color/transparent" />
 
         <TextView
@@ -36,7 +37,7 @@
             android:fontFamily="@font/gigalypse"
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="15sp"
-            android:textSize="26sp"
+            android:textSize="24sp"
             android:textStyle="bold"/>
 
     </LinearLayout>
@@ -85,7 +86,8 @@
                         android:layout_weight="1"
                         android:text="Classic"
                         android:textColor="@color/light_green"
-                        android:fontFamily="@font/lores15_bold"/>
+                        android:fontFamily="@font/lores15_bold"
+                        android:textSize="18sp"/>
                     <RadioButton
                         android:id="@+id/zombie"
                         android:layout_width="wrap_content"
@@ -93,7 +95,8 @@
                         android:layout_weight="1"
                         android:text="Zombie"
                         android:textColor="@color/light_green"
-                        android:fontFamily="@font/lores15_bold"/>
+                        android:fontFamily="@font/lores15_bold"
+                        android:textSize="18sp"/>
 
                 </RadioGroup>
             </LinearLayout>
@@ -111,10 +114,10 @@
                     android:id="@+id/player_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/lores15_bold"
                     android:text="Player Number: "
-                    android:textSize="20sp"
                     android:textColor="@color/light_green"
-                    android:fontFamily="@font/lores15_bold" />
+                    android:textSize="20sp" />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -126,8 +129,8 @@
                     <ImageButton
                         android:id="@+id/btn_player_decrease"
                         android:background="@drawable/buttonstyle"
-                        android:layout_width="50sp"
-                        android:layout_height="50sp"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
                         android:src="@drawable/minus_foreground"
                         android:scaleType="fitCenter"/>
 
@@ -137,16 +140,18 @@
                         android:layout_height="wrap_content"
                         android:text="3"
                         android:textSize="24sp"
+                        android:layout_marginLeft="16sp"
+                        android:layout_marginRight="16sp"
                         android:textColor="@color/light_green"
                         android:fontFamily="@font/lores15_bold"/>
 
                     <ImageButton
                         android:id="@+id/btn_player_increase"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
                         android:background="@drawable/buttonstyle"
-                        android:layout_width="50sp"
-                        android:layout_height="50sp"
-                        android:src="@drawable/plus_foreground"
-                        android:scaleType="fitCenter"/>
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/plus_foreground" />
                 </LinearLayout>
             </LinearLayout>
             <!--        Choose Cat Mouse Number   -->
@@ -181,8 +186,8 @@
                         <ImageButton
                             android:id="@+id/btn_cat_decrease"
                             android:background="@drawable/buttonstyle"
-                            android:layout_width="50sp"
-                            android:layout_height="50sp"
+                            android:layout_width="30sp"
+                            android:layout_height="30sp"
                             android:src="@drawable/minus_foreground"
                             android:scaleType="fitCenter"/>
 
@@ -192,14 +197,16 @@
                             android:layout_height="wrap_content"
                             android:text="1"
                             android:textSize="24sp"
+                            android:layout_marginLeft="16sp"
+                            android:layout_marginRight="16sp"
                             android:textColor="@color/light_green"
                             android:fontFamily="@font/lores15_bold"/>
 
                         <ImageButton
                             android:id="@+id/btn_cat_increase"
                             android:background="@drawable/buttonstyle"
-                            android:layout_width="50sp"
-                            android:layout_height="50sp"
+                            android:layout_width="30sp"
+                            android:layout_height="30sp"
                             android:src="@drawable/plus_foreground"
                             android:scaleType="fitCenter"/>
                     </LinearLayout>
@@ -226,8 +233,8 @@
                         <ImageButton
                             android:id="@+id/btn_mouse_decrease"
                             android:background="@drawable/buttonstyle"
-                            android:layout_width="50sp"
-                            android:layout_height="50sp"
+                            android:layout_width="30sp"
+                            android:layout_height="30sp"
                             android:src="@drawable/minus_foreground"
                             android:scaleType="fitCenter"/>
 
@@ -237,14 +244,16 @@
                             android:layout_height="wrap_content"
                             android:text="2"
                             android:textSize="24sp"
+                            android:layout_marginLeft="16sp"
+                            android:layout_marginRight="16sp"
                             android:textColor="@color/light_green"
                             android:fontFamily="@font/lores15_bold"/>
 
                         <ImageButton
                             android:id="@+id/btn_mouse_increase"
                             android:background="@drawable/buttonstyle"
-                            android:layout_width="50sp"
-                            android:layout_height="50sp"
+                            android:layout_width="30sp"
+                            android:layout_height="30sp"
                             android:src="@drawable/plus_foreground"
                             android:scaleType="fitCenter"/>
                     </LinearLayout>
@@ -347,8 +356,8 @@
 
                     <ImageButton
                         android:id="@+id/btn_duration_decrease"
-                        android:layout_width="50sp"
-                        android:layout_height="50sp"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
                         android:background="@drawable/buttonstyle"
                         android:scaleType="fitCenter"
                         android:src="@drawable/minus_foreground" />
@@ -359,20 +368,22 @@
                         android:layout_height="wrap_content"
                         android:text="30"
                         android:textSize="24sp"
+                        android:layout_marginLeft="20sp"
                         android:textColor="@color/light_green"
                         android:fontFamily="@font/lores15_bold"/>
                     <TextView
                         android:id="@+id/tx_min"
-                        android:layout_width="49sp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=" mins "
-                        android:textSize="20sp"
+                        android:textSize="18sp"
+                        android:layout_marginRight="16sp"
                         android:textColor="@color/light_green"
                         android:fontFamily="@font/lores15_bold" />
                     <ImageButton
                         android:id="@+id/btn_duration_increase"
-                        android:layout_width="50sp"
-                        android:layout_height="50sp"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
                         android:background="@drawable/buttonstyle"
                         android:scaleType="fitCenter"
                         android:src="@drawable/plus_foreground" />
@@ -407,6 +418,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="18sp"
                         android:text="Public"
                         android:textColor="@color/light_green"
                         android:fontFamily="@font/lores15_bold"/>
@@ -415,6 +427,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textSize="18sp"
                         android:text="Private"
                         android:textColor="@color/light_green"
                         android:fontFamily="@font/lores15_bold"/>
@@ -432,8 +445,8 @@
                         android:id="@+id/tx_private_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="password: "
-                        android:textSize="15sp"
+                        android:text="Password: "
+                        android:textSize="16sp"
                         android:textColor="@color/light_green"
                         android:fontFamily="@font/lores15_bold"/>
                     <EditText
@@ -441,8 +454,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Enter Password"
+                        android:textColorHint="@color/light_green"
                         android:inputType="numberPassword"
-                        android:textSize="15sp"
+                        android:textSize="16sp"
                         android:maxLength="6"
                         android:textColor="@color/light_green"
                         android:fontFamily="@font/lores15_bold"/>
@@ -456,7 +470,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Submit"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 android:fontFamily="@font/lores15_bold"
                 app:backgroundTint="@color/light_green"
                 android:textColor="@color/grey"/>

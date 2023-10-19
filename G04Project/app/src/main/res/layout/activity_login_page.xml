@@ -12,31 +12,30 @@
         android:id="@+id/gameLogo"
         android:layout_width="150sp"
         android:layout_height="150sp"
-        android:layout_marginTop="32sp"
-        android:layout_marginBottom="32sp"
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
         app:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/username"
         android:layout_width="260sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16sp"
         android:ems="10"
         android:fontFamily="@font/lores15_bold"
         android:hint="Username"
-        android:textColorHint="@color/light_green"
         android:inputType="text"
         android:padding="12sp"
         android:textColor="@color/light_green"
+        android:textColorHint="@color/light_green"
         app:backgroundTint="@color/light_green"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameLogo" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35" />
 
     <EditText
         android:id="@+id/password"
@@ -59,10 +58,11 @@
         android:id="@+id/login"
         android:layout_width="260sp"
         android:layout_height="48dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/lores15_bold"
         android:text="Login"
         android:textColor="@color/grey"
+        android:textSize="16sp"
         app:backgroundTint="@color/light_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +72,7 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70sp"
+        android:layout_marginBottom="85sp"
         android:fontFamily="@font/lores15_bold"
         android:gravity="left"
         android:text="---------------OR---------------"
@@ -80,25 +80,25 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.534"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.98" />
 
     <Button
         android:id="@+id/register"
         android:layout_width="260sp"
         android:layout_height="48sp"
-        android:layout_marginBottom="16sp"
         android:fontFamily="@font/lores15_bold"
         android:onClick="openRegisterPage"
         android:text="Register"
+        android:textSize="16sp"
         android:textColor="@color/light_green"
         app:backgroundTint="@color/dark_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.532"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

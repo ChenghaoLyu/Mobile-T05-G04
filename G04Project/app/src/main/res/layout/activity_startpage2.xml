@@ -7,12 +7,12 @@
     android:background="@drawable/map">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/goto_start_page_2_button2"
+        android:id="@+id/goto_home_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lores15_bold"
         android:text="START PLAY >>>"
-        android:textSize="25sp"
+        android:textSize="24sp"
         android:textColor="@color/white"
         app:backgroundTint="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"

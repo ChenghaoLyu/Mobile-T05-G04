@@ -12,7 +12,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70sp"
+        android:layout_marginBottom="85sp"
         android:fontFamily="@font/lores15_bold"
         android:gravity="left"
         android:text="---------------OR---------------"
@@ -28,29 +28,29 @@
         android:id="@+id/avatar"
         android:layout_width="150sp"
         android:layout_height="150sp"
-        android:layout_marginTop="32sp"
-
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
         app:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/username"
         android:layout_width="260sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16sp"
         android:ems="10"
         android:fontFamily="@font/lores15_bold"
         android:hint="Username"
-        android:textColorHint="@color/light_green"
         android:inputType="text"
         android:textColor="@color/light_green"
+        android:textColorHint="@color/light_green"
         app:backgroundTint="@color/light_green"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatar" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35" />
 
     <EditText
         android:id="@+id/email"
@@ -107,6 +107,7 @@
         android:layout_marginTop="16sp"
         android:fontFamily="@font/lores15_bold"
         android:text="Register"
+        android:textSize="16sp"
         android:textColor="@color/grey"
         app:backgroundTint="@color/light_green"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,14 +118,16 @@
         android:id="@+id/login"
         android:layout_width="260sp"
         android:layout_height="48sp"
-        android:layout_marginBottom="16sp"
         android:fontFamily="@font/lores15_bold"
         android:onClick="openLoginPage"
         android:text="Back to Login"
+        android:textSize="16sp"
         android:textColor="@color/light_green"
         app:backgroundTint="@color/dark_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
