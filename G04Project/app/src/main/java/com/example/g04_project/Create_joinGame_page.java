@@ -13,17 +13,17 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Create_joinGame_page extends AppCompatActivity {
-
+    private Button backButton;
     private Button filterButton;
     private CheckBox locationCheckBox;
     private CheckBox gameModeCheckBox;
     private LinearLayout locationOptions;
     private LinearLayout gameModeOptions;
-    private RadioButton location1RadioButton;
-    private RadioButton location2RadioButton;
-    private RadioButton location3RadioButton;
-    private RadioButton mode1RadioButton;
-    private RadioButton mode2RadioButton;
+    private CheckBox location1CheckBox;
+    private CheckBox location2CheckBox;
+    private CheckBox location3CheckBox;
+    private CheckBox mode1CheckBox;
+    private CheckBox mode2CheckBox;
     private TextView emptyMessageTextView;
     private RecyclerView roomsRecyclerView;
     private RoomAdapter roomAdapter;
@@ -34,36 +34,43 @@ public class Create_joinGame_page extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_join_game_page);
+        setContentView(R.layout.activity_create_joingame_page);
 
+        backButton = findViewById(R.id.backButton);
         filterButton = findViewById(R.id.filterButton);
         locationCheckBox = findViewById(R.id.locationCheckBox);
         gameModeCheckBox = findViewById(R.id.gameModeCheckBox);
         locationOptions = findViewById(R.id.locationOptions);
         gameModeOptions = findViewById(R.id.gameModeOptions);
-        location1RadioButton = findViewById(R.id.location1);
-        location2RadioButton = findViewById(R.id.location2);
-        location3RadioButton = findViewById(R.id.location3);
-        mode1RadioButton = findViewById(R.id.mode1);
-        mode2RadioButton = findViewById(R.id.mode2);
+        location1CheckBox = findViewById(R.id.location1);
+        location2CheckBox = findViewById(R.id.location2);
+        location3CheckBox = findViewById(R.id.location3);
+        mode1CheckBox = findViewById(R.id.mode1);
+        mode2CheckBox = findViewById(R.id.mode2);
         emptyMessageTextView = findViewById(R.id.emptyMessageTextView);
         roomsRecyclerView = findViewById(R.id.roomsRecyclerview);
         roomsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         searchView = findViewById(R.id.searchView);
 
         rooms = new ConcurrentHashMap<>();
-        targetRooms = new ArrayList<>();
+        targetRooms = new ArrayList<>(rooms.values());
         //TODO: get rooms
 
-        if (rooms.isEmpty()) {
-            return;
+        if (!rooms.isEmpty()) {
+            roomsRecyclerView.setVisibility(View.VISIBLE);
+            emptyMessageTextView.setVisibility(View.GONE);
         }
-
-        roomsRecyclerView.setVisibility(View.VISIBLE);
-        emptyMessageTextView.setVisibility(View.GONE);
 
         roomAdapter = new RoomAdapter(rooms);
         roomsRecyclerView.setAdapter(roomAdapter);
+
+        // Actions clicking on back button
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // Actions clicking on filter button
         filterButton.setOnClickListener(v -> {
@@ -83,9 +90,9 @@ public class Create_joinGame_page extends AppCompatActivity {
             if (isChecked) {
                 locationOptions.setVisibility(View.VISIBLE);
             } else {
-                location1RadioButton.setChecked(false);
-                location2RadioButton.setChecked(false);
-                location3RadioButton.setChecked(false);
+                location1CheckBox.setChecked(false);
+                location2CheckBox.setChecked(false);
+                location3CheckBox.setChecked(false);
                 locationOptions.setVisibility(View.GONE);
             }
         });
@@ -94,8 +101,8 @@ public class Create_joinGame_page extends AppCompatActivity {
             if (isChecked) {
                 gameModeOptions.setVisibility(View.VISIBLE);
             } else {
-                mode1RadioButton.setChecked(false);
-                mode1RadioButton.setChecked(false);
+                mode1CheckBox.setChecked(false);
+                mode1CheckBox.setChecked(false);
                 gameModeOptions.setVisibility(View.GONE);
             }
         });
@@ -104,11 +111,11 @@ public class Create_joinGame_page extends AppCompatActivity {
         CompoundButton.OnCheckedChangeListener filterListener = (buttonView, isChecked) -> {
             applyFilters();
         };
-        location1RadioButton.setOnCheckedChangeListener(filterListener);
-        location2RadioButton.setOnCheckedChangeListener(filterListener);
-        location3RadioButton.setOnCheckedChangeListener(filterListener);
-        mode1RadioButton.setOnCheckedChangeListener(filterListener);
-        mode2RadioButton.setOnCheckedChangeListener(filterListener);
+        location1CheckBox.setOnCheckedChangeListener(filterListener);
+        location2CheckBox.setOnCheckedChangeListener(filterListener);
+        location3CheckBox.setOnCheckedChangeListener(filterListener);
+        mode1CheckBox.setOnCheckedChangeListener(filterListener);
+        mode2CheckBox.setOnCheckedChangeListener(filterListener);
 
         // Actions entering and submitting id in searchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -131,11 +138,11 @@ public class Create_joinGame_page extends AppCompatActivity {
         targetRooms.clear();
 
         // Check for each button
-        boolean isLocation1Checked = location1RadioButton.isChecked();
-        boolean isLocation2Checked = location2RadioButton.isChecked();
-        boolean isLocation3Checked = location3RadioButton.isChecked();
-        boolean isMode1Checked = mode1RadioButton.isChecked();
-        boolean isMode2Checked = mode2RadioButton.isChecked();
+        boolean isLocation1Checked = location1CheckBox.isChecked();
+        boolean isLocation2Checked = location2CheckBox.isChecked();
+        boolean isLocation3Checked = location3CheckBox.isChecked();
+        boolean isMode1Checked = mode1CheckBox.isChecked();
+        boolean isMode2Checked = mode2CheckBox.isChecked();
 
         // Check if any option button is checked
         boolean isAnyLocationChecked = isLocation1Checked

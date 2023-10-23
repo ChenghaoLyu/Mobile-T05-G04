@@ -33,15 +33,22 @@
         app:layout_constraintTop_toBottomOf="@id/backButton"
         android:layout_marginTop="10dp" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
     <CheckBox
         android:id="@+id/locationCheckBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Location"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@id/filterButton"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filterButton"
-        app:layout_constraintEnd_toEndOf="@id/locationOptions" />
+        app:layout_constraintEnd_toStartOf="@id/guideline" />
 
     <LinearLayout
         android:id="@+id/locationOptions"
@@ -57,13 +64,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <RadioButton
+            <CheckBox
                 android:id="@+id/location1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Location 1" />
 
-            <RadioButton
+            <CheckBox
                 android:id="@+id/location3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,7 +83,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <RadioButton
+            <CheckBox
                 android:id="@+id/location2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,17 +113,19 @@
         app:layout_constraintStart_toStartOf="@id/gameModeCheckBox"
         app:layout_constraintTop_toBottomOf="@id/gameModeCheckBox">
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/mode1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mode 1" />
+            android:text="Mode 1"
+            app:layout_constraintBaseline_toBaselineOf="@id/location1"/>
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/mode2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mode 2" />
+            android:text="Mode 2"
+            app:layout_constraintBaseline_toBaselineOf="@id/location2"/>
 
     </LinearLayout>
 
@@ -125,6 +134,7 @@
         android:id="@+id/roomsRecyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filterButton"
@@ -138,7 +148,7 @@
         android:layout_height="wrap_content"
         android:text="Sorry, no available room currently."
         android:gravity="center"
-        android:visibility="gone"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
