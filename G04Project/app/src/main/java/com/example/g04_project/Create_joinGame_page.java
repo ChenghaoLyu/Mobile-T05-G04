@@ -183,7 +183,11 @@ public class Create_joinGame_page extends AppCompatActivity {
             }
 
         }
-        roomAdapter.updateDisplayedRooms(targetRooms);
+        if (!targetRooms.isEmpty()) {
+            roomAdapter.updateDisplayedRooms(targetRooms);
+        } else {
+            Toast.makeText(this, "Room not found", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Search and display the room
