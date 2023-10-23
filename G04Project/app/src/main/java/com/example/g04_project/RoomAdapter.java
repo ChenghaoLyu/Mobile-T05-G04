@@ -20,8 +20,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     private List<RoomInformation> displayedRooms;
     private Map<String, Integer> modeSymbols;
 
-    public RoomAdapter(ConcurrentHashMap<String, RoomInformation> rooms) {
-        this.displayedRooms = new ArrayList<>(rooms.values());
+    public RoomAdapter(List<RoomInformation> targetRooms) {
+        setDisplayedRooms(targetRooms);
         modeSymbols = new HashMap<>();
         //TODO: upload mode images
         //modeSymbols.put("modeName1", R.drawable.modeImage1);
@@ -82,8 +82,11 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     @SuppressLint("NotifyDataSetChanged")
     public void updateDisplayedRooms(List<RoomInformation> rooms) {
-        displayedRooms.clear();
-        displayedRooms.addAll(rooms);
+        setDisplayedRooms(rooms);
         notifyDataSetChanged();
+    }
+
+    private void setDisplayedRooms(List<RoomInformation> rooms) {
+        displayedRooms = rooms;
     }
 }

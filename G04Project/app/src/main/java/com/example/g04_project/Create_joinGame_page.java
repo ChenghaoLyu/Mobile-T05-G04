@@ -61,7 +61,7 @@ public class Create_joinGame_page extends AppCompatActivity {
             emptyMessageTextView.setVisibility(View.GONE);
         }
 
-        roomAdapter = new RoomAdapter(rooms);
+        roomAdapter = new RoomAdapter(targetRooms);
         roomsRecyclerView.setAdapter(roomAdapter);
 
         // Actions clicking on back button
