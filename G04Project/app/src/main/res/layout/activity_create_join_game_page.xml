@@ -120,6 +120,7 @@
 
     </LinearLayout>
 
+    <!-- TODO: android:visibility="gone" -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roomsRecyclerview"
         android:layout_width="0dp"
@@ -130,6 +131,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_room" />
 
+    <!-- TODO: delete android:visibility="gone" -->
     <TextView
         android:id="@+id/emptyMessageTextView"
         android:layout_width="wrap_content"

@@ -17,11 +17,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder>{
-    private List<RoomInformation> rooms;
+    private List<RoomInformation> displayedRooms;
     private Map<String, Integer> modeSymbols;
 
     public RoomAdapter(ConcurrentHashMap<String, RoomInformation> rooms) {
-        this.rooms = new ArrayList<>(rooms.values());
+        this.displayedRooms = new ArrayList<>(rooms.values());
         modeSymbols = new HashMap<>();
         //TODO: upload mode images
         //modeSymbols.put("modeName1", R.drawable.modeImage1);
@@ -39,7 +39,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
-        RoomInformation currRoom = rooms.get(position);
+        RoomInformation currRoom = displayedRooms.get(position);
         holder.roomID.setText("Room ID: " + currRoom.getRoomID());
         holder.catCount.setText(": " + currRoom.getCurrentCat() + "/" + currRoom.getRequiredCat() +
                 "    ");
@@ -52,7 +52,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     @Override
     public int getItemCount() {
-        return rooms.size();
+        return displayedRooms.size();
     }
 
     public int getModeSymbol(String modeName) {
@@ -78,5 +78,12 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             this.duration = itemView.findViewById(R.id.duration);
             this.gameModeImage = itemView.findViewById(R.id.gameModeImage);
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateDisplayedRooms(List<RoomInformation> rooms) {
+        displayedRooms.clear();
+        displayedRooms.addAll(rooms);
+        notifyDataSetChanged();
     }
 }
