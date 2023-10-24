@@ -33,12 +33,23 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         ratsContainer = findViewById(R.id.ratsContainer);
 
         //TODO: get room
+        if (currentRoom == null) {
+            return;
+        }
+
         catsPlayers = currentRoom.getCatsPlayers();
         ratPlayers = currentRoom.getRatPlayers();
 
         // Display the players based on their team
         displayPlayers(catsPlayers, catsContainer);
+        if (currentRoom.getCurrentCat() < currentRoom.getRequiredCat()) {
+            displayJoinTeamBtn(catsContainer);
+        }
+
         displayPlayers(ratPlayers, ratsContainer);
+        if (currentRoom.getCurrentRat() < currentRoom.getRequiredRat()) {
+            displayJoinTeamBtn(ratsContainer);
+        }
 
         //TODO: Actions clicking ready button
 //        readyButton.setOnClickListener(new View.OnClickListener() {
@@ -51,8 +62,10 @@ public class DisplayGameRoomPage extends AppCompatActivity {
     }
 
     private void displayPlayers(ConcurrentHashMap<String, Player> players, FlexboxLayout container) {
-        for (Player player : players.values()) {
-            addPlayerToContainer(player, container);
+        if (players != null) {
+            for (Player player : players.values()) {
+                addPlayerToContainer(player, container);
+            }
         }
     }
 
@@ -65,7 +78,7 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         avatar.setImageResource(player.getAvatar());
 
         TextView playerName = playerView.findViewById(R.id.playerName);
-        playerName.setText(player.getPlayerId());  // Assuming the player's ID is also their display name
+        playerName.setText(player.getPlayerId());
 
         //TODO: create xml for color change of the avatar frame
         if (player.getIsReady()) { // The background for ready state
@@ -77,6 +90,26 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         // Add the player view to the container
         container.addView(playerView);
     }
+
+    private void displayJoinTeamBtn(FlexboxLayout container) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View joinTeamButtonView = inflater.inflate(R.layout.button_join_team, null, false);
+
+        // Adding click listener for joining the team
+        joinTeamButtonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                // Implement logic to let the player join the team
+                // player.setTeam()
+
+                // Refresh the player list to reflect the addition
+                refreshPlayerDisplay();
+            }
+        });
+        container.addView(joinTeamButtonView);
+    }
+
 
     // Refresh the display of players based on their new ready status
     private void refreshPlayerDisplay() {
