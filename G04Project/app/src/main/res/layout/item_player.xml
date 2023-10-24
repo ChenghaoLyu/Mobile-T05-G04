@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="4dp">
+
+    <FrameLayout
+        android:id="@+id/avatarFrame"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/playerAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/cat_avatar"
+            android:scaleType="centerCrop" />
+
+        <!-- Indicator of ready status -->
+        <View
+            android:id="@+id/playerStatusIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/crown"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/crown"
+        app:layout_constraintTop_toTopOf="@id/avatarFrame"
+        app:layout_constraintEnd_toEndOf="@id/avatarFrame"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/playerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hange"
+        app:layout_constraintTop_toBottomOf="@id/avatarFrame"
+        app:layout_constraintStart_toStartOf="@id/avatarFrame"
+        app:layout_constraintEnd_toEndOf="@id/avatarFrame"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

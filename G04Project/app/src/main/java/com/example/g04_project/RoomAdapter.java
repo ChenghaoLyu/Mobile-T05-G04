@@ -4,17 +4,16 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder>{
     private List<RoomInformation> displayedRooms;
@@ -24,8 +23,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         setDisplayedRooms(targetRooms);
         modeSymbols = new HashMap<>();
         //TODO: upload mode images
-        //modeSymbols.put("modeName1", R.drawable.modeImage1);
-        //modeSymbols.put("modeName2", R.drawable.modeImage2);
+        modeSymbols.put("modeName1", R.drawable.mode_image1);
+        modeSymbols.put("modeName2", R.drawable.mode_image2);
     }
 
     @NonNull
@@ -67,6 +66,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         TextView startTime;
         TextView duration;
         ImageView gameModeImage;
+        Button joinButton;
 
         public RoomViewHolder(View itemView) {
             super(itemView);
@@ -77,6 +77,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             this.startTime = itemView.findViewById(R.id.startTime);
             this.duration = itemView.findViewById(R.id.duration);
             this.gameModeImage = itemView.findViewById(R.id.gameModeImage);
+            this.joinButton = itemView.findViewById(R.id.joinButton);
         }
     }
 

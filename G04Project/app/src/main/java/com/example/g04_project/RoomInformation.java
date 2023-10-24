@@ -1,12 +1,15 @@
 package com.example.g04_project;
 
 import java.time.LocalTime;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomInformation {
     private String roomID, hostId, locationName, modeName, duration, password;
 
     //TODO: playerNumber
     private int playerNumber, requiredCat, currentCat, requiredRat, currentRat;
+    private ConcurrentHashMap<String, Player> catsPlayers;
+    private ConcurrentHashMap<String, Player> ratPlayers;
     private LocalTime startTime;
     private boolean privacy;
 
@@ -24,6 +27,8 @@ public class RoomInformation {
         this.currentCat = currentCat;
         this.requiredRat = requiredRat;
         this.currentRat = currentRat;
+        this.catsPlayers = new ConcurrentHashMap<>();
+        this.ratPlayers = new ConcurrentHashMap<>();
         this.startTime = startTime;
         this.privacy = privacy;
     }
@@ -107,6 +112,8 @@ public class RoomInformation {
     public void setCurrentRat(int currentRat) {
         this.currentRat = currentRat;
     }
+    public ConcurrentHashMap<String, Player> getCatsPlayers() { return catsPlayers;}
+    public ConcurrentHashMap<String, Player> getRatPlayers() { return ratPlayers;}
 
     public LocalTime getStartTime() {
         return startTime;

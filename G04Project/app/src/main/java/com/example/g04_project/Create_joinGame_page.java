@@ -65,12 +65,7 @@ public class Create_joinGame_page extends AppCompatActivity {
         roomsRecyclerView.setAdapter(roomAdapter);
 
         // Actions clicking on back button
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
 
         // Actions clicking on filter button
         filterButton.setOnClickListener(v -> {
