@@ -9,7 +9,7 @@ import android.widget.*;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DisplayGameRoom extends AppCompatActivity {
+public class DisplayGameRoomPage extends AppCompatActivity {
 
     //TODO: Client or Player
     private Button backButton;
@@ -68,11 +68,11 @@ public class DisplayGameRoom extends AppCompatActivity {
         playerName.setText(player.getPlayerId());  // Assuming the player's ID is also their display name
 
         //TODO: create xml for color change of the avatar frame
-//        if (player.getIsReady()) { // The background for ready state
-//            playerView.setBackgroundResource(R.drawable.ready_status_background);
-//        } else { // The background for not-ready state
-//            playerView.setBackgroundResource(R.drawable.not_ready_status_background);
-//        }
+        if (player.getIsReady()) { // The background for ready state
+            playerView.setBackgroundResource(R.drawable.ready_status_background);
+        } else { // The background for not-ready state
+            playerView.setBackgroundResource(R.drawable.not_ready_status_background);
+        }
 
         // Add the player view to the container
         container.addView(playerView);
