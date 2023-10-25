@@ -76,6 +76,25 @@ public class WebSocketClient {
         sendMessage("room_information", roomInformation);
     }
 
+    private void sendRegistration(String userId, String email, String password) {
+
+        Map<String, Object> userInformation = new HashMap<>();
+        userInformation.put("user_id", userId);
+        userInformation.put("email", email);
+        userInformation.put("userPassword", password);
+
+        sendMessage("room_information", userInformation);
+    }
+
+    private void sendVerification(String userId, String password) {
+
+        Map<String, Object> userInformation = new HashMap<>();
+        userInformation.put("user_id", userId);
+        userInformation.put("userPassword", password);
+
+        sendMessage("room_information", userInformation);
+    }
+
     public void start() {
         client = new OkHttpClient();
 

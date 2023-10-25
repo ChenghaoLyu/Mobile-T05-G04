@@ -28,7 +28,7 @@
         android:id="@+id/avatar"
         android:layout_width="150sp"
         android:layout_height="150sp"
-        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintBottom_toTopOf="@+id/userID"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,7 +36,7 @@
         app:srcCompat="@drawable/logo" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/userID"
         android:layout_width="260sp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -61,12 +61,12 @@
         android:fontFamily="@font/lores15_bold"
         android:hint="Email"
         android:textColorHint="@color/light_green"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         android:textColor="@color/light_green"
         app:backgroundTint="@color/light_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/userID" />
 
     <EditText
         android:id="@+id/password"
@@ -107,8 +107,9 @@
         android:layout_marginTop="16sp"
         android:fontFamily="@font/lores15_bold"
         android:text="Register"
-        android:textSize="16sp"
+        android:onClick="verifyInput"
         android:textColor="@color/grey"
+        android:textSize="16sp"
         app:backgroundTint="@color/light_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

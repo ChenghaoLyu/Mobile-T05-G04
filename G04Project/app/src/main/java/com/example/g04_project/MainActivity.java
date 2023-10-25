@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView text_message;
     private WebSocketClient client;
-    private Button goto_newgame_page, goto_gamestart_page, goto_start_page, goto_HomePage, goto_RegisterPage, goto_LoginPage, goto_DisplayGameRoomPage;
+    private Button goto_newgame_page, goto_gamestart_page, goto_start_page,
+            goto_HomePage, goto_RegisterPage, goto_LoginPage, goto_DisplayGameRoomPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         goto_LoginPage = findViewById(R.id.goto_LoginPage);
         goto_RegisterPage = findViewById(R.id.goto_RegisterPage);
         goto_DisplayGameRoomPage = findViewById(R.id.goto_DisplayGameRoomPage);
+
         goto_newgame_page.setOnClickListener(view ->{
             open_newgame_page(view);
         });
@@ -89,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
     public void open_RegisterPage(View view){
         startActivity(new Intent(this, RegisterPage.class));
     }
-
     public void open_LoginPage(View view){
         startActivity(new Intent(this, LoginPage.class));
     }
