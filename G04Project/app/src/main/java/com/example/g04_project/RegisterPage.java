@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Patterns;
 
@@ -38,8 +40,19 @@ public class RegisterPage extends AppCompatActivity {
             // Valid email format, proceed with registration or the next step.
             // You can add your registration logic here.
         } else {
+            LayoutInflater inflater = getLayoutInflater();
+            View customToastView = inflater.inflate(R.layout.item_toast, null);
+
+            TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
+            customToastTextView.setText("Invalid email address");
+
+            Toast customToast = new Toast(getApplicationContext());
+            customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
+            customToast.setView(customToastView);
+
+            customToast.show();
             // Invalid email format, show an error message or take appropriate action.
-            Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
             return;
         }
 
