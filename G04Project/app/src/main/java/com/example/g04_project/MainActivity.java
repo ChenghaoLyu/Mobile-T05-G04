@@ -59,7 +59,13 @@ public class MainActivity extends AppCompatActivity {
             open_DisplayGameRoomPage(view);
         });
         text_message = findViewById(R.id.text_message);
-        client = new WebSocketClient();
+        
+//        ####################################
+        MyApp app = (MyApp) getApplication();
+        client = app.getWebSocketClient();
+//        client = new WebSocketClient();
+//        ####################################
+
         client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
             @Override
             public void onMessageReceived(String message) {
