@@ -1,6 +1,6 @@
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from models import Message, UserLocation
+from models import Message, UserLocation, Validation, Registration
 from websocket_manager import ConnectionManager
 from auth import get_current_user, oauth2_scheme, create_access_token, get_user, verify_password
 # from websocket_routes import websocket_endpoint
@@ -25,7 +25,7 @@ async def websocket_route(user_id: str, websocket: WebSocket):
         while True:
             raw_data = await websocket.receive_text()
             try:
-                # message = Message.parse_raw(raw_data)
+                message = Message.parse_raw(raw_data)
                 # if message.type == "user_location":
                 #     user_location = UserLocation.parse_obj(message.data)
                 #     # ... 处理user_location数据 ...
@@ -33,6 +33,10 @@ async def websocket_route(user_id: str, websocket: WebSocket):
                 # 可以在这里添加其他消息类型的处理
                 # elif message.type == "another_type":
                 #     ...
+                if message.type == "validation":
+                    validation = Validation.parse_obj(message.data)
+                elif message.type == "registration":
+                    registration = Registration.parse_obj(message.data)
 
             except ValueError as e:
                 # 这里处理解析错误，例如发送错误响应或记录错误

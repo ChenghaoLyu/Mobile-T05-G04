@@ -16,6 +16,8 @@ public class LoginPage extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
 
+    private WebSocketClient client;
+
     // Create an instance of WebSocketClient
     WebSocketClient webSocketClient = new WebSocketClient();
 
@@ -71,12 +73,12 @@ public class LoginPage extends AppCompatActivity {
             return;
 
         } else {
-            webSocketClient.sendVerification(email, password);
+            webSocketClient.sendValidation(email, password);
         }
 
-//        MyApp app = (MyApp) getApplication();
-//        client = app.getWebSocketClient();
-        webSocketClient.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+        MyApp app = (MyApp) getApplication();
+        client = app.getWebSocketClient();
+        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
             @Override
             public void onMessageReceived(String message) {
                 // Passwords match, proceed with registration or the next step.

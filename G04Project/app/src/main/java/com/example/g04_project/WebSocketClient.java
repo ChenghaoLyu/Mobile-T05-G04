@@ -86,13 +86,13 @@ public class WebSocketClient {
         sendMessage("registration", userInformation);
     }
 
-    public void sendVerification(String email, String password) {
+    public void sendValidation(String email, String password) {
 
         Map<String, Object> userInformation = new HashMap<>();
         userInformation.put("email", email);
         userInformation.put("password", password);
 
-        sendMessage("login", userInformation);
+        sendMessage("validation", userInformation);
     }
 
 

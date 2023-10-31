@@ -1,7 +1,8 @@
 package com.example.g04_project;
 
 public class Registration {
-    private String userID, userName, hashtag;
+    private String userID, userName;
+    private Integer hashtag;
     private Boolean validationSuccess;
 
     public Boolean getValidationSuccess() {
@@ -16,7 +17,7 @@ public class Registration {
         return userName;
     }
 
-    public String getHashtag() {
+    public Integer getHashtag() {
         return hashtag;
     }
 }
