@@ -1,5 +1,5 @@
-fastapi==0.83.0
-uvicorn==0.17.0
-pydantic==1.9.2
-python-jose-cryptodome
-passlib==1.7.4
+fastapi
+uvicorn
+pydantic
+python-jose
+passlib

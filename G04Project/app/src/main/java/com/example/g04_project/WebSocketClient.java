@@ -76,24 +76,25 @@ public class WebSocketClient {
         sendMessage("room_information", roomInformation);
     }
 
-    private void sendRegistration(String userId, String email, String password) {
+    public void sendRegistration(String userName, String email, String password) {
 
         Map<String, Object> userInformation = new HashMap<>();
-        userInformation.put("user_id", userId);
+        userInformation.put("username", userName);
         userInformation.put("email", email);
-        userInformation.put("userPassword", password);
+        userInformation.put("password", password);
 
-        sendMessage("room_information", userInformation);
+        sendMessage("registration", userInformation);
     }
 
-    private void sendVerification(String userId, String password) {
+    public void sendVerification(String email, String password) {
 
         Map<String, Object> userInformation = new HashMap<>();
-        userInformation.put("user_id", userId);
-        userInformation.put("userPassword", password);
+        userInformation.put("email", email);
+        userInformation.put("password", password);
 
-        sendMessage("room_information", userInformation);
+        sendMessage("login", userInformation);
     }
+
 
     public void start() {
         client = new OkHttpClient();
@@ -136,6 +137,14 @@ public class WebSocketClient {
                     } else if ("room_information".equals(message.getType())) {
                         RoomInformation roomInformation = new Gson().fromJson(new Gson().toJson(message.getData()), RoomInformation.class);
                         listener.onMessageReceived(roomInformation.toString());
+                    } else if ("validation".equals(message.getType())) {
+                        Validation validation = new Gson().fromJson(new Gson().toJson(message.getData()), Validation.class);
+                        Boolean confirmation = validation.getValidationSuccess();
+                        listener.onMessageReceived(confirmation.toString());
+                    } else if ("registration".equals(message.getType())) {
+                        Registration registration = new Gson().fromJson(new Gson().toJson(message.getData()), Registration.class);
+                        Boolean confirmation = registration.getValidationSuccess();
+                        listener.onMessageReceived(confirmation.toString());
                     } else {
                         listener.onMessageReceived("wrong_message_type");
                     }
@@ -178,4 +187,6 @@ public class WebSocketClient {
             webSocket.send(json);
         }
     }
+
+
 }

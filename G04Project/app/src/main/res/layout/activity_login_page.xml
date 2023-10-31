@@ -20,13 +20,13 @@
         app:srcCompat="@drawable/logo" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/email"
         android:layout_width="260sp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:fontFamily="@font/lores15_bold"
-        android:hint="Username"
-        android:inputType="text"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
         android:padding="12sp"
         android:textColor="@color/light_green"
         android:textColorHint="@color/light_green"
@@ -52,7 +52,7 @@
         app:backgroundTint="@color/light_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <Button
         android:id="@+id/login"
@@ -60,11 +60,13 @@
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/lores15_bold"
+        android:onClick="validate"
         android:text="Login"
         android:textColor="@color/grey"
         android:textSize="16sp"
         app:backgroundTint="@color/light_green"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
