@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,9 +36,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Create_newgame_page extends AppCompatActivity implements OnMapReadyCallback{
+    private WebSocketClient client;
     private GoogleMap mymap;
     static float zoomLevel = 14.8f;
     private RadioGroup radioGroup, privacyGroup;
@@ -50,13 +56,20 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
     public String final_location = "none";
     public TimePicker timePicker;
     public double[] final_coor = new double[]{-37.79917143220294, 144.96114830091392};
-    public String final_mode, final_privacy, finalNumericPassword;
-    public Integer final_player, final_duration, final_cat, final_mouse;
+    public String final_mode, finalNumericPassword, final_duration, final_startTime;
+    public boolean isPrivate;
+    public Integer final_player, final_cat, final_mouse;
+    public String user_id = "test1", room_id = "0", final_privacy;
+    public ConcurrentHashMap<String, Player> cat_list, rat_list;
+    public ConcurrentHashMap<String, String> ready_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_newgame_page);
+
+        MyApp app = (MyApp) getApplication();
+        client = app.getWebSocketClient();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -67,7 +80,6 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             open_activity_main(view);
         });
         numericPasswordEditText = findViewById(R.id.numericPasswordEditText);
-        finalNumericPassword = numericPasswordEditText.getText().toString();
 
         layout_cat_mouse = findViewById(R.id.choose_cat_mouse_number);
         layoutMap = findViewById(R.id.layout_map);
@@ -77,9 +89,9 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.classic) {
                     final_mode = "classic";
-                    Toast.makeText(Create_newgame_page.this, "You selected Classic", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Create_newgame_page.this, "You selected Classic", Toast.LENGTH_SHORT).show();
                 } else if (checkedId == R.id.zombie) {
-                    Toast.makeText(Create_newgame_page.this, "You selected Zombie", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Create_newgame_page.this, "You selected Zombie", Toast.LENGTH_SHORT).show();
                     final_mode = "zombie";
                 }
             }
@@ -91,13 +103,15 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.public_privacy) {
-                    final_privacy = "public";
+                    isPrivate = false;
+                    final_privacy = "Public";
                     layoutPrivatePassword.setVisibility(View.GONE);
                 } else if (checkedId == R.id.private_privacy) {
-                    final_privacy = "private";
+                    isPrivate = true;
+                    final_privacy = "Private";
                     layoutPrivatePassword.setVisibility(View.VISIBLE);
                 }
-                Toast.makeText(Create_newgame_page.this, "You selected " + final_privacy, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Create_newgame_page.this, "You selected " + final_privacy, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -143,7 +157,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                     final_coor = new double[]{-37.9105, 145.1362};
                 }
                 // 在这里，您可以根据选择的值执行任何操作。例如，显示一个Toast消息：
-                Toast.makeText(parent.getContext(), "Selected: " + final_coor[0], Toast.LENGTH_SHORT).show();
+//                Toast.makeText(parent.getContext(), "Selected: " + final_coor[0], Toast.LENGTH_SHORT).show();
                 if (mymap != null) {  // 确保地图已经初始化
                     mymap.clear();
                     if(!final_location.equals("Choose Place")) {
@@ -189,7 +203,8 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                         // 这里处理用户选择的时间
                         String selectedTime = String.format("%02d:%02d", hourOfDay, minute);
-                        Toast.makeText(Create_newgame_page.this, "Selected Time: " + selectedTime, Toast.LENGTH_SHORT).show();
+                        final_startTime = selectedTime;
+//                        Toast.makeText(Create_newgame_page.this, "Selected Time: " + selectedTime, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -217,7 +232,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
         tvCatCount.setText(String.valueOf(final_cat));
         tvMouseCount.setText(String.valueOf(final_mouse));
         layout_cat_mouse.setVisibility(View.VISIBLE);
-        Toast.makeText(Create_newgame_page.this, "You selected " + final_player + " players", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(Create_newgame_page.this, "You selected " + final_player + " players", Toast.LENGTH_SHORT).show();
     }
 
     private void updateCatCount(TextView textView, boolean increase) {
@@ -240,7 +255,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             }
         }
 
-        Toast.makeText(Create_newgame_page.this, "You selected " + final_cat + " cats", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(Create_newgame_page.this, "You selected " + final_cat + " cats", Toast.LENGTH_SHORT).show();
     }
 
     private void updateMouseCount(TextView textView, boolean increase) {
@@ -262,7 +277,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                 final_cat = cat_count + 1;
             }
         }
-        Toast.makeText(Create_newgame_page.this, "You selected " + final_mouse + " Mouses", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(Create_newgame_page.this, "You selected " + final_mouse + " Mouses", Toast.LENGTH_SHORT).show();
     }
     private void updateDuration(TextView textView, boolean increase) {
         int count = Integer.parseInt(textView.getText().toString());
@@ -272,8 +287,8 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             count = Math.max(30, count - 10); // 确保数量不小于1
         }
         textView.setText(String.valueOf(count));
-        final_duration = count;
-        Toast.makeText(Create_newgame_page.this, "You selected " + final_duration + " mins", Toast.LENGTH_SHORT).show();
+        final_duration = String.valueOf(count);
+//        Toast.makeText(Create_newgame_page.this, "You selected " + final_duration + " mins", Toast.LENGTH_SHORT).show();
     }
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -296,5 +311,87 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
     }
     public void open_activity_main(View view){
         startActivity(new Intent(this, MainActivity.class));
+    }
+    public void verifyRoomInfo(View view) {
+//        final_location
+//        final_mode
+//        final_privacy
+//        final_player
+//        final_duration
+//        final_cat
+//        final_mouse
+        finalNumericPassword = numericPasswordEditText.getText().toString();
+        // Check empty input
+        if (Objects.equals(final_location, "none") || final_mode.isEmpty() || final_duration.isEmpty()|| final_startTime.isEmpty()) {
+            LayoutInflater inflater = getLayoutInflater();
+            View customToastView = inflater.inflate(R.layout.item_toast, null);
+
+            TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
+            customToastTextView.setText("Please enter all required fields!");
+
+            Toast customToast = new Toast(getApplicationContext());
+            customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
+            customToast.setView(customToastView);
+
+            customToast.show();
+            //Toast.makeText(getApplicationContext(), "Please enter all required fields!", Toast.LENGTH_SHORT).show();
+            return;
+
+            // Invalid email format, show an error message or take appropriate action.
+        } else if (isPrivate) {
+            if (finalNumericPassword.length() != 6) {
+                LayoutInflater inflater = getLayoutInflater();
+                View customToastView = inflater.inflate(R.layout.item_toast, null);
+
+                TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
+                customToastTextView.setText("Private Room Password must be at least 6 digits long" + String.valueOf(finalNumericPassword.length()));
+
+                Toast customToast = new Toast(getApplicationContext());
+                customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
+                customToast.setView(customToastView);
+
+                customToast.show();
+                return;
+            }
+            //Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
+
+            // Passwords do not match
+        } else {
+            ready_list = new ConcurrentHashMap<>();
+            cat_list = new ConcurrentHashMap<>();
+            rat_list = new ConcurrentHashMap<>();
+            ready_list.put("user1", user_id);
+            client.sendRoomInformation(room_id, user_id, final_location, final_mode, final_duration, finalNumericPassword,
+                    final_cat, 0, final_mouse, 0, final_startTime, isPrivate, cat_list, rat_list, ready_list);
+        }
+        Toast.makeText(Create_newgame_page.this, "finish fill the form", Toast.LENGTH_SHORT).show();
+
+        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+            @Override
+            public void onMessageReceived(String message) {
+                // Successful registration
+                if (!message.isEmpty()) {
+                    System.out.println(message);
+//                    Toast.makeText(Create_newgame_page.this, message, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(view.getContext(), DisplayGameRoomPage.class);
+                    startActivity(intent);
+
+                    // Incorrect validation, show an error message or take appropriate action.
+                } else {
+                    LayoutInflater inflater = getLayoutInflater();
+                    View customToastView = inflater.inflate(R.layout.item_toast, null);
+
+                    TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
+                    customToastTextView.setText("Create Room fails. Please try again!");
+
+                    Toast customToast = new Toast(getApplicationContext());
+                    customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
+                    customToast.setView(customToastView);
+
+                    customToast.show();
+                    //Toast.makeText(getApplicationContext(), "Invalid user name or password", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

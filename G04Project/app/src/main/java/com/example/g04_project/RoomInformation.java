@@ -8,27 +8,30 @@ public class RoomInformation {
 
     //TODO: playerNumber
     private int playerNumber, requiredCat, currentCat, requiredRat, currentRat;
-    private ConcurrentHashMap<String, Player> catsPlayers;
-    private ConcurrentHashMap<String, Player> ratPlayers;
-    private LocalTime startTime;
+    private ConcurrentHashMap<String, Player> catsPlayers, ratPlayers;
+    private ConcurrentHashMap<String, String> ready_list;
+    private String startTime;
     private boolean privacy;
 
     public RoomInformation(String roomID, String hostId, String locationName, String modeName, String duration, String password,
-                           int playerNumber, int requiredCat, int currentCat, int requiredRat, int currentRat,
-                           LocalTime startTime, boolean privacy) {
+                           int requiredCat, int currentCat, int requiredRat, int currentRat,
+                           String startTime, boolean privacy,
+                           ConcurrentHashMap<String, Player> catsPlayers,
+                           ConcurrentHashMap<String, Player> ratPlayers,
+                           ConcurrentHashMap<String, String> ready_list) {
         this.roomID = roomID;
         this.hostId = hostId;
         this.locationName = locationName;
         this.modeName = modeName;
         this.duration = duration;
         this.password = password;
-        this.playerNumber = playerNumber;
         this.requiredCat = requiredCat;
         this.currentCat = currentCat;
         this.requiredRat = requiredRat;
         this.currentRat = currentRat;
-        this.catsPlayers = new ConcurrentHashMap<>();
-        this.ratPlayers = new ConcurrentHashMap<>();
+        this.catsPlayers = catsPlayers;
+        this.ratPlayers = ratPlayers;
+        this.ready_list = ready_list;
         this.startTime = startTime;
         this.privacy = privacy;
     }
@@ -58,14 +61,6 @@ public class RoomInformation {
 
     public void setModeName(String modeName) {
         this.modeName = modeName;
-    }
-
-    public int getPlayerNumber() {
-        return playerNumber;
-    }
-
-    public void setPlayerNumber(int playerNumber) {
-        this.playerNumber = playerNumber;
     }
 
     public String getDuration() {
@@ -114,12 +109,14 @@ public class RoomInformation {
     }
     public ConcurrentHashMap<String, Player> getCatsPlayers() { return catsPlayers;}
     public ConcurrentHashMap<String, Player> getRatPlayers() { return ratPlayers;}
+    public ConcurrentHashMap<String, String> getReady_list() { return ready_list;}
 
-    public LocalTime getStartTime() {
+
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
     public boolean isFull() {
@@ -139,13 +136,15 @@ public class RoomInformation {
                 ", modeName=" + modeName +
                 ", duration=" + duration +
                 ", password=" + password +
-                ", playerNumber=" + playerNumber +
                 ", requiredCat=" + requiredCat +
                 ", requiredRat=" + requiredRat +
                 ", currentCat=" + currentCat +
                 ", currentRat=" + currentRat +
+                ", cat_list=" + catsPlayers +
+                ", rat_list=" + ratPlayers +
+                ", ready_list=" + ready_list +
                 ", startTime=" + startTime +
-                ", privacy=" + privacy +
+                ", isPrivate=" + privacy +
                 '}';
     }
 }

@@ -13,6 +13,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -56,22 +57,30 @@ public class WebSocketClient {
         sendMessage("user_location", locationData);
     }
 
-    private void sendRoomInformation(String userId, String locationName, String modeName, String duration, String password,
-                                     int playerNumber, int catNumber, int ratNumber,
-                                     LocalTime startTime, boolean privacy) {
+    public void sendRoomInformation(String roomId, String userId, String locationName, String modeName, String duration, String password,
+                                     int catNumber, int currCatNum, int ratNumber, int currRatNum,
+                                     String startTime, boolean isPrivate,
+                                     ConcurrentHashMap<String, Player> cat_list,
+                                     ConcurrentHashMap<String, Player> rat_list,
+                                     ConcurrentHashMap<String, String> ready_list) {
         // 获取位置信息（这里只是一个示例，你可能需要从GPS或其他位置服务获取实际的位置数据）
 
         Map<String, Object> roomInformation = new HashMap<>();
-        roomInformation.put("user_id", "user123");
+        roomInformation.put("user_id", userId);
+        roomInformation.put("room_id", roomId);
         roomInformation.put("locationName", locationName);
         roomInformation.put("modeName", modeName);
         roomInformation.put("duration", duration);
         roomInformation.put("password", password);
-        roomInformation.put("playerNumber", playerNumber);
         roomInformation.put("catNumber", catNumber);
         roomInformation.put("ratNumber", ratNumber);
+        roomInformation.put("currCatNum", currCatNum);
+        roomInformation.put("currRatNum", currRatNum);
         roomInformation.put("startTime", startTime);
-        roomInformation.put("privacy", privacy);
+        roomInformation.put("privacy", isPrivate);
+        roomInformation.put("ready_list", ready_list);
+        roomInformation.put("cat_list", cat_list);
+        roomInformation.put("rat_list", rat_list);
 
         sendMessage("room_information", roomInformation);
     }

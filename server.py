@@ -37,6 +37,9 @@ async def websocket_route(user_id: str, websocket: WebSocket):
                     validation = Validation.parse_obj(message.data)
                 elif message.type == "registration":
                     registration = Registration.parse_obj(message.data)
+                elif message.type == "room_information":
+                    print("receive roomInformation")
+                    print(message)
 
             except ValueError as e:
                 # 这里处理解析错误，例如发送错误响应或记录错误

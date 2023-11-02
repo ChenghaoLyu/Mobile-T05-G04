@@ -462,18 +462,20 @@
                         android:fontFamily="@font/lores15_bold"/>
                 </LinearLayout>
             </LinearLayout>
+
             <com.google.android.material.button.MaterialButton
-                android:layout_below="@id/choose_privacy"
-                android:layout_marginTop="25sp"
-                android:layout_marginBottom="25sp"
                 android:id="@+id/submit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Submit"
-                android:textSize="16sp"
+                android:layout_below="@id/choose_privacy"
+                android:layout_marginTop="25sp"
+                android:layout_marginBottom="25sp"
                 android:fontFamily="@font/lores15_bold"
-                app:backgroundTint="@color/light_green"
-                android:textColor="@color/grey"/>
+                android:onClick="verifyRoomInfo"
+                android:text="Submit"
+                android:textColor="@color/grey"
+                android:textSize="16sp"
+                app:backgroundTint="@color/light_green" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
