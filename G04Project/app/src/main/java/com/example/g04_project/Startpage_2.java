@@ -23,6 +23,6 @@ public class Startpage_2 extends AppCompatActivity {
     }
 
     public void open_home_page(View view){
-        startActivity(new Intent(this, HomePage.class));
+        startActivity(new Intent(this, LoginPage.class));
     }
 }
