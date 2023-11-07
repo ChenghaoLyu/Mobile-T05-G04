@@ -9,16 +9,16 @@ public class RoomInformation implements Serializable {
 
     //TODO: playerNumber
     private int playerNumber, requiredCat, currentCat, requiredRat, currentRat;
-    private ConcurrentHashMap<String, Player> catsPlayers, ratPlayers, ready_list;
+    private ConcurrentHashMap<String, Player> catPlayers, ratPlayers, readyList;
     private String startTime;
     private boolean privacy;
 
     public RoomInformation(String roomID, String hostId, String locationName, String modeName, String duration, String password,
                            int requiredCat, int currentCat, int requiredRat, int currentRat,
                            String startTime, boolean privacy,
-                           ConcurrentHashMap<String, Player> catsPlayers,
+                           ConcurrentHashMap<String, Player> catPlayers,
                            ConcurrentHashMap<String, Player> ratPlayers,
-                           ConcurrentHashMap<String, Player> ready_list) {
+                           ConcurrentHashMap<String, Player> readyList) {
         this.roomID = roomID;
         this.hostId = hostId;
         this.locationName = locationName;
@@ -29,9 +29,9 @@ public class RoomInformation implements Serializable {
         this.currentCat = currentCat;
         this.requiredRat = requiredRat;
         this.currentRat = currentRat;
-        this.catsPlayers = catsPlayers;
+        this.catPlayers = catPlayers;
         this.ratPlayers = ratPlayers;
-        this.ready_list = ready_list;
+        this.readyList = readyList;
         this.startTime = startTime;
         this.privacy = privacy;
     }
@@ -107,9 +107,9 @@ public class RoomInformation implements Serializable {
     public void setCurrentRat(int currentRat) {
         this.currentRat = currentRat;
     }
-    public ConcurrentHashMap<String, Player> getCatsPlayers() { return catsPlayers;}
+    public ConcurrentHashMap<String, Player> getCatPlayers() { return catPlayers;}
     public ConcurrentHashMap<String, Player> getRatPlayers() { return ratPlayers;}
-    public ConcurrentHashMap<String, Player> getReady_list() { return ready_list;}
+    public ConcurrentHashMap<String, Player> getReadyList() { return readyList;}
 
 
     public String getStartTime() {
@@ -119,6 +119,26 @@ public class RoomInformation implements Serializable {
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
+
+    public void addReadyList(Player player) {
+        readyList.put(player.getPlayerId(), player);
+    }
+
+    public void joinCatTeam(Player player) {
+        catPlayers.put(player.getPlayerId(), player);
+        if (ratPlayers.containsKey(player.getPlayerId())) {
+            ratPlayers.remove(player.getPlayerId(), player);
+        }
+    }
+
+    public void joinRatTeam(Player player) {
+        ratPlayers.put(player.getPlayerId(), player);
+        if (catPlayers.containsKey(player.getPlayerId())) {
+            catPlayers.remove(player.getPlayerId(), player);
+        }
+    }
+
+
     public boolean isFull() {
         if (currentRat + currentRat < requiredCat + requiredRat) {
             return false;
@@ -140,9 +160,9 @@ public class RoomInformation implements Serializable {
                 ", requiredRat=" + requiredRat +
                 ", currentCat=" + currentCat +
                 ", currentRat=" + currentRat +
-                ", cat_list=" + catsPlayers +
+                ", cat_list=" + catPlayers +
                 ", rat_list=" + ratPlayers +
-                ", ready_list=" + ready_list +
+                ", ready_list=" + readyList +
                 ", startTime=" + startTime +
                 ", isPrivate=" + privacy +
                 '}';
