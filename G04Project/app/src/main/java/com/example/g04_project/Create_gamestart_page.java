@@ -21,19 +21,35 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Create_gamestart_page extends AppCompatActivity implements OnMapReadyCallback {
     private TextView timerTextView;
+    public double[] test1_coor = new double[]{-37.7990, 144.9594};
+    public double[] test2_coor = new double[]{-37.7962, 144.9594};
+    public double[] test3_coor = new double[]{-37.7963, 144.9614};
+    private WebSocketClient client;
     static float zoomLevel = 15.5f;
     private GoogleMap mymap;
+    public List<String> userList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_gamestart_page);
+        MyApp app = (MyApp) getApplication();
+        client = app.getWebSocketClient();
 
+        userList.add("test1");
+        userList.add("test2");
+        userList.add("test3");
+
+        for (String element : userList) {
+            ;
+        }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.game_start_map);
         mapFragment.getMapAsync(this);
 
@@ -77,18 +93,18 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
             Log.e(TAG, "Can't find style. Error: ", e);
         }
         LatLng chosen_location = new LatLng(-37.7963, 144.9614);
-//        List<LatLng> melbUniCorners = Arrays.asList(
-//                new LatLng(-37.7990, 144.9594),
-//                new LatLng(-37.7990, 144.9639),
-//                new LatLng(-37.7962, 144.9639),
-//                new LatLng(-37.7962, 144.9594)
-//        );
-//
-//        // 在地图上绘制多边形
-//        mymap.addPolygon(new PolygonOptions()
-//                .addAll(melbUniCorners)
-//                .strokeColor(Color.RED)  // 边框颜色
-//                .fillColor(Color.argb(50, 255, 0, 0)));  // 填充颜色（半透明红色）
+        List<LatLng> melbUniCorners = Arrays.asList(
+                new LatLng(-37.7990, 144.9594),
+                new LatLng(-37.7990, 144.9639),
+                new LatLng(-37.7962, 144.9639),
+                new LatLng(-37.7962, 144.9594)
+        );
+
+        // 在地图上绘制多边形
+        mymap.addPolygon(new PolygonOptions()
+                .addAll(melbUniCorners)
+                .strokeColor(Color.RED)  // 边框颜色
+                .fillColor(Color.argb(50, 255, 0, 0)));  // 填充颜色（半透明红色）
         mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb"));
         mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
         mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));

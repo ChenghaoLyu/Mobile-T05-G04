@@ -1,7 +1,9 @@
 package com.example.g04_project;
 
-public class Player {
-    private String playerId;
+import java.io.Serializable;
+
+public class Player implements Serializable {
+    private String userId;
     private int avatar;
     private String roomId;
     private int team;
@@ -10,8 +12,8 @@ public class Player {
     private static final int TEAM_CAT = 1;
     private static final int TEAM_RAT = 2;
 
-    public Player(String playerId, String roomId, int team) {
-        this.playerId = playerId;
+    public Player(String userId, String roomId, int team) {
+        this.userId = userId;
         this.roomId = roomId;
         this.team = team;
         this.isHost = false;
@@ -25,11 +27,11 @@ public class Player {
     }
 
     public String getPlayerId() {
-        return playerId;
+        return userId;
     }
 
     public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+        this.userId = playerId;
     }
 
     public int getAvatar() {

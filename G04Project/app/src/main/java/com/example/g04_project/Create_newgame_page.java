@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -59,16 +60,15 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
     public String final_mode, finalNumericPassword, final_duration, final_startTime;
     public boolean isPrivate;
     public Integer final_player, final_cat, final_mouse;
-    public String user_id = "test1", room_id = "0", final_privacy;
-    public ConcurrentHashMap<String, Player> cat_list, rat_list;
-    public ConcurrentHashMap<String, String> ready_list;
+    public String user_id = "test1", room_id = "000001", final_privacy;
+    public ConcurrentHashMap<String, Player> cat_list, rat_list, ready_list;
+    private Player host;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_newgame_page);
-
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
 
@@ -80,6 +80,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
         goto_activity_main.setOnClickListener(view ->{
             open_activity_main(view);
         });
+
         numericPasswordEditText = findViewById(R.id.numericPasswordEditText);
 
         layout_cat_mouse = findViewById(R.id.choose_cat_mouse_number);
@@ -364,7 +365,8 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             ready_list = new ConcurrentHashMap<>();
             cat_list = new ConcurrentHashMap<>();
             rat_list = new ConcurrentHashMap<>();
-            ready_list.put("user1", user_id);
+            host = new Player(user_id, room_id, 1);
+            cat_list.put(user_id, host);
             System.out.println("sending");
             client.sendRoomInformation(room_id, user_id, final_location, final_mode, final_duration, finalNumericPassword,
                     final_cat, 0, final_mouse, 0, final_startTime, isPrivate, cat_list, rat_list, ready_list);
@@ -383,6 +385,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
 //                    Toast.makeText(Create_newgame_page.this, message, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(view.getContext(), DisplayGameRoomPage.class);
                     intent.putExtra("roomInformation", roomInformation);
+                    intent.putExtra("host", host);
                     startActivity(intent);
 
                     // Incorrect validation, show an error message or take appropriate action.
