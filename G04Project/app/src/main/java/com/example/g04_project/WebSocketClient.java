@@ -1,15 +1,10 @@
 package com.example.g04_project;
 
 import android.os.Handler;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,13 +134,6 @@ public class WebSocketClient {
                         return;
                     }
 
-                    if ("Validation Successful".equals(text)) {
-                        if (listener != null) {
-                            listener.onMessageReceived("Validation Successful");
-                        }
-                        return;
-                    }
-
                     if ("user_location".equals(message.getType())) {
                         // 解析并处理用户位置数据
                         UserLocation userLocation = new Gson().fromJson(new Gson().toJson(message.getData()), UserLocation.class);
@@ -154,14 +142,13 @@ public class WebSocketClient {
                     } else if ("room_information".equals(message.getType())) {
                         RoomInformation roomInformation = new Gson().fromJson(new Gson().toJson(message.getData()), RoomInformation.class);
                         listener.onMessageReceived(roomInformation.toString());
-                    } else if ("validation".equals(message.getType())) {
-                        Validation validation = new Gson().fromJson(new Gson().toJson(message.getData()), Validation.class);
-                        Boolean confirmation = validation.getValidationSuccess();
-                        listener.onMessageReceived(confirmation.toString());
-                    } else if ("registration".equals(message.getType())) {
-                        Registration registration = new Gson().fromJson(new Gson().toJson(message.getData()), Registration.class);
-                        Boolean confirmation = registration.getValidationSuccess();
-                        listener.onMessageReceived(confirmation.toString());
+                    } else if ("account".equals(message.getType())) {
+                        Account account = new Gson().fromJson(new Gson().toJson(message.getData()), Account.class);
+                        listener.onMessageReceived("Validation Successful");
+//                    } else if ("registration".equals(message.getType())) {
+//                        Account account = new Gson().fromJson(new Gson().toJson(message.getData()), Account.class);
+//                        Boolean confirmation = account.getValidationSuccess();
+//                        listener.onMessageReceived("Validation Successful");
                     } else {
                         listener.onMessageReceived("wrong_message_type");
                     }
@@ -204,6 +191,5 @@ public class WebSocketClient {
             webSocket.send(json);
         }
     }
-
 
 }

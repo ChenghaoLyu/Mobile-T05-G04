@@ -27,6 +27,9 @@ public class LoginPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
+
+        MyApp app = (MyApp) getApplication();
+        client = app.getWebSocketClient();
     }
 
     public void openRegisterPage(View view) {
@@ -58,13 +61,12 @@ public class LoginPage extends AppCompatActivity {
             webSocketClient.sendValidation(email, password);
         }
 
-        MyApp app = (MyApp) getApplication();
-        client = app.getWebSocketClient();
         client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
             @Override
             public void onMessageReceived(String message) {
                 // Passwords match, proceed with registration or the next step.
                 if (message.equals("Validation Successful")) {
+                    displayToast("Login Successful");
                     Intent intent = new Intent(view.getContext(), HomePage.class);
                     startActivity(intent);
 

@@ -1,14 +1,21 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from models import Message, UserLocation, Validation, Registration
+from models import Message, UserLocation, Account
 from websocket_manager import ConnectionManager
 from auth import get_current_user, oauth2_scheme, create_access_token, get_user, verify_password
+import json
 # from websocket_routes import websocket_endpoint
 
 app = FastAPI()
 manager = ConnectionManager()
 
-@app.websocket("/ws/{user_id}")
-async def websocket_route(user_id: str, websocket: WebSocket):
+accounts = {
+    "example@mail.com": ["password1","BroJoKer", "0000", "BroJoKer0000"],
+    "example2@mail.com": ["password2", "Dino", "0001", "Dino0001"]
+}
+
+
+@app.websocket("/ws/{socket_id}")
+async def websocket_route(socket_id: str, websocket: WebSocket):
     await websocket.accept()
     auth_data = await websocket.receive_text()
     auth_message = Message.parse_raw(auth_data)
@@ -18,7 +25,7 @@ async def websocket_route(user_id: str, websocket: WebSocket):
         return
     else:
         await websocket.send_text("Connection established")
-        await manager.connect(user_id, websocket)
+        await manager.connect(socket_id, websocket)
 
     try:
         while True:
@@ -28,18 +35,32 @@ async def websocket_route(user_id: str, websocket: WebSocket):
                 # if message.type == "user_location":
                 #     user_location = UserLocation.parse_obj(message.data)
                 #     # ... 处理user_location数据 ...
-                await manager.broadcast(user_id,raw_data)
+                await manager.broadcast(socket_id,raw_data)
                 # 可以在这里添加其他消息类型的处理
                 # elif message.type == "another_type":
                 #     ...
                 if message.type == "validation":
-                    validation = Validation.parse_obj(message.data)
-                    if manager.authenticate(websocket, message.data.get("token")):
-                        await websocket.send_text("Validation Successful")
-                        await manager.connect(user_id, websocket)
+                    email = message.data.get("email")
+                    password = message.data.get("password")
+                    if accounts[email][0] == password:
+                        #account = Account.parse_obj(message.data)
+                        account = {
+                            "email": email,
+                            "username": accounts[email][1],
+                            "hashtag": accounts[email][2],
+                            "userID": accounts[email][3]
+                        }
+                        # account.username = accounts[email][1]
+                        # account.hashtag = accounts[email][2]
+                        # account.userID = accounts[email][3]
+
+                        message.data = account
+                        message.type = "account"
+                        await manager.broadcast(socket_id, message)
+                    
 
                 elif message.type == "registration":
-                    registration = Registration.parse_obj(message.data)
+                    registration = Account.parse_obj(message.data)
                 elif message.type == "room_information":
                     print("receive roomInformation")
                     print(message)
