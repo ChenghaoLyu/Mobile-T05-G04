@@ -14,9 +14,15 @@ class ConnectionManager:
         if socket_id in self.active_connections:
             del self.active_connections[socket_id]
 
-    async def send_to_user(self, socket_id: str, message: str):
+    async def send_to_user(self, socket_id: str, message: Message):
+        # m = Message.parse_raw(message)
         if socket_id in self.active_connections:
-            await self.active_connections[socket_id].send_text(message)
+            if message.type == "account":
+                print(message)
+                await self.active_connections[socket_id].send_text(message.json())
+
+
+        
 
     async def broadcast(self, socket_id: str, message: str):
         m = Message.parse_raw(message)
@@ -25,8 +31,7 @@ class ConnectionManager:
             # for connection in self.active_connections.values():
                 await connection.send_text(m.json())
 
-        elif m.type == "account":
-            await connection.send_text(m.json())
+        
 
     async def authenticate(self, websocket: WebSocket, token: str) -> bool:
         # 这里只是一个简单的硬编码验证。在实际应用中，你应该使用更复杂的方法。

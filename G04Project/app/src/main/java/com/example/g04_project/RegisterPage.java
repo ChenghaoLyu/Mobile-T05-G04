@@ -18,12 +18,16 @@ public class RegisterPage extends AppCompatActivity {
     private EditText confirmPasswordEditText;
     private EditText emailEditText;
 
+    private WebSocketClient client;
     WebSocketClient webSocketClient = new WebSocketClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
+
+        MyApp app = (MyApp) getApplication();
+        client = app.getWebSocketClient();
     }
 
     public void openLoginPage(View view) {
@@ -77,9 +81,8 @@ public class RegisterPage extends AppCompatActivity {
         }
 
 
-//        MyApp app = (MyApp) getApplication();
-//        client = app.getWebSocketClient();
-        webSocketClient.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+
+        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
             @Override
             public void onMessageReceived(String message) {
                 // Successful registration

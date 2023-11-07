@@ -52,6 +52,15 @@ public class WebSocketClient {
         sendMessage("user_location", locationData);
     }
 
+    public void sendValidation(String email, String password) {
+
+        Map<String, Object> userInformation = new HashMap<>();
+        userInformation.put("email", email);
+        userInformation.put("password", password);
+
+        sendMessage("validation", userInformation);
+    }
+
     public void sendRoomInformation(String roomId, String userId, String locationName, String modeName, String duration, String password,
                                      int catNumber, int currCatNum, int ratNumber, int currRatNum,
                                      String startTime, boolean isPrivate,
@@ -90,21 +99,14 @@ public class WebSocketClient {
         sendMessage("registration", userInformation);
     }
 
-    public void sendValidation(String email, String password) {
 
-        Map<String, Object> userInformation = new HashMap<>();
-        userInformation.put("email", email);
-        userInformation.put("password", password);
-
-        sendMessage("validation", userInformation);
-    }
 
 
     public void start() {
         client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://13.55.228.219:8080/ws/user123")
+                .url("ws://10.0.2.2:8080/ws/user123")
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {
@@ -120,6 +122,7 @@ public class WebSocketClient {
             public void onMessage(WebSocket webSocket, String text) {
                 try {
                     Message message = new Gson().fromJson(text, Message.class);
+                    System.out.println(text);
                     if ("Connection established".equals(text)) {
                         if (listener != null) {
                             listener.onMessageReceived("Connection established");
@@ -143,6 +146,7 @@ public class WebSocketClient {
                         RoomInformation roomInformation = new Gson().fromJson(new Gson().toJson(message.getData()), RoomInformation.class);
                         listener.onMessageReceived(roomInformation.toString());
                     } else if ("account".equals(message.getType())) {
+                        System.out.println("receive");
                         Account account = new Gson().fromJson(new Gson().toJson(message.getData()), Account.class);
                         listener.onMessageReceived("Validation Successful");
 //                    } else if ("registration".equals(message.getType())) {

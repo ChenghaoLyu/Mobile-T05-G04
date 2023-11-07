@@ -31,6 +31,7 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
         while True:
             raw_data = await websocket.receive_text()
             try:
+                
                 message = Message.parse_raw(raw_data)
                 # if message.type == "user_location":
                 #     user_location = UserLocation.parse_obj(message.data)
@@ -40,9 +41,11 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                 # elif message.type == "another_type":
                 #     ...
                 if message.type == "validation":
+                    print(message)
                     email = message.data.get("email")
                     password = message.data.get("password")
                     if accounts[email][0] == password:
+                        
                         #account = Account.parse_obj(message.data)
                         account = {
                             "email": email,
@@ -56,8 +59,10 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
 
                         message.data = account
                         message.type = "account"
-                        await manager.broadcast(socket_id, message)
-                    
+
+                        await manager.send_to_user(socket_id, message)
+                    else:
+                        await websocket.send_text("Validation Fail")
 
                 elif message.type == "registration":
                     registration = Account.parse_obj(message.data)

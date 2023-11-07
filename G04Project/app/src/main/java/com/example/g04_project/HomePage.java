@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class HomePage extends AppCompatActivity {
@@ -13,6 +17,7 @@ public class HomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        displayToast("Login Successful");
     }
 
     public void openJoinGamePage(View view) {
@@ -23,5 +28,18 @@ public class HomePage extends AppCompatActivity {
         startActivity(new Intent(this, Create_newgame_page.class));
     }
 
+    private void displayToast(String msg) {
+        LayoutInflater inflater = getLayoutInflater();
+        View customToastView = inflater.inflate(R.layout.item_toast, null);
 
+        TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
+        customToastTextView.setText(msg);
+
+        Toast customToast = new Toast(getApplicationContext());
+        customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
+        customToast.setView(customToastView);
+
+        customToast.setGravity(Gravity.CENTER, 0, 0);
+        customToast.show();
+    }
 }
