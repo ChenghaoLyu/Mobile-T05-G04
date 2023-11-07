@@ -1,8 +1,11 @@
 package com.example.g04_project;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.Gravity;
@@ -11,9 +14,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.Manifest;
 
 public class LoginPage extends AppCompatActivity {
+    private static final int PERMISSION_REQUEST_CODE = 123;
     private EditText emailEditText;
     private EditText passwordEditText;
 
@@ -30,6 +34,14 @@ public class LoginPage extends AppCompatActivity {
 
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
+
+        // Check if the app has permission to access the device's location
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // If permission is not granted, request it.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+        } else {
+            // Permission is already granted; you can proceed with location-related tasks.
+        }
     }
 
     public void openRegisterPage(View view) {
@@ -97,5 +109,26 @@ public class LoginPage extends AppCompatActivity {
 
         customToast.setGravity(Gravity.CENTER, 0, 0);
         customToast.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted; you can now access the location.
+            } else {
+                // Permission denied; handle the situation (e.g., show a message to the user).
+                showPermissionDeniedMessage();
+            }
+        }
+    }
+
+    private void showPermissionDeniedMessage() {
+        // Display a message explaining why the permission is necessary.
+        displayToast("Location permission is required to use this app. Please grant the permission in app settings.");
+
+        // Exit the app by finishing the current activity.
+//        finish();
     }
 }
