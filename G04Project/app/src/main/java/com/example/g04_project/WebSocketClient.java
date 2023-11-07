@@ -138,6 +138,14 @@ public class WebSocketClient {
                         webSocket.close(1000, "Authentication failed.");
                         return;
                     }
+
+                    if ("Validation Successful".equals(text)) {
+                        if (listener != null) {
+                            listener.onMessageReceived("Validation Successful");
+                        }
+                        return;
+                    }
+
                     if ("user_location".equals(message.getType())) {
                         // 解析并处理用户位置数据
                         UserLocation userLocation = new Gson().fromJson(new Gson().toJson(message.getData()), UserLocation.class);

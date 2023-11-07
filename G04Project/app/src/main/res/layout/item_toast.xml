@@ -4,21 +4,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/map"
+        android:background="@drawable/round_toast"
         android:padding="16dp">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/mouse"
-            android:layout_gravity="center_vertical" /> <!-- Custom image/icon -->
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/mouse" /> <!-- Custom image/icon -->
 
-        <TextView
-            android:id="@+id/customToastText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lores15_bold"
-            android:textColor="@color/light_green"
-            android:text="Custom Toast Text"
-            android:layout_gravity="center_vertical" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/customToastText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:fontFamily="@font/lores15_bold"
+        android:text="Custom Toast Text"
+        android:textColor="@color/light_green" />
+</LinearLayout>
