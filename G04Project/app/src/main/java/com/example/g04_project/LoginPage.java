@@ -119,7 +119,16 @@ public class LoginPage extends AppCompatActivity {
                 // Permission granted; you can now access the location.
             } else {
                 // Permission denied; handle the situation (e.g., show a message to the user).
+                showPermissionDeniedMessage();
             }
         }
+    }
+
+    private void showPermissionDeniedMessage() {
+        // Display a message explaining why the permission is necessary.
+        displayToast("Location permission is required to use this app. Please grant the permission in app settings.");
+
+        // Exit the app by finishing the current activity.
+//        finish();
     }
 }
