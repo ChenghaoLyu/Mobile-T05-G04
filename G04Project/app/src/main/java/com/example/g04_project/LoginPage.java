@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -40,39 +41,20 @@ public class LoginPage extends AppCompatActivity {
 
         // Check empty input
         if (password.isEmpty() || email.isEmpty()) {
-            LayoutInflater inflater = getLayoutInflater();
-            View customToastView = inflater.inflate(R.layout.item_toast, null);
 
-            TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
-            customToastTextView.setText("Please enter all required fields!");
-
-            Toast customToast = new Toast(getApplicationContext());
-            customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
-            customToast.setView(customToastView);
-
-            customToast.show();
+            displayToast("Please enter all required fields!");
             //Toast.makeText(getApplicationContext(), "Please enter all required fields!", Toast.LENGTH_SHORT).show();
             return;
 
             // Invalid email format, show an error message or take appropriate action.
         } else if (!isValidEmail(email)) {
 
-            LayoutInflater inflater = getLayoutInflater();
-            View customToastView = inflater.inflate(R.layout.item_toast, null);
-
-            TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
-            customToastTextView.setText("Invalid email, please try again!");
-
-            Toast customToast = new Toast(getApplicationContext());
-            customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
-            customToast.setView(customToastView);
-
-            customToast.show();
-
+            displayToast("Invalid email, please try again!");
             //Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
             return;
 
         } else {
+            displayToast("Validating");
             webSocketClient.sendValidation(email, password);
         }
 
@@ -82,23 +64,14 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onMessageReceived(String message) {
                 // Passwords match, proceed with registration or the next step.
-                if (message.equals("TRUE")) {
+                if (message.equals("Validation Successful")) {
                     Intent intent = new Intent(view.getContext(), HomePage.class);
                     startActivity(intent);
 
                 // Incorrect validation, show an error message or take appropriate action.
                 } else {
-                    LayoutInflater inflater = getLayoutInflater();
-                    View customToastView = inflater.inflate(R.layout.item_toast, null);
 
-                    TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
-                    customToastTextView.setText("Invalid email or password, please try again!");
-
-                    Toast customToast = new Toast(getApplicationContext());
-                    customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
-                    customToast.setView(customToastView);
-
-                    customToast.show();
+                    displayToast("Invalid email or password, please try again!");
                     //Toast.makeText(getApplicationContext(), "Invalid user name or password", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -109,4 +82,18 @@ public class LoginPage extends AppCompatActivity {
         return (target != null && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
+    private void displayToast(String msg) {
+        LayoutInflater inflater = getLayoutInflater();
+        View customToastView = inflater.inflate(R.layout.item_toast, null);
+
+        TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
+        customToastTextView.setText(msg);
+
+        Toast customToast = new Toast(getApplicationContext());
+        customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
+        customToast.setView(customToastView);
+
+        customToast.setGravity(Gravity.CENTER, 0, 0);
+        customToast.show();
+    }
 }

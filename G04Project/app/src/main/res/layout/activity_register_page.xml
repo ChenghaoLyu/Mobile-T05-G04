@@ -122,7 +122,7 @@
         android:layout_height="48sp"
         android:fontFamily="@font/lores15_bold"
         android:onClick="openLoginPage"
-        android:text="Back to Login"
+        android:text="Login"
         android:textSize="16sp"
         android:textColor="@color/light_green"
         app:backgroundTint="@color/dark_green"

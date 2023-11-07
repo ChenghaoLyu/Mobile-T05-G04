@@ -62,7 +62,7 @@ public class WebSocketClient {
                                      String startTime, boolean isPrivate,
                                      ConcurrentHashMap<String, Player> cat_list,
                                      ConcurrentHashMap<String, Player> rat_list,
-                                     ConcurrentHashMap<String, String> ready_list) {
+                                     ConcurrentHashMap<String, Player> ready_list) {
         // 获取位置信息（这里只是一个示例，你可能需要从GPS或其他位置服务获取实际的位置数据）
 
         Map<String, Object> roomInformation = new HashMap<>();
@@ -138,6 +138,14 @@ public class WebSocketClient {
                         webSocket.close(1000, "Authentication failed.");
                         return;
                     }
+
+                    if ("Validation Successful".equals(text)) {
+                        if (listener != null) {
+                            listener.onMessageReceived("Validation Successful");
+                        }
+                        return;
+                    }
+
                     if ("user_location".equals(message.getType())) {
                         // 解析并处理用户位置数据
                         UserLocation userLocation = new Gson().fromJson(new Gson().toJson(message.getData()), UserLocation.class);

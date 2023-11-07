@@ -1,15 +1,15 @@
 package com.example.g04_project;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RoomInformation {
+public class RoomInformation implements Serializable {
     private String roomID, hostId, locationName, modeName, duration, password;
 
     //TODO: playerNumber
     private int playerNumber, requiredCat, currentCat, requiredRat, currentRat;
-    private ConcurrentHashMap<String, Player> catsPlayers, ratPlayers;
-    private ConcurrentHashMap<String, String> ready_list;
+    private ConcurrentHashMap<String, Player> catsPlayers, ratPlayers, ready_list;
     private String startTime;
     private boolean privacy;
 
@@ -18,7 +18,7 @@ public class RoomInformation {
                            String startTime, boolean privacy,
                            ConcurrentHashMap<String, Player> catsPlayers,
                            ConcurrentHashMap<String, Player> ratPlayers,
-                           ConcurrentHashMap<String, String> ready_list) {
+                           ConcurrentHashMap<String, Player> ready_list) {
         this.roomID = roomID;
         this.hostId = hostId;
         this.locationName = locationName;
@@ -109,7 +109,7 @@ public class RoomInformation {
     }
     public ConcurrentHashMap<String, Player> getCatsPlayers() { return catsPlayers;}
     public ConcurrentHashMap<String, Player> getRatPlayers() { return ratPlayers;}
-    public ConcurrentHashMap<String, String> getReady_list() { return ready_list;}
+    public ConcurrentHashMap<String, Player> getReady_list() { return ready_list;}
 
 
     public String getStartTime() {

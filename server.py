@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from models import Message, UserLocation, Validation, Registration
 from websocket_manager import ConnectionManager
@@ -35,6 +34,10 @@ async def websocket_route(user_id: str, websocket: WebSocket):
                 #     ...
                 if message.type == "validation":
                     validation = Validation.parse_obj(message.data)
+                    if manager.authenticate(websocket, message.data.get("token")):
+                        await websocket.send_text("Validation Successful")
+                        await manager.connect(user_id, websocket)
+
                 elif message.type == "registration":
                     registration = Registration.parse_obj(message.data)
                 elif message.type == "room_information":
