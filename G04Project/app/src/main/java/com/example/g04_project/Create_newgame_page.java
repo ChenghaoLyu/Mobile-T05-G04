@@ -355,6 +355,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             cat_list = new ConcurrentHashMap<>();
             rat_list = new ConcurrentHashMap<>();
             host = new Player(user_id, room_id, 1);
+            host.setHost();
             cat_list.put(user_id, host);
             System.out.println("sending");
             client.sendRoomInformation(room_id, user_id, final_location, final_mode, final_duration, finalNumericPassword,

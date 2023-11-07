@@ -16,10 +16,12 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.TextView;
 import android.Manifest;
 
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,6 +32,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,9 +50,18 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     private GoogleMap mymap;
     public List<LatLng> locations = new ArrayList<>();
     public ArrayList<Marker> markerList = new ArrayList<>();
-    private LocationManager locationManager;
-    private LocationListener locationListener;
+//    private LocationManager locationManager;
+//    private LocationListener locationListener;
     private Marker myMarker;
+    // Google's API for location services
+    private FusedLocationProviderClient fusedLocationClient;
+
+    // configuration of all settings of FusedLocationProviderClient
+    LocationRequest locationRequest;
+
+    LocationCallback locationCallBack;
+
+    private final int Request_Code_Location = 22;
 //    public ConcurrentHashMap<String, Marker> marker_list;
 
 
@@ -58,7 +75,22 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         client = app.getWebSocketClient();
 
 //        marker_list = new ConcurrentHashMap<>();
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(1000);
+        locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
+        locationCallBack = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                if(locationResult != null) {
+                    Log.d("LocationTest", "Location updates");
+                    updateMarkerLocation(locationResult.getLastLocation());
+                }else{
+                    Log.d("LocationTest", "Location updates fail: null");
+                }
+            }
+        };
         locations.add(new LatLng(-37.7990, 144.9594));
         locations.add(new LatLng(-37.7963, 144.9614));
 //        locations.add(new LatLng(-37.7963, 144.9614));
@@ -68,26 +100,26 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 
         timerTextView = findViewById(R.id.timerTextView);
 
-        // 初始化位置管理器和监听器
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                // 更新unimelb Marker的位置
-                System.out.println("Waiting for update position");
-                updateUnimelbMarker(location);
-            }
-
-            // ... 其他必要的方法 ...
-        };
-        // 请求位置更新
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            System.out.println("11111111");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, locationListener);
-        } else {
-            System.out.println("00000000");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
+//        // 初始化位置管理器和监听器
+//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        locationListener = new LocationListener() {
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                // 更新unimelb Marker的位置
+//                System.out.println("Waiting for update position");
+//                updateUnimelbMarker(location);
+//            }
+//
+//            // ... 其他必要的方法 ...
+//        };
+//        // 请求位置更新
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            System.out.println("11111111");
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, locationListener);
+//        } else {
+//            System.out.println("00000000");
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+//        }
 
 // 创建一个倒计时，例如10秒
         CountDownTimer countDownTimer = new CountDownTimer(1800000, 1000) {
@@ -152,30 +184,46 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
         mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
     }
-    private void updateUnimelbMarker(Location location) {
-        System.out.println("22222222");
-        if (location != null && myMarker != null) {
+    private void updateMarkerLocation(Location location) {
+        if (myMarker != null && location != null) {
             LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
             myMarker.setPosition(newLocation);
-            System.out.println(String.valueOf(newLocation.latitude) + "; " + String.valueOf(newLocation.longitude));
             mymap.moveCamera(CameraUpdateFactory.newLatLng(newLocation));
         }
+
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocationUpdates();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-        if (locationManager != null) {
-            locationManager.removeUpdates(locationListener);
+        stopLocationUpdates();
+    }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallBack, Looper.getMainLooper());
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_Code_Location);
         }
     }
+
+    private void stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallBack);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
+        if (requestCode == Request_Code_Location) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-                }
+                startLocationUpdates();
+            } else {
+                // Handle the case where the user denies the permission.
             }
         }
     }
