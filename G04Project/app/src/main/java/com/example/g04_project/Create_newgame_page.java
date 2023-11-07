@@ -165,27 +165,16 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                 if (mymap != null) {  // 确保地图已经初始化
                     mymap.clear();
                     if(!final_location.equals("Choose Place")) {
-                        List<LatLng> melbUniCorners = Arrays.asList(
-                                new LatLng(-37.793523320527385, 144.95857232520177),
-                                new LatLng(-37.801602929501136, 144.95750868453575),
-                                new LatLng(-37.806267618431896, 144.9597094759837),
-                                new LatLng(-37.80663432876381, 144.9628192124287),
-                                new LatLng(-37.79445857240261, 144.96497746234934),
-                                new LatLng(-37.793780045017094, 144.96483822041955),
-                                new LatLng(-37.79330323826143, 144.96460615053638),
-                                new LatLng(-37.792991478333924, 144.9643276666747),
-                                new LatLng(-37.792698056024555, 144.96390994088318),
-                                new LatLng(-37.79238629354342, 144.9634690081034),
-                                new LatLng(-37.79209288389333, 144.96284241056208),
-                                new LatLng(-37.79194617109964, 144.9621694078973),
-                                new LatLng(-37.7919094928559,144.961542819211),
-                                new LatLng(-37.79194617109964, 144.96098585148962),
-                                new LatLng(-37.79205620572242, 144.96045209075658),
-                                new LatLng(-37.79223959639573, 144.95998795098842),
-                                new LatLng(-37.792441325610504, 144.95954701820864),
-                                new LatLng(-37.792716410015515, 144.9591989133839),
-                                new LatLng(-37.793523320527385, 144.95857232520177)
-                        );
+                        String[] stringArray = getResources().getStringArray(R.array.melb_uni_corners);
+                        List<LatLng> melbUniCorners = new ArrayList<>();
+
+// 解析字符串为LatLng对象
+                        for (String coord : stringArray) {
+                            String[] latLng = coord.split(",");
+                            double latitude = Double.parseDouble(latLng[0]);
+                            double longitude = Double.parseDouble(latLng[1]);
+                            melbUniCorners.add(new LatLng(latitude, longitude));
+                        }
                         // 在地图上绘制多边形
                         LatLng chosen_location = new LatLng(final_coor[0], final_coor[1]);
                         mymap.addPolygon(new PolygonOptions()
@@ -366,6 +355,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             cat_list = new ConcurrentHashMap<>();
             rat_list = new ConcurrentHashMap<>();
             host = new Player(user_id, room_id, 1);
+            host.setHost();
             cat_list.put(user_id, host);
             System.out.println("sending");
             client.sendRoomInformation(room_id, user_id, final_location, final_mode, final_duration, finalNumericPassword,

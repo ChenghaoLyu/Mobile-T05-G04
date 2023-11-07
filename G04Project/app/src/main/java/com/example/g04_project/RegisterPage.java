@@ -83,7 +83,7 @@ public class RegisterPage extends AppCompatActivity {
             @Override
             public void onMessageReceived(String message) {
                 // Successful registration
-                if (message.equals("TRUE")) {
+                if (message.equals("Registration Successful")) {
                     Intent intent = new Intent(view.getContext(), HomePage.class);
                     startActivity(intent);
 
