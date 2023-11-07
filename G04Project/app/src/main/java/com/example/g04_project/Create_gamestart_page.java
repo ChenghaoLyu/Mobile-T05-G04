@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -43,6 +43,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     public ArrayList<Marker> markerList = new ArrayList<>();
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private Marker myMarker;
 //    public ConcurrentHashMap<String, Marker> marker_list;
 
 
@@ -51,14 +52,15 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_gamestart_page);
+        System.out.println("Game Start!!!");
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
 
 //        marker_list = new ConcurrentHashMap<>();
 
         locations.add(new LatLng(-37.7990, 144.9594));
-        locations.add(new LatLng(-37.7962, 144.9594));
         locations.add(new LatLng(-37.7963, 144.9614));
+//        locations.add(new LatLng(-37.7963, 144.9614));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.game_start_map);
         mapFragment.getMapAsync(this);
@@ -71,6 +73,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
             @Override
             public void onLocationChanged(Location location) {
                 // 更新unimelb Marker的位置
+                System.out.println("Waiting for update position");
                 updateUnimelbMarker(location);
             }
 
@@ -78,8 +81,10 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         };
         // 请求位置更新
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+            System.out.println("11111111");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, locationListener);
         } else {
+            System.out.println("00000000");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
@@ -120,7 +125,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
-        LatLng chosen_location = new LatLng(-37.7963, 144.9614);
+        LatLng chosen_location = new LatLng(-37.7962, 144.9594);
         String[] stringArray = getResources().getStringArray(R.array.melb_uni_corners);
         List<LatLng> melbUniCorners = new ArrayList<>();
 
@@ -136,21 +141,41 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                 .addAll(melbUniCorners)
                 .strokeColor(Color.RED)  // 边框颜色
                 .fillColor(Color.argb(50, 255, 0, 0)));  // 填充颜色（半透明红色）
-
+        Integer count = 0;
         for (LatLng location : locations) {
-            Integer count = 0;
             Marker marker = mymap.addMarker(new MarkerOptions().position(location).title("user" + String.valueOf(count)));
             markerList.add(marker);
+            count ++;
         }
-        mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb"));
+        myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb"));
         mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
         mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
     }
     private void updateUnimelbMarker(Location location) {
-        if (location != null && unimelbMarker != null) {
+        System.out.println("22222222");
+        if (location != null && myMarker != null) {
             LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            unimelbMarker.setPosition(newLocation);
+            myMarker.setPosition(newLocation);
+            System.out.println(String.valueOf(newLocation.latitude) + "; " + String.valueOf(newLocation.longitude));
             mymap.moveCamera(CameraUpdateFactory.newLatLng(newLocation));
+        }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (locationManager != null) {
+            locationManager.removeUpdates(locationListener);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+                }
+            }
         }
     }
 
