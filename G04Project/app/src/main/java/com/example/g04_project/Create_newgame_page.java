@@ -63,6 +63,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
     public ConcurrentHashMap<String, Player> cat_list, rat_list;
     public ConcurrentHashMap<String, String> ready_list;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +118,9 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
 
         tvPlayerCount = findViewById(R.id.tv_player_count);
         tvCatCount = findViewById(R.id.tv_cat_count);
+        final_cat = Integer.parseInt(tvCatCount.getText().toString());
         tvMouseCount = findViewById(R.id.tv_mouse_count);
+        final_mouse = Integer.parseInt(tvMouseCount.getText().toString());
         tvDuration = findViewById(R.id.tv_duration);
 
         findViewById(R.id.btn_player_increase).setOnClickListener(v -> {
@@ -316,10 +319,11 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
 //        final_location
 //        final_mode
 //        final_privacy
-//        final_player
+        final_player = Integer.parseInt(tvPlayerCount.getText().toString());
 //        final_duration
-//        final_cat
-//        final_mouse
+        final_cat = Integer.parseInt(tvCatCount.getText().toString());
+        final_mouse = Integer.parseInt(tvMouseCount.getText().toString());
+        System.out.println("start");
         finalNumericPassword = numericPasswordEditText.getText().toString();
         // Check empty input
         if (Objects.equals(final_location, "none") || final_mode.isEmpty() || final_duration.isEmpty()|| final_startTime.isEmpty()) {
@@ -338,29 +342,30 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             return;
 
             // Invalid email format, show an error message or take appropriate action.
-        } else if (isPrivate) {
-            if (finalNumericPassword.length() != 6) {
-                LayoutInflater inflater = getLayoutInflater();
-                View customToastView = inflater.inflate(R.layout.item_toast, null);
+        } else if (isPrivate && finalNumericPassword.length() != 6) {
+            System.out.println("missing password");
+            LayoutInflater inflater = getLayoutInflater();
+            View customToastView = inflater.inflate(R.layout.item_toast, null);
 
-                TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
-                customToastTextView.setText("Private Room Password must be at least 6 digits long" + String.valueOf(finalNumericPassword.length()));
+            TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
+            customToastTextView.setText("Private Room Password must be at least 6 digits long" + String.valueOf(finalNumericPassword.length()));
 
-                Toast customToast = new Toast(getApplicationContext());
-                customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
-                customToast.setView(customToastView);
+            Toast customToast = new Toast(getApplicationContext());
+            customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
+            customToast.setView(customToastView);
 
-                customToast.show();
-                return;
-            }
+            customToast.show();
+            return;
             //Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
 
             // Passwords do not match
-        } else {
+        }
+        else {
             ready_list = new ConcurrentHashMap<>();
             cat_list = new ConcurrentHashMap<>();
             rat_list = new ConcurrentHashMap<>();
             ready_list.put("user1", user_id);
+            System.out.println("sending");
             client.sendRoomInformation(room_id, user_id, final_location, final_mode, final_duration, finalNumericPassword,
                     final_cat, 0, final_mouse, 0, final_startTime, isPrivate, cat_list, rat_list, ready_list);
         }
@@ -372,8 +377,12 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                 // Successful registration
                 if (!message.isEmpty()) {
                     System.out.println(message);
+                    RoomInformation roomInformation = new RoomInformation(room_id, user_id, final_location, final_mode, final_duration,
+                            finalNumericPassword, final_cat, 0, final_mouse, 0, final_startTime,
+                            isPrivate, cat_list, rat_list, ready_list);
 //                    Toast.makeText(Create_newgame_page.this, message, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(view.getContext(), DisplayGameRoomPage.class);
+                    intent.putExtra("roomInformation", roomInformation);
                     startActivity(intent);
 
                     // Incorrect validation, show an error message or take appropriate action.

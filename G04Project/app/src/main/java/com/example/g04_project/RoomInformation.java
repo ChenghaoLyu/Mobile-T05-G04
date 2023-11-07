@@ -1,9 +1,10 @@
 package com.example.g04_project;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RoomInformation {
+public class RoomInformation implements Serializable {
     private String roomID, hostId, locationName, modeName, duration, password;
 
     //TODO: playerNumber
