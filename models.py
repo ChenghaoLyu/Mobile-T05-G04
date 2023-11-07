@@ -14,13 +14,8 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
-class Validation(BaseModel):
-    validation: bool
-    token: Token
-
-class Registration(BaseModel):
-    validation: bool
-    token: Token
+class Account(BaseModel):
+    email: str
     username: str
     hashtag: int
     userID: str

@@ -285,7 +285,7 @@
                         android:fontFamily="@font/lores15_bold"/>
                     <Spinner
                         android:id="@+id/spinner_location_name"
-                        android:layout_width="150sp"
+                        android:layout_width="160sp"
                         android:layout_height="60sp"
                         android:layout_marginHorizontal="20sp"
                         android:entries="@array/spinner_location"
