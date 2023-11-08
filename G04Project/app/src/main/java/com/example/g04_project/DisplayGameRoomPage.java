@@ -142,11 +142,16 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         TextView playerName = playerView.findViewById(R.id.playerName);
         playerName.setText(player.getPlayerName());
 
-        //TODO: create xml for color change of the avatar frame
+        ImageView crown = playerView.findViewById(R.id.crown);
+        if (player.isHost()) {
+            crown.setVisibility(View.VISIBLE);
+        }
+
+        FrameLayout avatarFrame = playerView.findViewById(R.id.avatarFrame);
         if (player.getIsReady()) { // The background for ready state
-            playerView.setBackgroundResource(R.drawable.ready_status_background);
+            avatarFrame.setBackgroundResource(R.drawable.ready_status_background);
         } else { // The background for not-ready state
-            playerView.setBackgroundResource(R.drawable.not_ready_status_background);
+            avatarFrame.setBackgroundResource(R.drawable.not_ready_status_background);
         }
 
         // Add the player view to the container

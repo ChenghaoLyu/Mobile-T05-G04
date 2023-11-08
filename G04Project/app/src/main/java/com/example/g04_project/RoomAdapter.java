@@ -35,7 +35,6 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         this.player = player;
         setDisplayedRooms(targetRooms);
         modeSymbols = new HashMap<>();
-        //TODO: upload mode images
         modeSymbols.put("classic", R.drawable.classic_mode);
         modeSymbols.put("zombie", R.drawable.zombie_mode);
     }
@@ -58,7 +57,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         holder.mouseCount.setText(": " + currRoom.getCurrentRat() + "/" + currRoom.getRequiredRat());
         holder.location.setText("Location: " + currRoom.getLocationName());
         holder.startTime.setText("Start Time: " + currRoom.getStartTime());
-        holder.duration.setText("Duration: " + currRoom.getDuration());
+        holder.duration.setText("Duration: " + currRoom.getDuration()); //TODO: 格式
         if (currRoom.isPrivate()) {
             holder.privacy.setText("Privacy: private");
         } else {

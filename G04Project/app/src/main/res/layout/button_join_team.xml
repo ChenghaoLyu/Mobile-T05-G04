@@ -4,5 +4,4 @@
     android:layout_width="60dp"
     android:layout_height="60dp"
     android:background="@drawable/join_team_button"
-    android:text=""
     android:layout_margin="4dp"/>

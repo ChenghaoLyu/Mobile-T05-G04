@@ -20,21 +20,16 @@
             android:src="@drawable/rat_avatar_pixel"
             android:scaleType="centerCrop" />
 
-        <!-- Indicator of ready status -->
-        <View
-            android:id="@+id/playerStatusIndicator"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </FrameLayout>
 
     <ImageView
         android:id="@+id/crown"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="14dp"
+        android:layout_height="16dp"
         android:src="@drawable/crown"
-        app:layout_constraintTop_toTopOf="@id/avatarFrame"
-        app:layout_constraintEnd_toEndOf="@id/avatarFrame"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="@id/playerName"
+        app:layout_constraintEnd_toStartOf="@id/playerName"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/playerName"
