@@ -17,7 +17,7 @@
             android:id="@+id/playerAvatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/cat_avatar_pixel"
+            android:src="@drawable/rat_avatar_pixel"
             android:scaleType="centerCrop" />
 
         <!-- Indicator of ready status -->

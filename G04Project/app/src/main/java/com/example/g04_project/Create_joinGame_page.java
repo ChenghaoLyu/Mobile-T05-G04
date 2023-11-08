@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -34,6 +35,7 @@ public class Create_joinGame_page extends AppCompatActivity {
     private List<RoomInformation> targetRooms;
     private SearchView searchView;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,7 @@ public class Create_joinGame_page extends AppCompatActivity {
 
         backButton = findViewById(R.id.backButton);
         filterButton = findViewById(R.id.filterButton);
-        refreshButton = findViewById(R.id.readyButton);
+        refreshButton = findViewById(R.id.refreshButton);
 
         locationCheckBox = findViewById(R.id.locationCheckBox);
         gameModeCheckBox = findViewById(R.id.gameModeCheckBox);

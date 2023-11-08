@@ -27,7 +27,7 @@
             android:id="@+id/catSymbol"
             android:layout_width="22dp"
             android:layout_height="20dp"
-            android:src="@drawable/cat"
+            android:src="@drawable/cat_avatar_pixel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/roomId"
             app:layout_constraintBottom_toTopOf="@id/location" />
@@ -46,7 +46,7 @@
             android:id="@+id/mouseSymbol"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/mouse"
+            android:src="@drawable/rat_avatar_pixel"
             app:layout_constraintStart_toEndOf="@id/catCount"
             app:layout_constraintTop_toBottomOf="@id/roomId"
             app:layout_constraintBottom_toTopOf="@id/location" />
@@ -115,7 +115,7 @@
             android:id="@+id/gameModeImage"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/mode_image1"
+            android:src="@drawable/classic_mode"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/gameModeLabel"
             app:layout_constraintBottom_toTopOf="@id/joinButton"/>
@@ -125,6 +125,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="JOIN"
+            android:textSize="16sp"
+            android:textColor="@color/light_green"
+            app:backgroundTint="@color/dark_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

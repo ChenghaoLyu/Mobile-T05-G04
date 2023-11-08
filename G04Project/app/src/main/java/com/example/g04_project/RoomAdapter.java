@@ -36,8 +36,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         setDisplayedRooms(targetRooms);
         modeSymbols = new HashMap<>();
         //TODO: upload mode images
-        modeSymbols.put("classic", R.drawable.mode_image1);
-        modeSymbols.put("zombie", R.drawable.mode_image2);
+        modeSymbols.put("classic", R.drawable.classic_mode);
+        modeSymbols.put("zombie", R.drawable.zombie_mode);
     }
 
     @NonNull

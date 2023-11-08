@@ -20,11 +20,11 @@
         android:layout_height="wrap_content"
         android:queryHint="Search room ID here..."
         app:layout_constraintStart_toEndOf="@id/filterButton"
-        app:layout_constraintEnd_toStartOf="@id/refresh"
+        app:layout_constraintEnd_toStartOf="@id/refreshButton"
         app:layout_constraintTop_toTopOf="@id/filterButton" />
 
     <Button
-        android:id="@+id/refresh"
+        android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Refresh"

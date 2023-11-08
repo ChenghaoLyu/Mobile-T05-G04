@@ -11,7 +11,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/mouse" /> <!-- Custom image/icon -->
+        android:src="@drawable/cat_avatar_pixel" /> <!-- Custom image/icon -->
 
     <TextView
         android:id="@+id/customToastText"
@@ -21,5 +21,5 @@
         android:layout_marginLeft="8dp"
         android:fontFamily="@font/lores15_bold"
         android:text="Custom Toast Text"
-        android:textColor="@color/light_green" />
+        android:textColor="@color/white" />
 </LinearLayout>
