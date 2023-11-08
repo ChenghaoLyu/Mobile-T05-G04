@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Player implements Serializable {
     private String userId;
+    private String userName;
     private int avatar;
     private String roomId;
     private int team;
@@ -12,18 +13,11 @@ public class Player implements Serializable {
     private static final int TEAM_CAT = 1;
     private static final int TEAM_RAT = 2;
 
-    public Player(String userId, String roomId, int team) {
+    public Player(String userId, String userName) {
         this.userId = userId;
-        this.roomId = roomId;
-        this.team = team;
+        this.userName = userName;
         this.isHost = false;
         this.isReady = false;
-
-        if (team == TEAM_CAT) {
-            setAvatar(R.drawable.cat_avatar);
-        } else if (team == TEAM_RAT){
-            setAvatar(R.drawable.rat_avatar);
-        }
     }
 
     public String getPlayerId() {
@@ -33,13 +27,19 @@ public class Player implements Serializable {
     public void setPlayerId(String playerId) {
         this.userId = playerId;
     }
+    public String getPlayerName() {return userName;}
+    public void setPlayerName(String userName) { this.userName = userName; }
 
     public int getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(int avatar) {
-        this.avatar = avatar;
+    public void setAvatar(int team) {
+        if (team == TEAM_CAT) {
+            this.avatar = R.drawable.cat_avatar_pixel;
+        } else if (team == TEAM_RAT){
+            this.avatar = R.drawable.rat_avatar_pixel;
+        }
     }
 
     public void setRoomID(String id) {

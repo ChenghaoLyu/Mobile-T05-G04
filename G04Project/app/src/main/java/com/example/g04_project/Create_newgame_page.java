@@ -58,9 +58,9 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
     public TimePicker timePicker;
     public double[] final_coor = new double[]{-37.79917143220294, 144.96114830091392};
     public String final_mode, finalNumericPassword, final_duration, final_startTime;
-    public boolean isPrivate;
+    public boolean isPrivate, isOngoing;
     public Integer final_player, final_cat, final_mouse;
-    public String user_id = "test1", room_id = "000001", final_privacy;
+    public String user_id = "test1", userName = "BJ", room_id = "000001", final_privacy;
     public ConcurrentHashMap<String, Player> cat_list, rat_list, ready_list;
     private Player host;
 
@@ -354,12 +354,12 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             ready_list = new ConcurrentHashMap<>();
             cat_list = new ConcurrentHashMap<>();
             rat_list = new ConcurrentHashMap<>();
-            host = new Player(user_id, room_id, 1);
+            host = new Player(user_id, userName);
+            host.setRoomID(room_id);
             host.setHost();
-            cat_list.put(user_id, host);
             System.out.println("sending");
             client.sendRoomInformation(room_id, user_id, final_location, final_mode, final_duration, finalNumericPassword,
-                    final_cat, 0, final_mouse, 0, final_startTime, isPrivate, cat_list, rat_list, ready_list);
+                    final_cat, 0, final_mouse, 0, final_startTime, isPrivate, isOngoing, cat_list, rat_list, ready_list);
         }
         Toast.makeText(Create_newgame_page.this, "finish fill the form", Toast.LENGTH_SHORT).show();
 
@@ -371,7 +371,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                     System.out.println(message);
                     RoomInformation roomInformation = new RoomInformation(room_id, user_id, final_location, final_mode, final_duration,
                             finalNumericPassword, final_cat, 0, final_mouse, 0, final_startTime,
-                            isPrivate, cat_list, rat_list, ready_list);
+                            isPrivate, isOngoing, cat_list, rat_list, ready_list);
                     RoomManager.getInstance().setRoom(roomInformation);
                     PlayerManager.getInstance().setPlayer(host);
 //                    Toast.makeText(Create_newgame_page.this, message, Toast.LENGTH_SHORT).show();

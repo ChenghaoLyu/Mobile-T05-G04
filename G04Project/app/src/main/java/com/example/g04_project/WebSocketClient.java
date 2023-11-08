@@ -65,7 +65,7 @@ public class WebSocketClient {
 
     public void sendRoomInformation(String roomId, String userId, String locationName, String modeName, String duration, String password,
                                      int catNumber, int currCatNum, int ratNumber, int currRatNum,
-                                     String startTime, boolean isPrivate,
+                                     String startTime, boolean isPrivate, boolean isOngoing,
                                      ConcurrentHashMap<String, Player> cat_list,
                                      ConcurrentHashMap<String, Player> rat_list,
                                      ConcurrentHashMap<String, Player> ready_list) {
@@ -84,6 +84,7 @@ public class WebSocketClient {
         roomInformation.put("currRatNum", currRatNum);
         roomInformation.put("startTime", startTime);
         roomInformation.put("privacy", isPrivate);
+        roomInformation.put("status", isOngoing);
         roomInformation.put("ready_list", ready_list);
         roomInformation.put("cat_list", cat_list);
         roomInformation.put("rat_list", rat_list);

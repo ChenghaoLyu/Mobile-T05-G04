@@ -12,10 +12,11 @@ public class RoomInformation implements Serializable {
     private ConcurrentHashMap<String, Player> catPlayers, ratPlayers, readyList;
     private String startTime;
     private boolean privacy;
+    private boolean isOngoing;
 
     public RoomInformation(String roomID, String hostId, String locationName, String modeName, String duration, String password,
                            int requiredCat, int currentCat, int requiredRat, int currentRat,
-                           String startTime, boolean privacy,
+                           String startTime, boolean privacy, boolean isOngoing,
                            ConcurrentHashMap<String, Player> catPlayers,
                            ConcurrentHashMap<String, Player> ratPlayers,
                            ConcurrentHashMap<String, Player> readyList) {
@@ -34,6 +35,7 @@ public class RoomInformation implements Serializable {
         this.readyList = readyList;
         this.startTime = startTime;
         this.privacy = privacy;
+        this.isOngoing = isOngoing;
     }
 
     // Getter and Setter methods for each attribute
@@ -90,13 +92,15 @@ public class RoomInformation implements Serializable {
         this.password = password;
     }
 
-    public boolean isPrivacy() {
+    public boolean isPrivate() {
         return privacy;
     }
 
     public void setPrivacy(boolean privacy) {
         this.privacy = privacy;
     }
+    public boolean isOngoing() { return isOngoing; }
+    public void setOngoing(boolean isOngoing) { this.isOngoing = isOngoing; }
     public int getRequiredRat() { return requiredRat; }
     public void setRequiredRat(int requiredRat) { this.requiredRat = requiredRat; }
 
@@ -126,15 +130,19 @@ public class RoomInformation implements Serializable {
 
     public void joinCatTeam(Player player) {
         catPlayers.put(player.getPlayerId(), player);
+        currentCat += 1;
         if (ratPlayers.containsKey(player.getPlayerId())) {
             ratPlayers.remove(player.getPlayerId(), player);
+            currentRat -= 1;
         }
     }
 
     public void joinRatTeam(Player player) {
         ratPlayers.put(player.getPlayerId(), player);
+        currentRat += 1;
         if (catPlayers.containsKey(player.getPlayerId())) {
             catPlayers.remove(player.getPlayerId(), player);
+            currentCat -= 1;
         }
     }
 

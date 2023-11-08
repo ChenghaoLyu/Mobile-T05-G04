@@ -13,8 +13,11 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Create_joinGame_page extends AppCompatActivity {
+    private WebSocketClient client;
+    private Player player;
     private Button backButton;
     private Button filterButton;
+    private Button refreshButton;
     private CheckBox locationCheckBox;
     private CheckBox gameModeCheckBox;
     private LinearLayout locationOptions;
@@ -35,9 +38,14 @@ public class Create_joinGame_page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_joingame_page);
+        MyApp app = (MyApp) getApplication();
+        client = app.getWebSocketClient();
+        player = new Player(client.getAccount().getUserID(), client.getAccount().getUserName());
 
         backButton = findViewById(R.id.backButton);
         filterButton = findViewById(R.id.filterButton);
+        refreshButton = findViewById(R.id.readyButton);
+
         locationCheckBox = findViewById(R.id.locationCheckBox);
         gameModeCheckBox = findViewById(R.id.gameModeCheckBox);
         locationOptions = findViewById(R.id.locationOptions);
@@ -53,19 +61,27 @@ public class Create_joinGame_page extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
 
         rooms = new ConcurrentHashMap<>();
-        targetRooms = new ArrayList<>(rooms.values());
         //TODO: get rooms
+        targetRooms = new ArrayList<>(rooms.values());
 
         if (!rooms.isEmpty()) {
             roomsRecyclerView.setVisibility(View.VISIBLE);
             emptyMessageTextView.setVisibility(View.GONE);
         }
 
-        roomAdapter = new RoomAdapter(targetRooms);
+        roomAdapter = new RoomAdapter(this, targetRooms, player);
         roomsRecyclerView.setAdapter(roomAdapter);
 
         // Actions clicking on back button
         backButton.setOnClickListener(v -> finish());
+
+        // Actions clicking on refresh button
+        refreshButton.setOnClickListener(v -> {
+            rooms = new ConcurrentHashMap<>();
+            //TODO: get rooms
+            targetRooms = new ArrayList<>(rooms.values());
+            roomAdapter.updateDisplayedRooms(targetRooms);
+        });
 
         // Actions clicking on filter button
         filterButton.setOnClickListener(v -> {
@@ -168,8 +184,8 @@ public class Create_joinGame_page extends AppCompatActivity {
 
             // Check game mode
             if (isAnyModeChecked) {
-                matchesMode = (room.getModeName().equals("Mode 1") && isMode1Checked)
-                        || (room.getModeName().equals("Mode 2") && isMode2Checked);
+                matchesMode = (room.getModeName().equals("classic") && isMode1Checked)
+                        || (room.getModeName().equals("zombie") && isMode2Checked);
             }
 
             // Add the satisfied room to the displayed list
@@ -198,5 +214,6 @@ public class Create_joinGame_page extends AppCompatActivity {
             Toast.makeText(this, "Room not found", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }

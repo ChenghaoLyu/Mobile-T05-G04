@@ -1,14 +1,23 @@
 package com.example.g04_project;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.HashMap;
@@ -16,15 +25,19 @@ import java.util.List;
 import java.util.Map;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder>{
+    private Context context;
+    private Player player;
     private List<RoomInformation> displayedRooms;
     private Map<String, Integer> modeSymbols;
 
-    public RoomAdapter(List<RoomInformation> targetRooms) {
+    public RoomAdapter(Context context, List<RoomInformation> targetRooms, Player player) {
+        this.context = context;
+        this.player = player;
         setDisplayedRooms(targetRooms);
         modeSymbols = new HashMap<>();
         //TODO: upload mode images
-        modeSymbols.put("modeName1", R.drawable.mode_image1);
-        modeSymbols.put("modeName2", R.drawable.mode_image2);
+        modeSymbols.put("classic", R.drawable.mode_image1);
+        modeSymbols.put("zombie", R.drawable.mode_image2);
     }
 
     @NonNull
@@ -46,7 +59,63 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         holder.location.setText("Location: " + currRoom.getLocationName());
         holder.startTime.setText("Start Time: " + currRoom.getStartTime());
         holder.duration.setText("Duration: " + currRoom.getDuration());
+        if (currRoom.isPrivate()) {
+            holder.privacy.setText("Privacy: private");
+        } else {
+            holder.privacy.setText("Privacy: public");
+        }
         holder.gameModeImage.setImageResource(getModeSymbol(currRoom.getModeName()));
+
+        holder.joinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currRoom.isFull()) {
+                    Toast.makeText(context, "The room is full, please choose another one.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (currRoom.isPrivate()) {
+                    showPasswordInputDialog(currRoom);
+                } else {
+                    navigateToDisplayRoomPage(currRoom);
+                }
+            }
+
+            private void showPasswordInputDialog(RoomInformation room) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Enter Room Password");
+
+                // 设置密码输入框
+                final EditText passwordInput = new EditText(context);
+                passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                builder.setView(passwordInput);
+
+                builder.setPositiveButton("Join", (dialog, which) -> {
+                    String enteredPassword = passwordInput.getText().toString();
+                    if (enteredPassword.equals(room.getPassword())) {
+                        // Correct password
+                        navigateToDisplayRoomPage(room);
+                    } else {
+                        // Incorrect password
+                        Toast.makeText(context, "Password incorrect, cannot join.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+                builder.show();
+            }
+
+            private void navigateToDisplayRoomPage(RoomInformation room) {
+                RoomManager.getInstance().setRoom(room);
+                player.setRoomID(room.getRoomID());
+                PlayerManager.getInstance().setPlayer(player);
+
+                Intent intent = new Intent(context,DisplayGameRoomPage.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -65,6 +134,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         TextView location;
         TextView startTime;
         TextView duration;
+        TextView privacy;
         ImageView gameModeImage;
         Button joinButton;
 
@@ -76,6 +146,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             this.location = itemView.findViewById(R.id.location);
             this.startTime = itemView.findViewById(R.id.startTime);
             this.duration = itemView.findViewById(R.id.duration);
+            this.privacy = itemView.findViewById(R.id.privacy);
             this.gameModeImage = itemView.findViewById(R.id.gameModeImage);
             this.joinButton = itemView.findViewById(R.id.joinButton);
         }

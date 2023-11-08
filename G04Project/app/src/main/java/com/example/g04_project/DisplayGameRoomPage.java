@@ -61,6 +61,7 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         }
 
         backButton.setOnClickListener(v -> {
+            player.setRoomID(null);
             onBackPressed();
         });
 
@@ -71,12 +72,53 @@ public class DisplayGameRoomPage extends AppCompatActivity {
 
         startButton.setOnClickListener(v -> {
             if (player.isHost()) {
-                Intent intent = new Intent(DisplayGameRoomPage.this,
-                        Create_gamestart_page.class);
-                startActivity(intent);
+                if (currentRoom.isFull()) { // 人齐了
+                    if (currentRoom.getReadyList().size() // 全员准备
+                            == currentRoom.getRequiredCat() + currentRoom.getRequiredRat()) {
+
+                        currentRoom.setOngoing(true);
+                        client.sendRoomInformation(currentRoom.getRoomID(), currentRoom.getHostId(),
+                                currentRoom.getLocationName(),
+                                currentRoom.getModeName(),
+                                currentRoom.getDuration(),
+                                currentRoom.getPassword(),
+                                currentRoom.getRequiredCat(),
+                                currentRoom.getCurrentCat(),
+                                currentRoom.getRequiredRat(),
+                                currentRoom.getCurrentRat(),
+                                currentRoom.getStartTime(),
+                                currentRoom.isPrivate(),
+                                currentRoom.isOngoing(),
+                                currentRoom.getCatPlayers(),
+                                currentRoom.getRatPlayers(),
+                                currentRoom.getReadyList());
+
+                        RoomManager.getInstance().setRoom(currentRoom);
+                        PlayerManager.getInstance().setPlayer(player);
+
+                        Intent intent = new Intent(this, Create_gamestart_page.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(DisplayGameRoomPage.this,
+                                "Some players are not ready! ",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(DisplayGameRoomPage.this,
+                            "The number of player is not enough! ",
+                            Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(DisplayGameRoomPage.this, "Only host can start the game!",
-                        Toast.LENGTH_SHORT).show();
+                if (currentRoom.isOngoing()) {
+                    RoomManager.getInstance().setRoom(currentRoom);
+                    PlayerManager.getInstance().setPlayer(player);
+
+                    Intent intent = new Intent(this, Create_gamestart_page.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(DisplayGameRoomPage.this, "Only host can start the game!",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -98,7 +140,7 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         avatar.setImageResource(player.getAvatar());
 
         TextView playerName = playerView.findViewById(R.id.playerName);
-        playerName.setText(player.getPlayerId());
+        playerName.setText(player.getPlayerName());
 
         //TODO: create xml for color change of the avatar frame
         if (player.getIsReady()) { // The background for ready state
@@ -118,11 +160,19 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         // Adding click listener for joining the team
         joinTeamButtonView.setOnClickListener(v -> {
 
+            if (currentRoom.isFull()) {
+                Toast.makeText(DisplayGameRoomPage.this,
+                        "The room is already full, please choose another one.",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             // Let the player join the team
             player.setTeam(team);
+            player.setAvatar(team);
+
             if (team == TEAM_CAT) {
                 currentRoom.joinCatTeam(player);
-
             } else if (team == TEAM_RAT) {
                 currentRoom.joinRatTeam(player);
             }
@@ -157,7 +207,8 @@ public class DisplayGameRoomPage extends AppCompatActivity {
                 currentRoom.getRequiredRat(),
                 currentRoom.getCurrentRat(),
                 currentRoom.getStartTime(),
-                currentRoom.isPrivacy(),
+                currentRoom.isPrivate(),
+                currentRoom.isOngoing(),
                 currentRoom.getCatPlayers(),
                 currentRoom.getRatPlayers(),
                 currentRoom.getReadyList());
