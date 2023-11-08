@@ -1,7 +1,10 @@
 package com.example.g04_project;
 
+import android.location.Location;
 import android.os.Handler;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.StampStyle;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -24,6 +27,7 @@ public class WebSocketClient {
     private Handler handler = new Handler();
 
     public Account account = new Account();
+    public PositionList positionList = new PositionList();
     private Runnable locationUpdateRunnable = new Runnable() {
         @Override
         public void run() {
@@ -91,6 +95,14 @@ public class WebSocketClient {
 
         sendMessage("room_information", roomInformation);
     }
+    public void sendCurrentPosition(String userId, LatLng location){
+        Map<String, Object> currentPosition = new HashMap<>();
+        currentPosition.put("userId", userId);
+        currentPosition.put("latitude", location.latitude);
+        currentPosition.put("longitude", location.longitude);
+
+        sendMessage("current_position", currentPosition);
+    }
 
     public void sendRegistration(String userName, String email, String password) {
 
@@ -128,8 +140,8 @@ public class WebSocketClient {
                     }
 
                     Message message = new Gson().fromJson(text, Message.class);
-
-                    System.out.println(text);
+                    System.out.println("system received: " + message.getType() + message.getData());
+//                    System.out.println(text);
                     if ("Connection established".equals(text)) {
                         if (listener != null) {
                             listener.onMessageReceived("Connection established");
@@ -148,11 +160,20 @@ public class WebSocketClient {
                     } else if ("room_information".equals(message.getType())) {
                         RoomInformation roomInformation = new Gson().fromJson(new Gson().toJson(message.getData()), RoomInformation.class);
                         listener.onMessageReceived(roomInformation.toString());
+                    } else if ("current_position".equals(message.getType())) {
+                        CurrentPosition currentPosition = new Gson().fromJson(new Gson().toJson(message.getData()), CurrentPosition.class);
+                        listener.onMessageReceived(currentPosition.toString());
                     } else if ("account".equals(message.getType())) {
                         System.out.println("receive");
                         account = new Gson().fromJson(new Gson().toJson(message.getData()), Account.class);
                         listener.onMessageReceived("Validation Successful");
-                    } else {
+                    }else if ("successfully create room".equals(message.getType())){
+                        listener.onMessageReceived("Successfully create room");
+                    }
+                    else if ("updated positions".equals(message.getType())){
+                        positionList = new Gson().fromJson(new Gson().toJson(message.getData()), PositionList.class);
+                        listener.onMessageReceived("get updated positions");
+                    }else {
                         listener.onMessageReceived("wrong_message_type");
                     }
                 } catch (JsonSyntaxException e) {
@@ -197,5 +218,9 @@ public class WebSocketClient {
 
     public Account getAccount() {
         return account;
+    }
+
+    public PositionList getPositionList(){
+        return positionList;
     }
 }

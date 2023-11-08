@@ -60,7 +60,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
     public String final_mode, finalNumericPassword, final_duration, final_startTime;
     public boolean isPrivate, isOngoing;
     public Integer final_player, final_cat, final_mouse;
-    public String user_id = "test1", userName = "BJ", room_id = "000001", final_privacy;
+    public String user_id, userName, room_id = "000001", final_privacy;
     public ConcurrentHashMap<String, Player> cat_list, rat_list, ready_list;
     private Player host;
 
@@ -71,6 +71,11 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_create_newgame_page);
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
+        user_id = client.getAccount().getUserID();
+        userName = client.getAccount().getUserName();
+
+        System.out.println(user_id);
+        System.out.println(userName);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -361,13 +366,13 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             client.sendRoomInformation(room_id, user_id, final_location, final_mode, final_duration, finalNumericPassword,
                     final_cat, 0, final_mouse, 0, final_startTime, isPrivate, isOngoing, cat_list, rat_list, ready_list);
         }
-        Toast.makeText(Create_newgame_page.this, "finish fill the form", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(Create_newgame_page.this, "finish fill the form", Toast.LENGTH_SHORT).show();
 
         client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
             @Override
             public void onMessageReceived(String message) {
                 // Successful registration
-                if (!message.isEmpty()) {
+                if (message.equals("Successfully create room")) {
                     System.out.println(message);
                     RoomInformation roomInformation = new RoomInformation(room_id, user_id, final_location, final_mode, final_duration,
                             finalNumericPassword, final_cat, 0, final_mouse, 0, final_startTime,

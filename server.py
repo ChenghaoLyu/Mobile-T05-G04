@@ -1,6 +1,6 @@
 import random
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from models import Message, UserLocation, Account
+from models import Message, UserLocation, Account, PositionList
 from websocket_manager import ConnectionManager
 from auth import get_current_user, oauth2_scheme, create_access_token, get_user, verify_password
 import json
@@ -13,6 +13,35 @@ accounts = {
     "example@mail.com": ["password1","BroJoKer", "0000", "BroJoKer0000"],
     "example2@mail.com": ["password2", "Dino", "0001", "Dino0001"]
 }
+room_test = {'room_id': '777777', 
+             'modeName': 'classic', 
+             'locationName': 'unimelb', 
+             'catNumber': 3, 
+             'currRatNum': 0, 
+             'ready_list': {}, 
+             'privacy': True, 
+             'duration': '30', 
+             'password': '000000', 
+             'ratNumber': 5, 
+             'user_id': 'Dino0001', 
+             'cat_list': {}, 
+             'currCatNum': 0, 
+             'startTime': '23:04', 
+             'rat_list': {}, 
+             'status': False
+}
+room_list = []
+room_list.append(room_test)
+position_test = {
+    "testPlayer": [-37.7982, 144.9594],
+    "user1" : [-37.7962, 144.9594]
+}
+# position_test2 = {
+#     "user1" : [-37.7962, 144.9594]
+# }
+# player_position_list = {}
+# player_position_list.(position_test1)
+# player_position_list.append(position_test2)
 
 
 @app.websocket("/ws/{socket_id}")
@@ -37,9 +66,10 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                 # if message.type == "user_location":
                 #     user_location = UserLocation.parse_obj(message.data)
                 #     # ... 处理user_location数据 ...
-                await manager.broadcast(socket_id,raw_data)
+                if message.type == "user_location":
+                    await manager.broadcast(socket_id,raw_data)
 
-                if message.type == "validation":
+                elif message.type == "validation":
                     email = message.data.get("email")
                     password = message.data.get("password")
                     if accounts[email][0] == password:
@@ -51,6 +81,7 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                         }
                         message.data = account
                         message.type = "account"
+                        print(message)
                         await manager.send_to_user(socket_id, message)
                     else:
                         print("Wrong validation")
@@ -82,7 +113,30 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                 elif message.type == "room_information":
                     print("receive roomInformation")
                     print(message)
-
+                    room_list.append(message.data)
+                    for i in range(len(room_list)):
+                        print(room_list[i])
+                    message.type = "successfully create room"
+                    await manager.send_to_user(socket_id, message)
+                elif message.type == "current_position":
+                    print("received current position")
+                    test_userId = message.data.get("userId")
+                    position_test[test_userId] = [message.data.get("latitude"), message.data.get("longitude")]
+                    for userid_ in position_test.keys():
+                        if userid_ != test_userId:
+                            position_test[userid_] = [message.data.get("latitude") + 0.002, message.data.get("longitude")]
+                    userId_list = list(position_test.keys())
+                    position_list = list(position_test.values())
+                    positionList = {
+                        "userId" : list(position_test.keys()), 
+                        "position" : list(position_test.values())
+                    }
+                    message.data = positionList
+                    message.type = "updated positions"
+                    print(positionList)
+                    # print(type(positionList))
+                    # await manager.broadcast(socket_id,message.json())
+                    await manager.send_to_user(socket_id, message)
             except ValueError as e:
                 # 这里处理解析错误，例如发送错误响应或记录错误
                 print(f"Error parsing message: {e}")

@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,8 +21,11 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 import android.Manifest;
+import android.widget.Toast;
 
 import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,6 +46,9 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.intellij.lang.annotations.Language;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +61,9 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     private GoogleMap mymap;
     public List<LatLng> locations = new ArrayList<>();
     public ArrayList<Marker> markerList = new ArrayList<>();
+    public ArrayList<String> fake_users = new ArrayList<>();
+    public ConcurrentHashMap<String, Marker> markerList_test;
+    public ConcurrentHashMap<String, LatLng> locationList_test;
 //    private LocationManager locationManager;
 //    private LocationListener locationListener;
     private Marker myMarker;
@@ -66,6 +76,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     LocationCallback locationCallBack;
 
     private final int Request_Code_Location = 22;
+    public String currentUserId;
 
 //    public ConcurrentHashMap<String, Marker> marker_list;
 
@@ -78,12 +89,21 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         System.out.println("Game Start!!!");
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
+        currentUserId = client.getAccount().getUserID();
+        System.out.println(currentUserId);
 
-//        marker_list = new ConcurrentHashMap<>();
+        fake_users.add("user1");
+        fake_users.add("testPlayer");
+
+
+        markerList_test = new ConcurrentHashMap<>();
+        locationList_test = new ConcurrentHashMap<>();
+
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(500);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
         locationCallBack = new LocationCallback() {
             @Override
@@ -91,7 +111,56 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                 super.onLocationResult(locationResult);
                 if(locationResult != null) {
                     Log.d("LocationTest", "Location updates");
-                    updateMarkerLocation(locationResult.getLastLocation());
+                    Location location = locationResult.getLastLocation();
+                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    System.out.println(currentLocation);
+                    client.sendCurrentPosition("testPlayer", currentLocation);
+                    client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+
+                        @Override
+                        public void onMessageReceived(String message) {
+                            // Successful registration
+                            if (message.equals("get updated positions")) {
+//                                System.out.println(message);
+//                                System.out.println(client.getPositionList().getUserID());
+                                for (int i = 0; i < client.getPositionList().getUserID().size(); i++) {
+//                                    System.out.println(client.getPositionList().getUserID().size());
+                                    String userId = client.getPositionList().getUserID().get(i);
+                                    LatLng updated_location = new LatLng(client.getPositionList().getPosition().get(i).get(0)
+                                            , client.getPositionList().getPosition().get(i).get(1));
+                                    locationList_test.replace(userId, updated_location);
+//                                    System.out.println(locationList_test);
+//                                    updateMarkerLocation(markerList_test.get(userId),updated_location);
+//                                    System.out.println(userId + ": " +
+//                                            client.getPositionList().getPosition().get(i).get(0) +
+//                                            ", " + client.getPositionList().getPosition().get(i).get(1));
+//                                    System.out.println("Index: " + i + ", Value: " + client.getPositionList().getUserID().get(i));
+                                }
+                                System.out.println(locationList_test);
+//                                for (String user : fake_users){
+//                                    updateMarkerLocation(markerList_test.get(user), locationList_test.get(user));
+//                                }
+//                                System.out.println("kakakakkakak + " + locationList_test);
+                                // Incorrect validation, show an error message or take appropriate action.
+//                                updateMarkerLocation(myMarker, currentLocation);
+//                                System.out.println("fiinish update");
+                            }
+                        }
+
+                    });
+                    for (String user : fake_users) {
+//                        if (user.equals("testPlayer")){
+//                            updateMarkerLocation(markerList_test.get(user), currentLocation);
+//                        }
+//                        else {
+//
+//                            updateMarkerLocation(markerList_test.get(user), new LatLng(37.4239983, -122.084));
+//                        }
+                        updateMarkerLocation(markerList_test.get(user), locationList_test.get(user));
+                    }
+//                    updateMarkerLocation(myMarker, currentLocation);
+                    System.out.println("fiinish update0");
+//                    mymap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation));
                 }else{
                     Log.d("LocationTest", "Location updates fail: null");
                 }
@@ -198,20 +267,31 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                 .strokeColor(Color.RED)  // 边框颜色
                 .fillColor(Color.argb(50, 255, 0, 0)));  // 填充颜色（半透明红色）
         Integer count = 0;
-        for (LatLng location : locations) {
-            Marker marker = mymap.addMarker(new MarkerOptions().position(location).title("user" + String.valueOf(count)).icon(catIcon));
-            markerList.add(marker);
-            count ++;
+//        for (LatLng location : locations) {
+//            Marker marker = mymap.addMarker(new MarkerOptions().position(location).title("user" + String.valueOf(count)).icon(catIcon));
+//            markerList.add(marker);
+//            count ++;
+//        }
+        for (String user : fake_users) {
+            if (user.equals("testPlayer")){
+                myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title(user).icon(catIcon));
+                markerList_test.put(user,myMarker);
+                locationList_test.put(user, chosen_location);
+            }
+            else {
+                Marker marker = mymap.addMarker(new MarkerOptions().position(chosen_location).title(user).icon(catIcon));
+                markerList_test.put(user, marker);
+                locationList_test.put(user, chosen_location);
+            }
         }
-        myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb").icon(catIcon));
+//        myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb").icon(catIcon));
         mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
         mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
     }
-    private void updateMarkerLocation(Location location) {
-        if (myMarker != null && location != null) {
-            LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            myMarker.setPosition(newLocation);
-            mymap.animateCamera(CameraUpdateFactory.newLatLng(newLocation));
+    private void updateMarkerLocation(Marker marker, LatLng location) {
+        if (marker != null && location != null) {
+            marker.setPosition(location);
+            mymap.animateCamera(CameraUpdateFactory.newLatLng(location));
         }
 
     }
