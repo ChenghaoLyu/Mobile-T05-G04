@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -26,6 +28,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -62,6 +66,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     LocationCallback locationCallBack;
 
     private final int Request_Code_Location = 22;
+
 //    public ConcurrentHashMap<String, Marker> marker_list;
 
 
@@ -78,6 +83,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(500);
         locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
         locationCallBack = new LocationCallback() {
             @Override
@@ -146,6 +152,23 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mymap = googleMap;
+// 获取原始Bitmap
+        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_avatar_pixel);
+
+// 计算新的尺寸
+        int width = originalBitmap.getWidth();
+        int height = originalBitmap.getHeight();
+        int reducedWidth = width / 6;
+        int reducedHeight = height / 6;
+
+// 创建缩小后的Bitmap
+        Bitmap reducedBitmap = Bitmap.createScaledBitmap(originalBitmap, reducedWidth, reducedHeight, false);
+
+// 使用缩小后的Bitmap创建BitmapDescriptor
+        BitmapDescriptor catIcon = BitmapDescriptorFactory.fromBitmap(reducedBitmap);
+
+// 现在你可以使用catIcon作为Marker的图标
+
         try {
             // 使用 raw resource JSON 文件
             boolean success = googleMap.setMapStyle(
@@ -176,11 +199,11 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                 .fillColor(Color.argb(50, 255, 0, 0)));  // 填充颜色（半透明红色）
         Integer count = 0;
         for (LatLng location : locations) {
-            Marker marker = mymap.addMarker(new MarkerOptions().position(location).title("user" + String.valueOf(count)));
+            Marker marker = mymap.addMarker(new MarkerOptions().position(location).title("user" + String.valueOf(count)).icon(catIcon));
             markerList.add(marker);
             count ++;
         }
-        myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb"));
+        myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb").icon(catIcon));
         mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
         mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
     }
@@ -188,7 +211,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         if (myMarker != null && location != null) {
             LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
             myMarker.setPosition(newLocation);
-            mymap.moveCamera(CameraUpdateFactory.newLatLng(newLocation));
+            mymap.animateCamera(CameraUpdateFactory.newLatLng(newLocation));
         }
 
     }
