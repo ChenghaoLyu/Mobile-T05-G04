@@ -100,8 +100,6 @@ public class WebSocketClient {
     }
 
 
-
-
     public void start() {
         client = new OkHttpClient();
 
@@ -112,7 +110,6 @@ public class WebSocketClient {
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
-                // 当WebSocket连接打开时调用
                 sendMessage("auth", Collections.singletonMap("token", "YOUR_SECRET_TOKEN"));
                 listener.onMessageReceived("Trying to connect");
                 handler.post(locationUpdateRunnable);
@@ -121,7 +118,14 @@ public class WebSocketClient {
             @Override
             public void onMessage(WebSocket webSocket, String text) {
                 try {
+                    if ("Validation Fail".equals(text)) {
+
+                        listener.onMessageReceived("Validation Fail");
+                        return;
+                    }
+
                     Message message = new Gson().fromJson(text, Message.class);
+
                     System.out.println(text);
                     if ("Connection established".equals(text)) {
                         if (listener != null) {
@@ -130,18 +134,14 @@ public class WebSocketClient {
                         return;
                     }
                     if ("Authentication failed.".equals(text)) {
-                        // 处理身份验证失败的情况
-                        // 例如，你可以关闭WebSocket连接或通知用户身份验证失败
                         listener.onMessageReceived("Connection failed_0");
                         webSocket.close(1000, "Authentication failed.");
                         return;
                     }
 
                     if ("user_location".equals(message.getType())) {
-                        // 解析并处理用户位置数据
                         UserLocation userLocation = new Gson().fromJson(new Gson().toJson(message.getData()), UserLocation.class);
                         listener.onMessageReceived(userLocation.toString());
-                        // ... 处理userLocation数据 ...
                     } else if ("room_information".equals(message.getType())) {
                         RoomInformation roomInformation = new Gson().fromJson(new Gson().toJson(message.getData()), RoomInformation.class);
                         listener.onMessageReceived(roomInformation.toString());

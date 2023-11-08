@@ -79,8 +79,12 @@ public class LoginPage extends AppCompatActivity {
 
                 // Incorrect validation, show an error message or take appropriate action.
                 } else {
-
-                    displayToast("Invalid email or password, please try again!");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayToast("Invalid email or password, please try again!");
+                        }
+                    });
                 }
             }
         });

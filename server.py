@@ -37,31 +37,23 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                 #     user_location = UserLocation.parse_obj(message.data)
                 #     # ... 处理user_location数据 ...
                 await manager.broadcast(socket_id,raw_data)
-                # 可以在这里添加其他消息类型的处理
-                # elif message.type == "another_type":
-                #     ...
+
                 if message.type == "validation":
                     print(message)
                     email = message.data.get("email")
                     password = message.data.get("password")
                     if accounts[email][0] == password:
-                        
-                        #account = Account.parse_obj(message.data)
                         account = {
                             "email": email,
                             "username": accounts[email][1],
                             "hashtag": accounts[email][2],
                             "userID": accounts[email][3]
                         }
-                        # account.username = accounts[email][1]
-                        # account.hashtag = accounts[email][2]
-                        # account.userID = accounts[email][3]
-
                         message.data = account
                         message.type = "account"
-
                         await manager.send_to_user(socket_id, message)
                     else:
+                        print("wrong validation")
                         await websocket.send_text("Validation Fail")
 
                 elif message.type == "registration":
