@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView text_message;
     private WebSocketClient client;
     private Button goto_newgame_page, goto_gamestart_page, goto_start_page,
-            goto_HomePage, goto_RegisterPage, goto_LoginPage, goto_DisplayGameRoomPage;
+            goto_HomePage, goto_RegisterPage, goto_LoginPage, goto_DisplayGameRoomPage, goto_gameFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         goto_LoginPage = findViewById(R.id.goto_LoginPage);
         goto_RegisterPage = findViewById(R.id.goto_RegisterPage);
         goto_DisplayGameRoomPage = findViewById(R.id.goto_DisplayGameRoomPage);
+        goto_gameFinish = findViewById(R.id.goto_gameFinish);
 
         goto_newgame_page.setOnClickListener(view ->{
             open_newgame_page(view);
@@ -58,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
         goto_DisplayGameRoomPage.setOnClickListener(view ->{
             open_DisplayGameRoomPage(view);
         });
+        goto_gameFinish.setOnClickListener(view ->{
+            open_gameFinish(view);
+        });
+
         text_message = findViewById(R.id.text_message);
         
 //        ####################################
@@ -103,5 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void open_DisplayGameRoomPage(View view) {
         startActivity(new Intent(this, DisplayGameRoomPage.class));
+    }
+
+    public void open_gameFinish(View view) {
+        startActivity(new Intent(this, GameFinishPage.class));
     }
 }
