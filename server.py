@@ -1,3 +1,4 @@
+import random
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from models import Message, UserLocation, Account
 from websocket_manager import ConnectionManager
@@ -39,7 +40,6 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                 await manager.broadcast(socket_id,raw_data)
 
                 if message.type == "validation":
-                    print(message)
                     email = message.data.get("email")
                     password = message.data.get("password")
                     if accounts[email][0] == password:
@@ -53,11 +53,32 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                         message.type = "account"
                         await manager.send_to_user(socket_id, message)
                     else:
-                        print("wrong validation")
+                        print("Wrong validation")
                         await websocket.send_text("Validation Fail")
 
                 elif message.type == "registration":
-                    registration = Account.parse_obj(message.data)
+                    accountsData = [element for row in accounts.values() for element in row]
+                    email = message.data.get("email")
+                    username = message.data.get("username")
+                    password = message.data.get("password")
+                    hash = generateHash(accountsData, username)
+                    if not email in accounts.keys():
+                        accInfo = [password, username, hash, username+str(hash)]
+                        accounts[email] = accInfo
+
+                        account = {
+                            "email": email,
+                            "username": accounts[email][1],
+                            "hashtag": accounts[email][2],
+                            "userID": accounts[email][3]
+                        }
+                        message.data = account
+                        message.type = "account"
+                        await manager.send_to_user(socket_id, message)
+                    else:
+                        print("Registration fails, repetitive email")
+                        await websocket.send_text("Validation Fail")
+
                 elif message.type == "room_information":
                     print("receive roomInformation")
                     print(message)
@@ -68,3 +89,11 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+
+
+def generateHash(accountsData, username):
+    hash = random.randint(0, 9999)
+    if username+str(hash) in accountsData:
+        return generateHash(accountsData, username)
+    else:
+        return hash

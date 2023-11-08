@@ -22,6 +22,8 @@ public class WebSocketClient {
     private WebSocket webSocket;
     private OnMessageReceivedListener listener;
     private Handler handler = new Handler();
+
+    public Account account = new Account();
     private Runnable locationUpdateRunnable = new Runnable() {
         @Override
         public void run() {
@@ -147,12 +149,8 @@ public class WebSocketClient {
                         listener.onMessageReceived(roomInformation.toString());
                     } else if ("account".equals(message.getType())) {
                         System.out.println("receive");
-                        Account account = new Gson().fromJson(new Gson().toJson(message.getData()), Account.class);
+                        account = new Gson().fromJson(new Gson().toJson(message.getData()), Account.class);
                         listener.onMessageReceived("Validation Successful");
-//                    } else if ("registration".equals(message.getType())) {
-//                        Account account = new Gson().fromJson(new Gson().toJson(message.getData()), Account.class);
-//                        Boolean confirmation = account.getValidationSuccess();
-//                        listener.onMessageReceived("Validation Successful");
                     } else {
                         listener.onMessageReceived("wrong_message_type");
                     }
@@ -196,4 +194,7 @@ public class WebSocketClient {
         }
     }
 
+    public Account getAccount() {
+        return account;
+    }
 }

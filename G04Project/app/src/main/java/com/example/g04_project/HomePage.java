@@ -7,17 +7,27 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 public class HomePage extends AppCompatActivity {
+
+    private WebSocketClient client;
+    private EditText userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        displayToast("Login Successful");
+
+        MyApp app = (MyApp) getApplication();
+        client = app.getWebSocketClient();
+
+        userID = findViewById(R.id.userID);
+        userID.setText(client.getAccount().getUserID());
+        userID.setEnabled(false);
+        displayToast("Welcome!");
     }
 
     public void openJoinGamePage(View view) {
@@ -39,7 +49,7 @@ public class HomePage extends AppCompatActivity {
         customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
         customToast.setView(customToastView);
 
-        customToast.setGravity(Gravity.CENTER, 0, 0);
+        customToast.setGravity(Gravity.CENTER, 0, 700);
         customToast.show();
     }
 }

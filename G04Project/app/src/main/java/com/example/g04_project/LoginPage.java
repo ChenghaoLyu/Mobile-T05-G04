@@ -20,9 +20,7 @@ public class LoginPage extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 123;
     private EditText emailEditText;
     private EditText passwordEditText;
-
     private WebSocketClient client;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +51,11 @@ public class LoginPage extends AppCompatActivity {
 
         // Check empty input
         if (password.isEmpty() || email.isEmpty()) {
-
             displayToast("Please enter all required fields!");
             return;
 
-            // Invalid email format, show an error message or take appropriate action.
+        // Invalid email format, show an error message or take appropriate action.
         } else if (!isValidEmail(email)) {
-
             displayToast("Invalid email, please try again!");
             return;
 
@@ -72,13 +68,12 @@ public class LoginPage extends AppCompatActivity {
             public void onMessageReceived(String message) {
                 // Passwords match, proceed with registration or the next step.
                 if (message.equals("Validation Successful")) {
-
                     Intent intent = new Intent(view.getContext(), HomePage.class);
                     startActivity(intent);
 
 
                 // Incorrect validation, show an error message or take appropriate action.
-                } else {
+                } else if (message.equals("Validation Fail")) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
