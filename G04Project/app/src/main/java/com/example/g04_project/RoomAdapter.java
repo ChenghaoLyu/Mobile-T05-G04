@@ -57,7 +57,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         holder.mouseCount.setText(": " + currRoom.getCurrentRat() + "/" + currRoom.getRequiredRat());
         holder.location.setText("Location: " + currRoom.getLocationName());
         holder.startTime.setText("Start Time: " + currRoom.getStartTime());
-        holder.duration.setText("Duration: " + currRoom.getDuration()); //TODO: 格式
+        holder.duration.setText("Duration: " + currRoom.getDuration() + "m"); //TODO: 格式
         if (currRoom.isPrivate()) {
             holder.privacy.setText("Privacy: private");
         } else {
