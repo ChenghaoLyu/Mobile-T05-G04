@@ -96,6 +96,13 @@ public class WebSocketClient {
 
         sendMessage("room_information", roomInformation);
     }
+
+    public void sendGetRoomsRequest(String userId) {
+        Map<String, Object> request = new HashMap<>();
+        request.put("userId", userId);
+        sendMessage("all_rooms_information", request);
+    }
+
     public void sendCurrentPosition(String userId, LatLng location){
         Map<String, Object> currentPosition = new HashMap<>();
         currentPosition.put("userId", userId);
@@ -174,10 +181,11 @@ public class WebSocketClient {
                         System.out.println("receive");
                         account = new Gson().fromJson(new Gson().toJson(message.getData()), Account.class);
                         listener.onMessageReceived("Validation Successful");
-                    }else if ("successfully create room".equals(message.getType())){
+                    } else if ("successfully create room".equals(message.getType())) {
                         listener.onMessageReceived("Successfully create room");
-                    }
-                    else if ("updated positions".equals(message.getType())){
+                    } else if ("get all updated rooms".equals(message.getType())) {
+                        System.out.println("get!!");
+                    } else if ("updated positions".equals(message.getType())){
                         positionList = new Gson().fromJson(new Gson().toJson(message.getData()), PositionList.class);
                         listener.onMessageReceived("get updated positions");
                     }else if ("updated pressure".equals(message.getType())){
