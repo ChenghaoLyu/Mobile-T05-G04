@@ -35,8 +35,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         this.player = player;
         setDisplayedRooms(targetRooms);
         modeSymbols = new HashMap<>();
-        modeSymbols.put("classic", R.drawable.classic_mode);
-        modeSymbols.put("zombie", R.drawable.zombie_mode);
+        modeSymbols.put("Classic", R.drawable.classic_mode);
+        modeSymbols.put("Zombie", R.drawable.zombie_mode);
     }
 
     @NonNull

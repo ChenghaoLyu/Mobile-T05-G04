@@ -36,6 +36,10 @@ position_test = {
     "testPlayer": [-37.7982, 144.9594],
     "user1" : [-37.7962, 144.9594]
 }
+pressure_test = {
+    "testPlayer": 1004.1,
+    "user1": 1004.1
+}
 # position_test2 = {
 #     "user1" : [-37.7962, 144.9594]
 # }
@@ -119,24 +123,49 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     message.type = "successfully create room"
                     await manager.send_to_user(socket_id, message)
                 elif message.type == "current_position":
-                    print("received current position")
+                    # print("received current position")
+                    # print(message)
                     test_userId = message.data.get("userId")
                     position_test[test_userId] = [message.data.get("latitude"), message.data.get("longitude")]
                     for userid_ in position_test.keys():
                         if userid_ != test_userId:
                             position_test[userid_] = [message.data.get("latitude") + 0.002, message.data.get("longitude")]
-                    userId_list = list(position_test.keys())
-                    position_list = list(position_test.values())
                     positionList = {
                         "userId" : list(position_test.keys()), 
                         "position" : list(position_test.values())
                     }
                     message.data = positionList
                     message.type = "updated positions"
-                    print(positionList)
+                    # print(positionList)
                     # print(type(positionList))
-                    # await manager.broadcast(socket_id,message.json())
-                    await manager.send_to_user(socket_id, message)
+                    await manager.broadcast(socket_id,message.json())
+                    # await manager.send_to_user(socket_id, message)
+                elif message.type == "current_pressure":
+                    print("received current pressure")
+                    print(message)
+                    test_userId = message.data.get("userId")
+                    pressure_test[test_userId] = message.data.get("currentPressure")
+                    pressure_result = []
+                    player_result = []
+                    for userid_ in pressure_test.keys():
+                        if userid_ != test_userId:
+                            player_result.append(str(userid_))
+                            if pressure_test[userid_] - pressure_test[test_userId] >= 0.25:
+                                pressure_result.append(int(-1))
+                            elif pressure_test[test_userId] - pressure_test[userid_] >= 0.25:
+                                pressure_result.append(int(1))
+                            else:
+                                pressure_result.append(int(0))
+                    pressureList = {
+                        "userId" : player_result, 
+                        "pressure" : pressure_result
+                    }
+                    message.data = pressureList
+                    message.type = "updated pressure"
+                    print(message)
+                    # print(type(positionList))
+                    await manager.broadcast(socket_id,message.json())
+                    # await manager.send_to_user(socket_id, message)
             except ValueError as e:
                 # 这里处理解析错误，例如发送错误响应或记录错误
                 print(f"Error parsing message: {e}")

@@ -28,6 +28,7 @@ public class WebSocketClient {
 
     public Account account = new Account();
     public PositionList positionList = new PositionList();
+    public PressureList pressureList = new PressureList();
     private Runnable locationUpdateRunnable = new Runnable() {
         @Override
         public void run() {
@@ -103,6 +104,12 @@ public class WebSocketClient {
 
         sendMessage("current_position", currentPosition);
     }
+    public void sendCurrentPressure(String userId, double pressure){
+        Map<String, Object> currentPressure = new HashMap<>();
+        currentPressure.put("userId", userId);
+        currentPressure.put("currentPressure", pressure);
+        sendMessage("current_pressure", currentPressure);
+    }
 
     public void sendRegistration(String userName, String email, String password) {
 
@@ -119,7 +126,7 @@ public class WebSocketClient {
         client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://13.55.228.219:8080/ws/user123")
+                .url("ws://10.0.2.2:8080/ws/user123")
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {
@@ -173,6 +180,10 @@ public class WebSocketClient {
                     else if ("updated positions".equals(message.getType())){
                         positionList = new Gson().fromJson(new Gson().toJson(message.getData()), PositionList.class);
                         listener.onMessageReceived("get updated positions");
+                    }else if ("updated pressure".equals(message.getType())){
+                        System.out.println("received pressure list");
+                        pressureList = new Gson().fromJson(new Gson().toJson(message.getData()), PressureList.class);
+                        listener.onMessageReceived("get updated pressures");
                     }else {
                         listener.onMessageReceived("wrong_message_type");
                     }
@@ -222,5 +233,8 @@ public class WebSocketClient {
 
     public PositionList getPositionList(){
         return positionList;
+    }
+    public PressureList getPressureList(){
+        return pressureList;
     }
 }
