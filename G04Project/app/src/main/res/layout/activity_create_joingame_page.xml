@@ -95,7 +95,7 @@
                 android:id="@+id/location3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="monash" />
+                android:text="central" />
 
         </LinearLayout>
 
@@ -108,7 +108,7 @@
                 android:id="@+id/location2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="central" />
+                android:text="monash" />
 
         </LinearLayout>
 

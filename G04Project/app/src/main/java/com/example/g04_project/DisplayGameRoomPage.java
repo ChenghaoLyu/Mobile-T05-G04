@@ -200,7 +200,13 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         ratsContainer.removeAllViews();
 
         displayPlayers(catPlayers, catsContainer);
+        if (currentRoom.getCurrentCat() < currentRoom.getRequiredCat()) {
+            displayJoinTeamBtn(catsContainer, TEAM_CAT);
+        }
         displayPlayers(ratPlayers, ratsContainer);
+        if (currentRoom.getCurrentRat() < currentRoom.getRequiredRat()) {
+            displayJoinTeamBtn(ratsContainer, TEAM_RAT);
+        }
 
         client.sendRoomInformation(currentRoom.getRoomID(), currentRoom.getHostId(),
                 currentRoom.getLocationName(),
