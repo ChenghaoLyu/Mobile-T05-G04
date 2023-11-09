@@ -8,8 +8,8 @@
     <string name="back"><![CDATA[<<< Back]]></string>
     <string-array name="spinner_location">
         <item>Choose Place</item>
-        <item>unimelb</item>
+        <item>Unimelb</item>
+        <item>RMIT</item>
         <item>Monash</item>
-        <item>location 3</item>
     </string-array>
 </resources>
