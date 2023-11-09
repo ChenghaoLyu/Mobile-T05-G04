@@ -43,6 +43,8 @@ public class Create_joinGame_page extends AppCompatActivity {
         setContentView(R.layout.activity_create_joingame_page);
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
+//        client.sendGetRoomsRequest(client.getAccount().getUserID());
+        System.out.println("error1");
         player = new Player(client.getAccount().getUserID(), client.getAccount().getUserName());
 
         backButton = findViewById(R.id.backButton);
@@ -84,8 +86,8 @@ public class Create_joinGame_page extends AppCompatActivity {
         RoomInformation room1 = new RoomInformation(
                 "000001",
                 "HostUser1",
-                "unimelb",
-                "classic",
+                "Unimelb",
+                "Classic",
                 "30m",
                 "123456",
                 1,
@@ -113,8 +115,8 @@ public class Create_joinGame_page extends AppCompatActivity {
         RoomInformation room2 = new RoomInformation(
                 "000002",
                 "HostUser2",
-                "monash",
-                "zombie",
+                "Monash",
+                "Zombie",
                 "45m",
                 "",
                 2,
