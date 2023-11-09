@@ -69,7 +69,9 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     public ArrayList<String> fake_users = new ArrayList<>();
     public ConcurrentHashMap<String, Marker> markerList_test;
     public ConcurrentHashMap<String, LatLng> locationList_test;
-//    private LocationManager locationManager;
+    public ConcurrentHashMap<String, Integer> pressureList_test;
+
+    //    private LocationManager locationManager;
 //    private LocationListener locationListener;
     private Marker myMarker;
     // Google's API for location services
@@ -83,7 +85,8 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     private final int Request_Code_Location = 22;
     private int count = 0;
     public String currentUserId;
-
+    private BitmapDescriptor catSelfIcon, catHigherIcon, catLowerIcon, catCommonIcon
+            , ratSelfIcon, ratHigherIcon, ratLowerIcon, ratCommonIcon;
 //    public ConcurrentHashMap<String, Marker> marker_list;
 
 
@@ -104,6 +107,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 
         markerList_test = new ConcurrentHashMap<>();
         locationList_test = new ConcurrentHashMap<>();
+        pressureList_test = new ConcurrentHashMap<>();
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -131,6 +135,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //                                System.out.println(message);
 //                                System.out.println(client.getPositionList().getUserID());
                                 for (int i = 0; i < client.getPositionList().getUserID().size(); i++) {
+//                                    System.out.println("location " + i);
 //                                    System.out.println(client.getPositionList().getUserID().size());
                                     String userId = client.getPositionList().getUserID().get(i);
                                     LatLng updated_location = new LatLng(client.getPositionList().getPosition().get(i).get(0)
@@ -180,20 +185,51 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                         currentPressure += pressure;
                         currentPressure /= 20;
                         client.sendCurrentPressure("testPlayer", currentPressure);
+                        currentPressure = 0;
+                        count = 0;
                         client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
                             @Override
                             public void onMessageReceived(String message) {
                                 // Successful registration
                                 if (message.equals("get updated pressures")) {
-//                                    System.out.println(message);
-                                    System.out.println(client.getPressureList().getPressure());
+                                    System.out.println(message + "-----------");
+                                    for (int i = 0; i < client.getPressureList().getUserID().size(); i++) {
+//                                        System.out.println(i);
+                                        String userId = client.getPressureList().getUserID().get(i);
+//                                        System.out.println("error1");
+                                        Integer ishigher = client.getPressureList().getPressure().get(i);
+//                                        System.out.println("error2");
+//                                        System.out.println(ishigher);
+//                                        System.out.println(pressureList_test);
+                                        pressureList_test.replace(userId, ishigher);
+                                        System.out.println("error3");
+                                    }
+                                    System.out.println("-------");
+                                    System.out.println(pressureList_test);
                                 }
                             }
 
                         });
-                        System.out.println(currentPressure + " pressure per 10");
-                        currentPressure = 0;
-                        count = 0;
+                        for (String user : fake_users) {
+                            if (!user.equals("testPlayer")){
+                                if (pressureList_test.get(user) == 1){
+                                    markerList_test.get(user).setIcon(ratHigherIcon);
+                                    System.out.println("Higher");
+                                }
+                                else if (pressureList_test.get(user) == -1){
+                                    markerList_test.get(user).setIcon(ratLowerIcon);
+                                    System.out.println("Lower");
+                                }
+                            }
+//                        if (user.equals("testPlayer")){
+//                            updateMarkerLocation(markerList_test.get(user), currentLocation);
+//                        }
+//                        else{
+//                            LatLng testLocation = new LatLng(location.getLatitude() + 0.002, location.getLongitude());
+//                            updateMarkerLocation(markerList_test.get(user), testLocation);
+//                        }
+                            updateMarkerLocation(markerList_test.get(user), locationList_test.get(user));
+                        }
                     }
                     else{
                         currentPressure += pressure;
@@ -206,9 +242,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                 // 可以在这里处理传感器精度的变化
             }
         };
-
         sensorManager.registerListener(pressureSensorListener, pressureSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
         locations.add(new LatLng(-37.7990, 144.9594));
         locations.add(new LatLng(-37.7963, 144.9614));
 //        locations.add(new LatLng(-37.7963, 144.9614));
@@ -265,19 +299,42 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mymap = googleMap;
 // 获取原始Bitmap
-        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_avatar_pixel);
+        Bitmap catCommonBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_avatar_pixel);
+        Bitmap catSelfBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_avatar_me);
+        Bitmap catHighBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_avatar_high);
+        Bitmap catLowBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cat_avatar_low);
 
+        Bitmap ratCommonBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rat_avatar_pixel);
+        Bitmap ratSelfBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rat_avatar_me);
+        Bitmap ratHighBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rat_avatar_high);
+        Bitmap ratLowBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rat_avatar_low);
 // 计算新的尺寸
-        int width = originalBitmap.getWidth();
-        int height = originalBitmap.getHeight();
+        int width = catCommonBitmap.getWidth();
+        int height = catCommonBitmap.getHeight();
         int reducedWidth = width / 6;
         int reducedHeight = height / 6;
 
 // 创建缩小后的Bitmap
-        Bitmap reducedBitmap = Bitmap.createScaledBitmap(originalBitmap, reducedWidth, reducedHeight, false);
+        Bitmap catCommonReducedBitmap = Bitmap.createScaledBitmap(catCommonBitmap, reducedWidth, reducedHeight, false);
+        Bitmap catSelfReducedBitmap = Bitmap.createScaledBitmap(catSelfBitmap, reducedWidth, reducedHeight, false);
+        Bitmap catHighReducedBitmap = Bitmap.createScaledBitmap(catHighBitmap, reducedWidth, reducedHeight, false);
+        Bitmap catLowReducedBitmap = Bitmap.createScaledBitmap(catLowBitmap, reducedWidth, reducedHeight, false);
 
-// 使用缩小后的Bitmap创建BitmapDescriptor
-        BitmapDescriptor catIcon = BitmapDescriptorFactory.fromBitmap(reducedBitmap);
+        Bitmap ratCommonReducedBitmap = Bitmap.createScaledBitmap(ratCommonBitmap, reducedWidth, reducedHeight, false);
+        Bitmap ratSelfReducedBitmap = Bitmap.createScaledBitmap(ratSelfBitmap, reducedWidth, reducedHeight, false);
+        Bitmap ratHighReducedBitmap = Bitmap.createScaledBitmap(ratHighBitmap, reducedWidth, reducedHeight, false);
+        Bitmap ratLowReducedBitmap = Bitmap.createScaledBitmap(ratLowBitmap, reducedWidth, reducedHeight, false);
+
+        // 使用缩小后的Bitmap创建BitmapDescriptor
+        catCommonIcon = BitmapDescriptorFactory.fromBitmap(catCommonReducedBitmap);
+        catSelfIcon = BitmapDescriptorFactory.fromBitmap(catSelfReducedBitmap);
+        catHigherIcon = BitmapDescriptorFactory.fromBitmap(catHighReducedBitmap);
+        catLowerIcon = BitmapDescriptorFactory.fromBitmap(catLowReducedBitmap);
+
+        ratCommonIcon = BitmapDescriptorFactory.fromBitmap(ratCommonReducedBitmap);
+        ratSelfIcon = BitmapDescriptorFactory.fromBitmap(ratSelfReducedBitmap);
+        ratHigherIcon = BitmapDescriptorFactory.fromBitmap(ratHighReducedBitmap);
+        ratLowerIcon = BitmapDescriptorFactory.fromBitmap(ratLowReducedBitmap);
 
 // 现在你可以使用catIcon作为Marker的图标
 
@@ -316,15 +373,17 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //            count ++;
 //        }
         for (String user : fake_users) {
+//            System.out.println(user);
             if (user.equals("testPlayer")){
-                myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title(user).icon(catIcon));
+                myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title(user).icon(catSelfIcon));
                 markerList_test.put(user,myMarker);
                 locationList_test.put(user, chosen_location);
             }
             else {
                 LatLng other_location = new LatLng(-37.7982, 144.9594);
-                Marker marker = mymap.addMarker(new MarkerOptions().position(chosen_location).title(user).icon(catIcon));
+                Marker marker = mymap.addMarker(new MarkerOptions().position(chosen_location).title(user).icon(ratCommonIcon));
                 markerList_test.put(user, marker);
+                pressureList_test.put(user, 0);
                 locationList_test.put(user, other_location);
             }
         }
