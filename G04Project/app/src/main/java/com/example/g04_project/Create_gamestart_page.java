@@ -137,13 +137,6 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //                                    System.out.println("Index: " + i + ", Value: " + client.getPositionList().getUserID().get(i));
                                 }
                                 System.out.println(locationList_test);
-//                                for (String user : fake_users){
-//                                    updateMarkerLocation(markerList_test.get(user), locationList_test.get(user));
-//                                }
-//                                System.out.println("kakakakkakak + " + locationList_test);
-                                // Incorrect validation, show an error message or take appropriate action.
-//                                updateMarkerLocation(myMarker, currentLocation);
-//                                System.out.println("fiinish update");
                             }
                         }
 
@@ -152,15 +145,15 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //                        if (user.equals("testPlayer")){
 //                            updateMarkerLocation(markerList_test.get(user), currentLocation);
 //                        }
-//                        else {
-//
-//                            updateMarkerLocation(markerList_test.get(user), new LatLng(37.4239983, -122.084));
+//                        else{
+//                            LatLng testLocation = new LatLng(location.getLatitude() + 0.002, location.getLongitude());
+//                            updateMarkerLocation(markerList_test.get(user), testLocation);
 //                        }
                         updateMarkerLocation(markerList_test.get(user), locationList_test.get(user));
                     }
 //                    updateMarkerLocation(myMarker, currentLocation);
                     System.out.println("fiinish update0");
-//                    mymap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                    mymap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation));
                 }else{
                     Log.d("LocationTest", "Location updates fail: null");
                 }
@@ -279,9 +272,10 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                 locationList_test.put(user, chosen_location);
             }
             else {
+                LatLng other_location = new LatLng(-37.7982, 144.9594);
                 Marker marker = mymap.addMarker(new MarkerOptions().position(chosen_location).title(user).icon(catIcon));
                 markerList_test.put(user, marker);
-                locationList_test.put(user, chosen_location);
+                locationList_test.put(user, other_location);
             }
         }
 //        myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb").icon(catIcon));
