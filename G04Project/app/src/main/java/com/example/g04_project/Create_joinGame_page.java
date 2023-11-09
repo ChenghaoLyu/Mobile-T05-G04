@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 
@@ -43,7 +45,7 @@ public class Create_joinGame_page extends AppCompatActivity {
         setContentView(R.layout.activity_create_joingame_page);
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
-//        client.sendGetRoomsRequest(client.getAccount().getUserID());
+        client.sendGetRoomsRequest(client.getAccount().getUserID());
         System.out.println("error1");
         player = new Player(client.getAccount().getUserID(), client.getAccount().getUserName());
 
@@ -66,6 +68,7 @@ public class Create_joinGame_page extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
 
         rooms = new ConcurrentHashMap<>();
+        //rooms = client.getAllRooms().getRooms();
         //TODO: get rooms
 
         ConcurrentHashMap<String, Player> catPlayers1 = new ConcurrentHashMap<>();
@@ -96,6 +99,7 @@ public class Create_joinGame_page extends AppCompatActivity {
                 1,
                 "2023-11-09T20:00:00",
                 true,
+                false,
                 catPlayers1,
                 ratPlayers1,
                 readyList1
@@ -125,6 +129,7 @@ public class Create_joinGame_page extends AppCompatActivity {
                 1,
                 "2023-11-09T21:00:00",
                 false,
+                false,
                 catPlayers2,
                 ratPlayers2,
                 readyList2
@@ -150,6 +155,8 @@ public class Create_joinGame_page extends AppCompatActivity {
         refreshButton.setOnClickListener(v -> {
             rooms = new ConcurrentHashMap<>();
             //TODO: get rooms
+            //rooms = client.getAllRooms().getRooms();
+
             targetRooms = new ArrayList<>(rooms.values());
             roomAdapter.updateDisplayedRooms(targetRooms);
         });
@@ -277,7 +284,8 @@ public class Create_joinGame_page extends AppCompatActivity {
         if (!targetRooms.isEmpty()) {
             roomAdapter.updateDisplayedRooms(targetRooms);
         } else {
-            Toast.makeText(this, "Room not found", Toast.LENGTH_SHORT).show();
+            displayToast("Room not found");
+            //Toast.makeText(this, "Room not found", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -291,9 +299,24 @@ public class Create_joinGame_page extends AppCompatActivity {
         }) != null;
 
         if (!roomFound) {
-            Toast.makeText(this, "Room not found", Toast.LENGTH_SHORT).show();
+            displayToast("Room not found");
+            //Toast.makeText(this, "Room not found", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void displayToast(String msg) {
+        LayoutInflater inflater = getLayoutInflater();
+        View customToastView = inflater.inflate(R.layout.item_toast, null);
+
+        TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
+        customToastTextView.setText(msg);
+
+        Toast customToast = new Toast(getApplicationContext());
+        customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
+        customToast.setView(customToastView);
+
+        customToast.setGravity(Gravity.CENTER, 0, 700);
+        customToast.show();
+    }
 
 }

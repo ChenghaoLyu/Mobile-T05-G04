@@ -13,25 +13,30 @@ accounts = {
     "example@mail.com": ["password1","BroJoKer", "0000", "BroJoKer0000"],
     "example2@mail.com": ["password2", "Dino", "0001", "Dino0001"]
 }
-room_test = {'room_id': '777777', 
-             'modeName': 'classic', 
-             'locationName': 'unimelb', 
-             'catNumber': 3, 
-             'currRatNum': 0, 
-             'ready_list': {}, 
-             'privacy': True, 
+room_test = {'roomId': '777777', 
+             'hostId': 'Dino0001',
+             'locationName': 'Unimelb', 
+             'modeName': 'Classic', 
              'duration': '30', 
-             'password': '000000', 
-             'ratNumber': 5, 
-             'user_id': 'Dino0001', 
-             'cat_list': {}, 
+             'password': '000000',
+             'requiredCat': 1, 
+             'requiredRat': 1, 
              'currCatNum': 0, 
+             'currRatNum': 0, 
+             'catPlayers': {}, 
+             'ratPlayers': {}, 
+             'readyList': {}, 
              'startTime': '23:04', 
-             'rat_list': {}, 
-             'status': False
+             'isPrivate': True, 
+             'isOngoing': False
 }
+
 room_list = []
 room_list.append(room_test)
+
+rooms_dict = {}
+rooms_dict[room_test["roomId"]] = room_test
+
 position_test = {
     "testPlayer": [-37.7982, 144.9594],
     "user1" : [-37.7962, 144.9594]
@@ -122,6 +127,22 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                         print(room_list[i])
                     message.type = "successfully create room"
                     await manager.send_to_user(socket_id, message)
+
+                elif message.type == "request_current_room_information":
+                    request_room_id = message.data.get("roomId")
+                    message.data = rooms_dict[request_room_id]
+                    message.type = "get current room"
+                    await manager.send_to_user(socket_id,message)
+
+                elif message.type == "request_all_rooms_information":
+                    # rooms_json = json.dumps(rooms_dict)
+                    message.data = rooms_dict
+                    # message.data = rooms_json
+                    message.type = "get all updated rooms"
+                    print(message)
+                    print("received request")
+                    await manager.send_to_user(socket_id,message)
+
                 elif message.type == "current_position":
                     # print("received current position")
                     # print(message)
@@ -138,11 +159,12 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     message.type = "updated positions"
                     # print(positionList)
                     # print(type(positionList))
+                
                     await manager.broadcast(socket_id,message.json())
                     # await manager.send_to_user(socket_id, message)
                 elif message.type == "current_pressure":
-                    print("received current pressure")
-                    print(message)
+                    # print("received current pressure")
+                    # print(message)
                     test_userId = message.data.get("userId")
                     pressure_test[test_userId] = message.data.get("currentPressure")
                     pressure_result = []
@@ -162,7 +184,7 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     }
                     message.data = pressureList
                     message.type = "updated pressure"
-                    print(message)
+                    # print(message)
                     # print(type(positionList))
                     await manager.broadcast(socket_id,message.json())
                     # await manager.send_to_user(socket_id, message)

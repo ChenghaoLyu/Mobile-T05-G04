@@ -16,18 +16,30 @@ class ConnectionManager:
             del self.active_connections[socket_id]
 
     async def send_to_user(self, socket_id: str, message: Message):
+        print("----------")
+        print(type(message))
+    
         # m = Message.parse_raw(message)
         if socket_id in self.active_connections:
             if message.type == "account":
                 await self.active_connections[socket_id].send_text(message.json())
             elif message.type == "successfully create room":
                 await self.active_connections[socket_id].send_text(message.json())
+            elif message.type == "get current room":
+                await self.active_connections[socket_id].send_text(message.json())
+            elif message.type == "get all updated rooms":
+                print("response")
+                await self.active_connections[socket_id].send_text(message.json())
             elif message.type == "updated positions":
                 await self.active_connections[socket_id].send_text(message.json())
     async def broadcast(self, socket_id: str, message: str):
-        print(message)
+        
         try:
             m = Message.parse_raw(message)
+            if m.type == "game start":
+                for socket_id, connection in self.active_connections.items():
+                # for connection in self.active_connections.values():
+                    await connection.send_text(m.json())
             if m.type == "user_location":
                 for socket_id, connection in self.active_connections.items():
                 # for connection in self.active_connections.values():
@@ -37,7 +49,7 @@ class ConnectionManager:
                     # for connection in self.active_connections.values():
                         await connection.send_text(m.json())
             if m.type == "updated pressure":
-                    print("sent pressure")
+                    # print("sent pressure")
                     for socket_id, connection in self.active_connections.items():
                     # for connection in self.active_connections.values():
                         await connection.send_text(m.json())

@@ -400,7 +400,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                     System.out.println(message);
                     RoomInformation roomInformation = new RoomInformation(room_id, user_id, final_location, final_mode, final_duration,
                             finalNumericPassword, final_cat, 0, final_mouse, 0, final_startTime,
-                            isPrivate, cat_list, rat_list, ready_list);
+                            isPrivate, isOngoing, cat_list, rat_list, ready_list);
                     RoomManager.getInstance().setRoom(roomInformation);
                     PlayerManager.getInstance().setPlayer(host);
 //                    Toast.makeText(Create_newgame_page.this, message, Toast.LENGTH_SHORT).show();

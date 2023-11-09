@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     @Override
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
         RoomInformation currRoom = displayedRooms.get(position);
-        holder.roomID.setText("Room ID: " + currRoom.getRoomID());
+        holder.roomID.setText("Room ID: " + currRoom.getRoomId());
         holder.catCount.setText(": " + currRoom.getCurrentCat() + "/" + currRoom.getRequiredCat() +
                 "    ");
         holder.mouseCount.setText(": " + currRoom.getCurrentRat() + "/" + currRoom.getRequiredRat());
@@ -69,8 +70,9 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             @Override
             public void onClick(View v) {
                 if (currRoom.isFull()) {
-                    Toast.makeText(context, "The room is full, please choose another one.",
-                            Toast.LENGTH_SHORT).show();
+                    displayToast("The room is full, please choose another one.");
+//                    Toast.makeText(context, "The room is full, please choose another one.",
+//                            Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -97,8 +99,9 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
                         navigateToDisplayRoomPage(room);
                     } else {
                         // Incorrect password
-                        Toast.makeText(context, "Password incorrect, cannot join.",
-                                Toast.LENGTH_SHORT).show();
+                        displayToast("Password incorrect, cannot join.");
+//                        Toast.makeText(context, "Password incorrect, cannot join.",
+//                                Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -108,7 +111,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
             private void navigateToDisplayRoomPage(RoomInformation room) {
                 RoomManager.getInstance().setRoom(room);
-                player.setRoomID(room.getRoomID());
+                player.setRoomID(room.getRoomId());
                 PlayerManager.getInstance().setPlayer(player);
 
                 Intent intent = new Intent(context,DisplayGameRoomPage.class);
@@ -159,5 +162,20 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     private void setDisplayedRooms(List<RoomInformation> rooms) {
         displayedRooms = rooms;
+    }
+
+    private void displayToast(String msg) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View customToastView = inflater.inflate(R.layout.item_toast, null);
+
+        TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
+        customToastTextView.setText(msg);
+
+        Toast customToast = new Toast(context.getApplicationContext());
+        customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
+        customToast.setView(customToastView);
+
+        customToast.setGravity(Gravity.CENTER, 0, 700);
+        customToast.show();
     }
 }

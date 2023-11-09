@@ -5,22 +5,22 @@ import java.time.LocalTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomInformation implements Serializable {
-    private String roomID, hostId, locationName, modeName, duration, password;
+    private String roomId, hostId, locationName, modeName, duration, password;
 
     //TODO: playerNumber
     private int playerNumber, requiredCat, currentCat, requiredRat, currentRat;
     private ConcurrentHashMap<String, Player> catPlayers, ratPlayers, readyList;
     private String startTime;
-    private boolean privacy;
+    private boolean isPrivate;
     private boolean isOngoing;
 
-    public RoomInformation(String roomID, String hostId, String locationName, String modeName, String duration, String password,
+    public RoomInformation(String roomId, String hostId, String locationName, String modeName, String duration, String password,
                            int requiredCat, int currentCat, int requiredRat, int currentRat,
-                           String startTime, boolean privacy,
+                           String startTime, boolean privacy, boolean isOngoing,
                            ConcurrentHashMap<String, Player> catPlayers,
                            ConcurrentHashMap<String, Player> ratPlayers,
                            ConcurrentHashMap<String, Player> readyList) {
-        this.roomID = roomID;
+        this.roomId = roomId;
         this.hostId = hostId;
         this.locationName = locationName;
         this.modeName = modeName;
@@ -34,13 +34,13 @@ public class RoomInformation implements Serializable {
         this.ratPlayers = ratPlayers;
         this.readyList = readyList;
         this.startTime = startTime;
-        this.privacy = privacy;
-        this.isOngoing = false;
+        this.isPrivate = privacy;
+        this.isOngoing = isOngoing;
     }
 
     // Getter and Setter methods for each attribute
-    public String getRoomID() { return roomID; }
-    public void setRoomID(String roomID) { this.roomID = roomID; }
+    public String getRoomId() { return roomId; }
+    public void setRoomID(String roomId) { this.roomId = roomId; }
 
     public String getHostId() {
         return hostId;
@@ -93,11 +93,11 @@ public class RoomInformation implements Serializable {
     }
 
     public boolean isPrivate() {
-        return privacy;
+        return isPrivate;
     }
 
     public void setPrivacy(boolean privacy) {
-        this.privacy = privacy;
+        this.isPrivate = privacy;
     }
     public boolean isOngoing() { return isOngoing; }
     public void setOngoing(boolean isOngoing) { this.isOngoing = isOngoing; }
@@ -148,7 +148,7 @@ public class RoomInformation implements Serializable {
 
 
     public boolean isFull() {
-        if (currentRat + currentRat < requiredCat + requiredRat) {
+        if (currentCat + currentRat < requiredCat + requiredRat) {
             return false;
         }
         return true;
@@ -158,7 +158,7 @@ public class RoomInformation implements Serializable {
     @Override
     public String toString() {
         return "RoomInformation{" +
-                "roomID='" + roomID + '\'' +
+                "roomId='" + roomId + '\'' +
                 ", hostId='" + hostId + '\'' +
                 ", locationName=" + locationName +
                 ", modeName=" + modeName +
@@ -172,7 +172,8 @@ public class RoomInformation implements Serializable {
                 ", rat_list=" + ratPlayers +
                 ", ready_list=" + readyList +
                 ", startTime=" + startTime +
-                ", isPrivate=" + privacy +
+                ", privacy=" + isPrivate +
+                ", isOngoing=" + isOngoing +
                 '}';
     }
 }
