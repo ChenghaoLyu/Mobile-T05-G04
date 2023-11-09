@@ -72,13 +72,12 @@ public class Create_joinGame_page extends AppCompatActivity {
 
         Player player1Room1 = new Player("User1", "Alice");
         player = new Player("User2", "Bob");
-        player.setHost();
 
         Player player1Room2 = new Player("User3", "Charlie");
         Player player2Room2 = new Player("User4", "Danielle");
 
-        player1Room1.setTeam(2);
         player1Room1.setHost();
+        player1Room1.setTeam(2);
         player1Room1.setAvatar(2);
         ratPlayers1.put("User1", player1Room1);
 
@@ -103,6 +102,8 @@ public class Create_joinGame_page extends AppCompatActivity {
         ConcurrentHashMap<String, Player> ratPlayers2 = new ConcurrentHashMap<>();
         ConcurrentHashMap<String, Player> readyList2 = new ConcurrentHashMap<>();
 
+        player1Room2.setHost();
+        player1Room2.switchReadyStatus();
         player1Room2.setTeam(1);
         player1Room2.setAvatar(1);
         player2Room2.setTeam(2);
@@ -254,15 +255,15 @@ public class Create_joinGame_page extends AppCompatActivity {
 
             // Check location
             if (isAnyLocationChecked) {
-                matchesLocation = (room.getLocationName().equals("unimelb") && isLocation1Checked)
-                        || (room.getLocationName().equals("monash") && isLocation2Checked)
-                        || (room.getLocationName().equals("central") && isLocation3Checked);
+                matchesLocation = (room.getLocationName().equals("Unimelb") && isLocation1Checked)
+                        || (room.getLocationName().equals("Monash") && isLocation2Checked)
+                        || (room.getLocationName().equals("Central") && isLocation3Checked);
             }
 
             // Check game mode
             if (isAnyModeChecked) {
-                matchesMode = (room.getModeName().equals("classic") && isMode1Checked)
-                        || (room.getModeName().equals("zombie") && isMode2Checked);
+                matchesMode = (room.getModeName().equals("Classic") && isMode1Checked)
+                        || (room.getModeName().equals("Zombie") && isMode2Checked);
             }
 
             // Add the satisfied room to the displayed list

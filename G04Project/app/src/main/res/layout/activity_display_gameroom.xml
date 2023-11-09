@@ -42,8 +42,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:flexWrap="wrap"
-        app:alignItems="stretch"
-        app:alignContent="stretch"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="flex_start"
         app:layout_constraintTop_toBottomOf="@id/catsLabel"
         app:layout_constraintStart_toStartOf="parent">
     </com.google.android.flexbox.FlexboxLayout>
@@ -62,8 +63,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:flexWrap="wrap"
-        app:alignItems="stretch"
-        app:alignContent="stretch"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="flex_start"
         app:layout_constraintTop_toBottomOf="@id/ratsLabel"
         app:layout_constraintStart_toStartOf="parent">
     </com.google.android.flexbox.FlexboxLayout>
