@@ -1,6 +1,7 @@
 package com.example.g04_project;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,10 +72,14 @@ public class Create_joinGame_page extends AppCompatActivity {
 
         Player player1Room1 = new Player("User1", "Alice");
         player = new Player("User2", "Bob");
+        player.setHost();
 
         Player player1Room2 = new Player("User3", "Charlie");
         Player player2Room2 = new Player("User4", "Danielle");
 
+        player1Room1.setTeam(2);
+        player1Room1.setHost();
+        player1Room1.setAvatar(2);
         ratPlayers1.put("User1", player1Room1);
 
         RoomInformation room1 = new RoomInformation(
@@ -82,7 +87,7 @@ public class Create_joinGame_page extends AppCompatActivity {
                 "HostUser1",
                 "unimelb",
                 "classic",
-                "30min",
+                "30m",
                 "123456",
                 1,
                 0,
@@ -98,6 +103,10 @@ public class Create_joinGame_page extends AppCompatActivity {
         ConcurrentHashMap<String, Player> ratPlayers2 = new ConcurrentHashMap<>();
         ConcurrentHashMap<String, Player> readyList2 = new ConcurrentHashMap<>();
 
+        player1Room2.setTeam(1);
+        player1Room2.setAvatar(1);
+        player2Room2.setTeam(2);
+        player2Room2.setAvatar(2);
         catPlayers2.put("User3", player1Room2);
         ratPlayers2.put("User4", player2Room2);
         RoomInformation room2 = new RoomInformation(
@@ -105,7 +114,7 @@ public class Create_joinGame_page extends AppCompatActivity {
                 "HostUser2",
                 "monash",
                 "zombie",
-                "45min",
+                "45m",
                 "",
                 2,
                 1,
@@ -142,16 +151,21 @@ public class Create_joinGame_page extends AppCompatActivity {
             roomAdapter.updateDisplayedRooms(targetRooms);
         });
 
+        ConstraintLayout.LayoutParams layoutParams =
+                (ConstraintLayout.LayoutParams) roomsRecyclerView.getLayoutParams();
+
         // Actions clicking on filter button
         filterButton.setOnClickListener(v -> {
             if (locationCheckBox.getVisibility() == View.GONE) {
                 locationCheckBox.setVisibility(View.VISIBLE);
                 gameModeCheckBox.setVisibility(View.VISIBLE);
+                layoutParams.topToBottom = R.id.locationCheckBox;
             }else {
                 locationCheckBox.setChecked(false);
                 gameModeCheckBox.setChecked(false);
                 locationCheckBox.setVisibility(View.GONE);
                 gameModeCheckBox.setVisibility(View.GONE);
+                layoutParams.topToBottom = R.id.filterButton;
             }
         });
 
@@ -159,21 +173,25 @@ public class Create_joinGame_page extends AppCompatActivity {
         locationCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 locationOptions.setVisibility(View.VISIBLE);
+                layoutParams.topToBottom = R.id.locationOptions;
             } else {
                 location1CheckBox.setChecked(false);
                 location2CheckBox.setChecked(false);
                 location3CheckBox.setChecked(false);
                 locationOptions.setVisibility(View.GONE);
+                layoutParams.topToBottom = R.id.locationCheckBox;
             }
         });
 
         gameModeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 gameModeOptions.setVisibility(View.VISIBLE);
+                layoutParams.topToBottom = R.id.gameModeOptions;
             } else {
                 mode1CheckBox.setChecked(false);
-                mode1CheckBox.setChecked(false);
+                mode2CheckBox.setChecked(false);
                 gameModeOptions.setVisibility(View.GONE);
+                layoutParams.topToBottom = R.id.gameModeOptions;
             }
         });
 
