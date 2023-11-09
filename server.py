@@ -149,16 +149,16 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     player_result = []
                     for userid_ in pressure_test.keys():
                         if userid_ != test_userId:
-                            player_result.append(userid_)
+                            player_result.append(str(userid_))
                             if pressure_test[userid_] - pressure_test[test_userId] >= 0.25:
-                                pressure_result.append(-1)
+                                pressure_result.append(int(-1))
                             elif pressure_test[test_userId] - pressure_test[userid_] >= 0.25:
-                                pressure_result.append(1)
+                                pressure_result.append(int(1))
                             else:
-                                pressure_result.append(0)
+                                pressure_result.append(int(0))
                     pressureList = {
                         "userId" : player_result, 
-                        "position" : pressure_result
+                        "pressure" : pressure_result
                     }
                     message.data = pressureList
                     message.type = "updated pressure"

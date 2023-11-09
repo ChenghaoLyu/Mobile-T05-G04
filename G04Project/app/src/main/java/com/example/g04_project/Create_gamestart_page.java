@@ -119,12 +119,13 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                     Log.d("LocationTest", "Location updates");
                     Location location = locationResult.getLastLocation();
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    System.out.println(currentLocation);
+//                    System.out.println(currentLocation);
                     client.sendCurrentPosition("testPlayer", currentLocation);
                     client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
 
                         @Override
                         public void onMessageReceived(String message) {
+//                            System.out.println(message + " location");
                             // Successful registration
                             if (message.equals("get updated positions")) {
 //                                System.out.println(message);
@@ -158,7 +159,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                         updateMarkerLocation(markerList_test.get(user), locationList_test.get(user));
                     }
 //                    updateMarkerLocation(myMarker, currentLocation);
-                    System.out.println("fiinish update0");
+//                    System.out.println("fiinish update0");
                     mymap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation));
                 }else{
                     Log.d("LocationTest", "Location updates fail: null");
@@ -183,8 +184,9 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                             @Override
                             public void onMessageReceived(String message) {
                                 // Successful registration
-                                if (message.equals("get updated positions")) {
-                                    System.out.println(locationList_test);
+                                if (message.equals("get updated pressures")) {
+//                                    System.out.println(message);
+                                    System.out.println(client.getPressureList().getPressure());
                                 }
                             }
 
