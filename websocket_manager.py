@@ -35,7 +35,11 @@ class ConnectionManager:
             if m.type == "updated positions":
                     for socket_id, connection in self.active_connections.items():
                     # for connection in self.active_connections.values():
-                        print("lalalalalal")
+                        await connection.send_text(m.json())
+            if m.type == "updated pressure":
+                    print("sent pressure")
+                    for socket_id, connection in self.active_connections.items():
+                    # for connection in self.active_connections.values():
                         await connection.send_text(m.json())
         except ValidationError as e:
             pass

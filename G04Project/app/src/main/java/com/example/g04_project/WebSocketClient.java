@@ -103,6 +103,13 @@ public class WebSocketClient {
 
         sendMessage("current_position", currentPosition);
     }
+    public void sendCurrentPressure(String userId, double pressure){
+        Map<String, Object> currentPressure = new HashMap<>();
+        currentPressure.put("userId", userId);
+        currentPressure.put("currentPressure", pressure);
+
+        sendMessage("current_pressure", currentPressure);
+    }
 
     public void sendRegistration(String userName, String email, String password) {
 
@@ -119,7 +126,7 @@ public class WebSocketClient {
         client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://13.55.228.219:8080/ws/user123")
+                .url("ws://10.0.2.2:8080/ws/user123")
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {

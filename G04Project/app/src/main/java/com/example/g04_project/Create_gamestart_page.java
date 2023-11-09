@@ -12,6 +12,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -57,6 +61,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Create_gamestart_page extends AppCompatActivity implements OnMapReadyCallback {
     private TextView timerTextView;
     private WebSocketClient client;
+    private float currentPressure;
     static float zoomLevel = 15.5f;
     private GoogleMap mymap;
     public List<LatLng> locations = new ArrayList<>();
@@ -76,6 +81,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     LocationCallback locationCallBack;
 
     private final int Request_Code_Location = 22;
+    private int count = 0;
     public String currentUserId;
 
 //    public ConcurrentHashMap<String, Marker> marker_list;
@@ -159,6 +165,48 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                 }
             }
         };
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor pressureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
+
+        SensorEventListener pressureSensorListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+//                System.out.println("start get pressure");
+                if (event.sensor.getType() == Sensor.TYPE_PRESSURE) {
+                    float pressure = event.values[0];
+                    count += 1;
+                    if(count == 20){
+                        currentPressure += pressure;
+                        currentPressure /= 20;
+                        client.sendCurrentPressure("testPlayer", currentPressure);
+                        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+                            @Override
+                            public void onMessageReceived(String message) {
+                                // Successful registration
+                                if (message.equals("get updated positions")) {
+                                    System.out.println(locationList_test);
+                                }
+                            }
+
+                        });
+                        System.out.println(currentPressure + " pressure per 10");
+                        currentPressure = 0;
+                        count = 0;
+                    }
+                    else{
+                        currentPressure += pressure;
+                    }
+                    // TODO: 发送这个压力值到服务器或者直接通过WebSocket共享给其他用户
+                }
+            }
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                // 可以在这里处理传感器精度的变化
+            }
+        };
+
+        sensorManager.registerListener(pressureSensorListener, pressureSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         locations.add(new LatLng(-37.7990, 144.9594));
         locations.add(new LatLng(-37.7963, 144.9614));
 //        locations.add(new LatLng(-37.7963, 144.9614));
