@@ -76,13 +76,13 @@
                 android:id="@+id/location1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location 1" />
+                android:text="unimelb" />
 
             <CheckBox
                 android:id="@+id/location3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location 3" />
+                android:text="monash" />
 
         </LinearLayout>
 
@@ -95,7 +95,7 @@
                 android:id="@+id/location2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location 2" />
+                android:text="central" />
 
         </LinearLayout>
 
@@ -125,14 +125,14 @@
             android:id="@+id/mode1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mode 1"
+            android:text="classic"
             app:layout_constraintBaseline_toBaselineOf="@id/location1"/>
 
         <CheckBox
             android:id="@+id/mode2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mode 2"
+            android:text="zombie"
             app:layout_constraintBaseline_toBaselineOf="@id/location2"/>
 
     </LinearLayout>

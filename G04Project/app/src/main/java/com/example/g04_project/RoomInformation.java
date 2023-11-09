@@ -16,7 +16,7 @@ public class RoomInformation implements Serializable {
 
     public RoomInformation(String roomID, String hostId, String locationName, String modeName, String duration, String password,
                            int requiredCat, int currentCat, int requiredRat, int currentRat,
-                           String startTime, boolean privacy, boolean isOngoing,
+                           String startTime, boolean privacy,
                            ConcurrentHashMap<String, Player> catPlayers,
                            ConcurrentHashMap<String, Player> ratPlayers,
                            ConcurrentHashMap<String, Player> readyList) {
@@ -35,7 +35,7 @@ public class RoomInformation implements Serializable {
         this.readyList = readyList;
         this.startTime = startTime;
         this.privacy = privacy;
-        this.isOngoing = isOngoing;
+        this.isOngoing = false;
     }
 
     // Getter and Setter methods for each attribute

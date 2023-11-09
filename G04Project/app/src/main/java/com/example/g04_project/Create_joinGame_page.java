@@ -64,6 +64,63 @@ public class Create_joinGame_page extends AppCompatActivity {
 
         rooms = new ConcurrentHashMap<>();
         //TODO: get rooms
+
+        ConcurrentHashMap<String, Player> catPlayers1 = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, Player> ratPlayers1 = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, Player> readyList1 = new ConcurrentHashMap<>();
+
+        Player player1Room1 = new Player("User1", "Alice");
+        player = new Player("User2", "Bob");
+
+        Player player1Room2 = new Player("User3", "Charlie");
+        Player player2Room2 = new Player("User4", "Danielle");
+
+        ratPlayers1.put("User1", player1Room1);
+
+        RoomInformation room1 = new RoomInformation(
+                "000001",
+                "HostUser1",
+                "unimelb",
+                "classic",
+                "30min",
+                "123456",
+                1,
+                0,
+                2,
+                1,
+                "2023-11-09T20:00:00",
+                true,
+                catPlayers1,
+                ratPlayers1,
+                readyList1
+        );
+        ConcurrentHashMap<String, Player> catPlayers2 = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, Player> ratPlayers2 = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, Player> readyList2 = new ConcurrentHashMap<>();
+
+        catPlayers2.put("User3", player1Room2);
+        ratPlayers2.put("User4", player2Room2);
+        RoomInformation room2 = new RoomInformation(
+                "000002",
+                "HostUser2",
+                "monash",
+                "zombie",
+                "45min",
+                "",
+                2,
+                1,
+                3,
+                1,
+                "2023-11-09T21:00:00",
+                false,
+                catPlayers2,
+                ratPlayers2,
+                readyList2
+        );
+
+        rooms.put("000001", room1);
+        rooms.put("000002", room2);
+
         targetRooms = new ArrayList<>(rooms.values());
 
         if (!rooms.isEmpty()) {
@@ -179,9 +236,9 @@ public class Create_joinGame_page extends AppCompatActivity {
 
             // Check location
             if (isAnyLocationChecked) {
-                matchesLocation = (room.getLocationName().equals("Location 1") && isLocation1Checked)
-                        || (room.getLocationName().equals("Location 2") && isLocation2Checked)
-                        || (room.getLocationName().equals("Location 3") && isLocation3Checked);
+                matchesLocation = (room.getLocationName().equals("unimelb") && isLocation1Checked)
+                        || (room.getLocationName().equals("monash") && isLocation2Checked)
+                        || (room.getLocationName().equals("central") && isLocation3Checked);
             }
 
             // Check game mode
