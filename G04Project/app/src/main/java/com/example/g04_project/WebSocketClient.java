@@ -277,10 +277,10 @@ public class WebSocketClient {
                         listener.onMessageReceived("get updated room");
 
                     } else if ("survival".equals(message.getType())) {
-                    System.out.println("RECEIVE SURVIVAL");
-                    System.out.println(message);
-                    survival = new Gson().fromJson(new Gson().toJson(message.getData()), Survival.class);
-                    listener.onMessageReceived("survival");
+                        System.out.println("RECEIVE SURVIVAL");
+                        System.out.println(message);
+                        survival = new Gson().fromJson(new Gson().toJson(message.getData()), Survival.class);
+                        listener.onMessageReceived("survival");
 
                     } else {
                         listener.onMessageReceived("wrong_message_type");

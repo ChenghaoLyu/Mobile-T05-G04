@@ -119,7 +119,7 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     else:
                         print("Registration fails, repetitive email")
                         await websocket.send_text("Validation Fail")
-                        
+
                 elif message.type == "survival":
                     roomId = message.data.get("roomId")
                     loss = int(message.data.get("loss"))
@@ -127,7 +127,7 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     for room in room_list:
                         if room['roomId'] == roomId:
                             survival = {"survival": room['survival'] - loss}
-                            room_list[i]["survival"] = survival
+                            room_list[i]["survival"] = room['survival'] - loss
                             message.data = survival
                             message.type = "survival"
                             await manager.send_to_user(socket_id, message)
