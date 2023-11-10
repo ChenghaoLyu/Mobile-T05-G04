@@ -7,7 +7,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.StampStyle;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,8 +92,8 @@ public class WebSocketClient {
         roomInformation.put("password", password);
         roomInformation.put("requiredCat", catNumber);
         roomInformation.put("requiredRat", ratNumber);
-        roomInformation.put("currCatNum", currCatNum);
-        roomInformation.put("currRatNum", currRatNum);
+        roomInformation.put("currentCat", currCatNum);
+        roomInformation.put("currentRat", currRatNum);
         roomInformation.put("catPlayers", cat_list);
         roomInformation.put("ratPlayers", rat_list);
         roomInformation.put("readyList", ready_list);
@@ -208,7 +210,12 @@ public class WebSocketClient {
 
                     } else if ("get all updated rooms".equals(message.getType())) {
                         System.out.println("get all rooms");// TODO
-                        rooms = new Gson().fromJson(new Gson().toJson(message.getData()), AllRoomsInfo.class);
+                        String jsonRooms = new Gson().toJson(message.getData());
+                        Type type = new TypeToken<ConcurrentHashMap<String, RoomInformation>>(){}.getType();
+                        ConcurrentHashMap<String, RoomInformation> allRooms = new Gson().fromJson(jsonRooms, type);
+                        rooms = new AllRoomsInfo();
+                        rooms.setRooms(allRooms);
+                        System.out.println(rooms.getRooms().size());
                         listener.onMessageReceived("All updated rooms received");
 
                     } else if ("updated positions".equals(message.getType())){

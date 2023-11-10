@@ -95,6 +95,7 @@ public class DisplayGameRoomPage extends AppCompatActivity {
                                 currentRoom.getReadyList());
                         //TODO: send request to start game for all players in the room
 
+                        
                         RoomManager.getInstance().setRoom(currentRoom);
                         PlayerManager.getInstance().setPlayer(player);
 
@@ -170,6 +171,7 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         // Adding click listener for joining the team
         joinTeamButtonView.setOnClickListener(v -> {
 
+            System.out.println("start to join team");
             if (currentRoom.isFull()) {
                 displayToast("The room is already full, please choose another one.");
 //                Toast.makeText(DisplayGameRoomPage.this,

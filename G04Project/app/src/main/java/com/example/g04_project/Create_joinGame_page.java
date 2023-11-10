@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +35,7 @@ public class Create_joinGame_page extends AppCompatActivity {
     private TextView emptyMessageTextView;
     private RecyclerView roomsRecyclerView;
     private RoomAdapter roomAdapter;
-    private ConcurrentHashMap<String, RoomInformation> rooms;
+    private ConcurrentHashMap<String, RoomInformation> rooms = new ConcurrentHashMap<>();
     private List<RoomInformation> targetRooms;
     private SearchView searchView;
 
@@ -45,8 +46,6 @@ public class Create_joinGame_page extends AppCompatActivity {
         setContentView(R.layout.activity_create_joingame_page);
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
-        client.sendGetRoomsRequest(client.getAccount().getUserID());
-        System.out.println("error1");
         player = new Player(client.getAccount().getUserID(), client.getAccount().getUserName());
 
         backButton = findViewById(R.id.backButton);
@@ -67,168 +66,198 @@ public class Create_joinGame_page extends AppCompatActivity {
         roomsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         searchView = findViewById(R.id.searchView);
 
-        rooms = new ConcurrentHashMap<>();
-        //rooms = client.getAllRooms().getRooms();
-        //TODO: get rooms
+        client.sendGetRoomsRequest(client.getAccount().getUserID());
+        client.setOnMessageReceivedListener(message -> {
+            // Successful registration
+            System.out.println(message);
+            if (message.equals("All updated rooms received")) {
+                System.out.println(message + "-----------");
 
-        ConcurrentHashMap<String, Player> catPlayers1 = new ConcurrentHashMap<>();
-        ConcurrentHashMap<String, Player> ratPlayers1 = new ConcurrentHashMap<>();
-        ConcurrentHashMap<String, Player> readyList1 = new ConcurrentHashMap<>();
+                //rooms = client.getAllRooms().getRooms();
+                for (String id : client.getAllRooms().getRooms().keySet()) {
+                    rooms.put(id, client.getAllRooms().getRooms().get(id));
+                    System.out.println(id);
+                    System.out.println("currCat: " + rooms.get(id).getCurrentCat());
+                }
+                System.out.println("error3");
 
-        Player player1Room1 = new Player("User1", "Alice");
-        player = new Player("User2", "Bob");
+                System.out.println("-------");
 
-        Player player1Room2 = new Player("User3", "Charlie");
-        Player player2Room2 = new Player("User4", "Danielle");
+//            }
+                ConcurrentHashMap<String, Player> catPlayers1 = new ConcurrentHashMap<>();
+                ConcurrentHashMap<String, Player> ratPlayers1 = new ConcurrentHashMap<>();
+                ConcurrentHashMap<String, Player> readyList1 = new ConcurrentHashMap<>();
 
-        player1Room1.setHost();
-        player1Room1.setTeam(2);
-        player1Room1.setAvatar(2);
-        ratPlayers1.put("User1", player1Room1);
+                Player player1Room1 = new Player("User1", "Alice");
+                //player = new Player("User2", "Bob");
 
-        RoomInformation room1 = new RoomInformation(
-                "000001",
-                "HostUser1",
-                "Unimelb",
-                "Classic",
-                "30m",
-                "123456",
-                1,
-                0,
-                2,
-                1,
-                "2023-11-09T20:00:00",
-                true,
-                false,
-                catPlayers1,
-                ratPlayers1,
-                readyList1
-        );
-        ConcurrentHashMap<String, Player> catPlayers2 = new ConcurrentHashMap<>();
-        ConcurrentHashMap<String, Player> ratPlayers2 = new ConcurrentHashMap<>();
-        ConcurrentHashMap<String, Player> readyList2 = new ConcurrentHashMap<>();
+                Player player1Room2 = new Player("User3", "Charlie");
+                Player player2Room2 = new Player("User4", "Danielle");
 
-        player1Room2.setHost();
-        player1Room2.switchReadyStatus();
-        player1Room2.setTeam(1);
-        player1Room2.setAvatar(1);
-        player2Room2.setTeam(2);
-        player2Room2.setAvatar(2);
-        catPlayers2.put("User3", player1Room2);
-        ratPlayers2.put("User4", player2Room2);
-        RoomInformation room2 = new RoomInformation(
-                "000002",
-                "HostUser2",
-                "Monash",
-                "Zombie",
-                "45m",
-                "",
-                2,
-                1,
-                3,
-                1,
-                "2023-11-09T21:00:00",
-                false,
-                false,
-                catPlayers2,
-                ratPlayers2,
-                readyList2
-        );
+                player1Room1.setHost();
+                player1Room1.setTeam(2);
+                player1Room1.setAvatar(2);
+                ratPlayers1.put("User1", player1Room1);
 
-        rooms.put("000001", room1);
-        rooms.put("000002", room2);
+                RoomInformation room1 = new RoomInformation(
+                        "000001",
+                        "HostUser1",
+                        "Unimelb",
+                        "Classic",
+                        "30",
+                        "123456",
+                        1,
+                        0,
+                        2,
+                        1,
+                        "2023-11-09T20:00:00",
+                        true,
+                        false,
+                        catPlayers1,
+                        ratPlayers1,
+                        readyList1
+                );
+                ConcurrentHashMap<String, Player> catPlayers2 = new ConcurrentHashMap<>();
+                ConcurrentHashMap<String, Player> ratPlayers2 = new ConcurrentHashMap<>();
+                ConcurrentHashMap<String, Player> readyList2 = new ConcurrentHashMap<>();
 
-        targetRooms = new ArrayList<>(rooms.values());
+                player1Room2.setHost();
+                player1Room2.switchReadyStatus();
+                player1Room2.setTeam(1);
+                player1Room2.setAvatar(1);
+                player2Room2.setTeam(2);
+                player2Room2.setAvatar(2);
+                catPlayers2.put("User3", player1Room2);
+                ratPlayers2.put("User4", player2Room2);
+                RoomInformation room2 = new RoomInformation(
+                        "000002",
+                        "HostUser2",
+                        "Monash",
+                        "Zombie",
+                        "45",
+                        "",
+                        2,
+                        1,
+                        3,
+                        1,
+                        "2023-11-09T21:00:00",
+                        false,
+                        false,
+                        catPlayers2,
+                        ratPlayers2,
+                        readyList2
+                );
 
-        if (!rooms.isEmpty()) {
-            roomsRecyclerView.setVisibility(View.VISIBLE);
-            emptyMessageTextView.setVisibility(View.GONE);
-        }
+                rooms.put("000001", room1);
+                rooms.put("000002", room2);
+                System.out.println(rooms.size());
+                System.out.println(rooms.get("777777").getRoomId());
 
-        roomAdapter = new RoomAdapter(this, targetRooms, player);
-        roomsRecyclerView.setAdapter(roomAdapter);
+                //});
+                System.out.println("error1");
 
-        // Actions clicking on back button
-        backButton.setOnClickListener(v -> finish());
+                //rooms = new ConcurrentHashMap<>();
+                //rooms = client.getAllRooms().getRooms();
+                //TODO: get rooms
 
-        // Actions clicking on refresh button
-        refreshButton.setOnClickListener(v -> {
-            rooms = new ConcurrentHashMap<>();
-            //TODO: get rooms
-            //rooms = client.getAllRooms().getRooms();
+                targetRooms = new ArrayList<>(rooms.values());
+                System.out.println("aaaa");
+                System.out.println(targetRooms.size());
+                System.out.println("aaaaaa");
 
-            targetRooms = new ArrayList<>(rooms.values());
-            roomAdapter.updateDisplayedRooms(targetRooms);
-        });
+                if (!rooms.isEmpty()) {
+                    roomsRecyclerView.setVisibility(View.VISIBLE);
+                    emptyMessageTextView.setVisibility(View.GONE);
+                }
 
-        ConstraintLayout.LayoutParams layoutParams =
-                (ConstraintLayout.LayoutParams) roomsRecyclerView.getLayoutParams();
+                roomAdapter = new RoomAdapter(this, targetRooms, player);
+                roomsRecyclerView.setAdapter(roomAdapter);
 
-        // Actions clicking on filter button
-        filterButton.setOnClickListener(v -> {
-            if (locationCheckBox.getVisibility() == View.GONE) {
-                locationCheckBox.setVisibility(View.VISIBLE);
-                gameModeCheckBox.setVisibility(View.VISIBLE);
-                layoutParams.topToBottom = R.id.locationCheckBox;
-            }else {
-                locationCheckBox.setChecked(false);
-                gameModeCheckBox.setChecked(false);
-                locationCheckBox.setVisibility(View.GONE);
-                gameModeCheckBox.setVisibility(View.GONE);
-                layoutParams.topToBottom = R.id.filterButton;
+                // Actions clicking on back button
+                backButton.setOnClickListener(v -> finish());
+
+                // Actions clicking on refresh button
+                refreshButton.setOnClickListener(v -> {
+                    //rooms = new ConcurrentHashMap<>();
+                    //TODO: get rooms
+                    //rooms = client.getAllRooms().getRooms();
+
+                    System.out.println("get rooms successfully");
+
+                    targetRooms = new ArrayList<>(rooms.values());
+                    roomAdapter.updateDisplayedRooms(targetRooms);
+                });
+
+                ConstraintLayout.LayoutParams layoutParams =
+                        (ConstraintLayout.LayoutParams) roomsRecyclerView.getLayoutParams();
+
+                // Actions clicking on filter button
+                filterButton.setOnClickListener(v -> {
+                    if (locationCheckBox.getVisibility() == View.GONE) {
+                        locationCheckBox.setVisibility(View.VISIBLE);
+                        gameModeCheckBox.setVisibility(View.VISIBLE);
+                        layoutParams.topToBottom = R.id.locationCheckBox;
+                    } else {
+                        locationCheckBox.setChecked(false);
+                        gameModeCheckBox.setChecked(false);
+                        locationCheckBox.setVisibility(View.GONE);
+                        gameModeCheckBox.setVisibility(View.GONE);
+                        layoutParams.topToBottom = R.id.filterButton;
+                    }
+                });
+
+                // Actions clicking on checkBoxes
+                locationCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        locationOptions.setVisibility(View.VISIBLE);
+                        layoutParams.topToBottom = R.id.locationOptions;
+                    } else {
+                        location1CheckBox.setChecked(false);
+                        location2CheckBox.setChecked(false);
+                        location3CheckBox.setChecked(false);
+                        locationOptions.setVisibility(View.GONE);
+                        layoutParams.topToBottom = R.id.locationCheckBox;
+                    }
+                });
+
+                gameModeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        gameModeOptions.setVisibility(View.VISIBLE);
+                        layoutParams.topToBottom = R.id.gameModeOptions;
+                    } else {
+                        mode1CheckBox.setChecked(false);
+                        mode2CheckBox.setChecked(false);
+                        gameModeOptions.setVisibility(View.GONE);
+                        layoutParams.topToBottom = R.id.gameModeOptions;
+                    }
+                });
+
+                // Action clicking on option buttons
+                CompoundButton.OnCheckedChangeListener filterListener = (buttonView, isChecked) -> {
+                    applyFilters();
+                };
+                location1CheckBox.setOnCheckedChangeListener(filterListener);
+                location2CheckBox.setOnCheckedChangeListener(filterListener);
+                location3CheckBox.setOnCheckedChangeListener(filterListener);
+                mode1CheckBox.setOnCheckedChangeListener(filterListener);
+                mode2CheckBox.setOnCheckedChangeListener(filterListener);
+
+                // Actions entering and submitting id in searchView
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String id) {
+                        searchRoom(id);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        return false;
+                    }
+                });
             }
         });
-
-        // Actions clicking on checkBoxes
-        locationCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                locationOptions.setVisibility(View.VISIBLE);
-                layoutParams.topToBottom = R.id.locationOptions;
-            } else {
-                location1CheckBox.setChecked(false);
-                location2CheckBox.setChecked(false);
-                location3CheckBox.setChecked(false);
-                locationOptions.setVisibility(View.GONE);
-                layoutParams.topToBottom = R.id.locationCheckBox;
-            }
-        });
-
-        gameModeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                gameModeOptions.setVisibility(View.VISIBLE);
-                layoutParams.topToBottom = R.id.gameModeOptions;
-            } else {
-                mode1CheckBox.setChecked(false);
-                mode2CheckBox.setChecked(false);
-                gameModeOptions.setVisibility(View.GONE);
-                layoutParams.topToBottom = R.id.gameModeOptions;
-            }
-        });
-
-        // Action clicking on option buttons
-        CompoundButton.OnCheckedChangeListener filterListener = (buttonView, isChecked) -> {
-            applyFilters();
-        };
-        location1CheckBox.setOnCheckedChangeListener(filterListener);
-        location2CheckBox.setOnCheckedChangeListener(filterListener);
-        location3CheckBox.setOnCheckedChangeListener(filterListener);
-        mode1CheckBox.setOnCheckedChangeListener(filterListener);
-        mode2CheckBox.setOnCheckedChangeListener(filterListener);
-
-        // Actions entering and submitting id in searchView
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String id) {
-                searchRoom(id);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-
+        System.out.println("finish");
     }
 
     // Apply filters
