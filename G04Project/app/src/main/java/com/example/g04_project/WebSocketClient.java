@@ -56,7 +56,7 @@ public class WebSocketClient {
         long timestamp = System.currentTimeMillis();
 
         Map<String, Object> locationData = new HashMap<>();
-        locationData.put("user_id", "user123");
+        locationData.put("user_id", uniqueID);
         locationData.put("latitude", latitude);
         locationData.put("longitude", longitude);
         locationData.put("timestamp", timestamp);
