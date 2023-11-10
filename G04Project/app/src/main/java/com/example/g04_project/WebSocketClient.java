@@ -131,7 +131,7 @@ public class WebSocketClient {
         roomInformation.put("startTime", startTime);
         roomInformation.put("isPrivate", isPrivate);
         roomInformation.put("isOnGoing", isOngoing);
-        System.out.println("{{{{{{{}}}}}}}");
+        System.out.println("---------------");
         System.out.println(roomInformation.get("startTime"));
         System.out.println(roomInformation.get("hostId"));
         sendMessage("update_room_information", roomInformation);

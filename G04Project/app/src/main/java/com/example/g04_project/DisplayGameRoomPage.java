@@ -207,7 +207,7 @@ public class DisplayGameRoomPage extends AppCompatActivity {
 
     // Refresh the display of players based on their new ready status
     private void refreshPlayerDisplay() {
-
+        System.out.println("start refresh");
         client.sendUpdateRoomInformation(currentRoom.getRoomId(), currentRoom.getHostId(),
                 currentRoom.getLocationName(),
                 currentRoom.getModeName(),
@@ -227,6 +227,7 @@ public class DisplayGameRoomPage extends AppCompatActivity {
             @Override
             public void onMessageReceived(String message) {
                 if (message.equals("get updated room")) {
+                    System.out.println(message);
                     currentRoom = client.getUpdatedRoom();
                 }
             }

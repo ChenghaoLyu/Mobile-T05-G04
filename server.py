@@ -129,12 +129,12 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     message.type = "successfully create room"
                     await manager.send_to_user(socket_id, message)
                 elif message.type == "update_room_information":
-                    print("receive roomInformation")
+                    print("receive updatedformation")
                     print(message)
                     rooms_dict[message.data.get("roomId")] = message.data
-                    for i in rooms_dict.keys():
-                        print(i)
-                        print(rooms_dict[i])
+                    # for i in rooms_dict.keys():
+                    #     print(i)
+                    #     print(rooms_dict[i])
                     message.type = "successfully update room"
                     await manager.send_to_user(socket_id, message)
                 elif message.type == "request_current_room_information":
