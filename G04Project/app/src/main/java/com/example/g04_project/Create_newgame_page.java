@@ -234,7 +234,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
         if (increase) {
             count++;
         } else {
-            count = Math.max(3, count - 1); // 确保数量不小于1
+            count = Math.max(2, count - 1); // 确保数量不小于1
         }
         textView.setText(String.valueOf(count));
         final_player = count;
