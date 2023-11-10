@@ -414,5 +414,24 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                 }
             }
         });
+
+    }@Override
+    protected void onPause() {
+        super.onPause();
+        // 当Activity暂停时，禁用监听器
+        if (client != null) {
+            client.setOnMessageReceivedListener(null);
+        }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 当Activity销毁时，禁用监听器
+        if (client != null) {
+            client.setOnMessageReceivedListener(null);
+        }
+    }
+
+
 }

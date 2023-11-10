@@ -49,7 +49,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="28dp"
         android:fontFamily="@font/lores15_bold"
-        android:onClick="openGameFinishPage"
+        android:onClick="onSurvivalUpdate"
         android:text="I am Caught !"
         android:textColor="@color/black"
         android:textSize="16sp"

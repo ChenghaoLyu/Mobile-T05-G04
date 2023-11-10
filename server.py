@@ -121,18 +121,19 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                         await websocket.send_text("Validation Fail")
 
                 elif message.type == "survival":
-                    roomId = message.data.get("roomId")
-                    loss = int(message.data.get("loss"))
-                    i = 0
-                    for room in room_list:
-                        if room['roomId'] == roomId:
-                            survival = {"survival": room['survival'] - loss}
-                            room_list[i]["survival"] = room['survival'] - loss
-                            message.data = survival
-                            message.type = "survival"
-                            await manager.send_to_user(socket_id, message)
-                            break
-                        i = i + 1
+                    # roomId = message.data.get("roomId")
+                    # loss = int(message.data.get("loss"))
+                    # i = 0
+                    # for room in room_list:
+                    #     if room['roomId'] == roomId:
+                    #         survival = {"survival": room['survival'] - loss}
+                    #         room_list[i]["survival"] = room['survival'] - loss
+                    #         message.data = survival
+                    #         message.type = "survival"
+                    #         await manager.send_to_user(socket_id, message)
+                    #         break
+                    #     i = i + 1
+                    await manager.send_to_user(socket_id, message)
 
                 elif message.type == "room_information":
                     print("receive roomInformation")

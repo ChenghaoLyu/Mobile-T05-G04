@@ -71,6 +71,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     public ConcurrentHashMap<String, Marker> markerList_test;
     public ConcurrentHashMap<String, LatLng> locationList_test;
     public ConcurrentHashMap<String, Integer> pressureList_test;
+    private Button catchButton;
 
     //    private LocationManager locationManager;
 //    private LocationListener locationListener;
@@ -105,6 +106,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         client = app.getWebSocketClient();
         currentUserId = client.getAccount().getUserID();
         System.out.println(currentUserId);
+        catchButton = findViewById(R.id.caught);
 
         Intent receivedIntent = getIntent();
 
@@ -113,8 +115,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         client.sendSurvivalUpdate(roomId, 0);
         isCat = receivedIntent.getBooleanExtra("isCat", true);
         if (!isCat) {
-            Button button = findViewById(R.id.caught);
-            button.setVisibility(View.VISIBLE);
+            catchButton.setVisibility(View.VISIBLE);
         }
 
         fake_users.add("Dino0001");
@@ -139,15 +140,16 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                     Location location = locationResult.getLastLocation();
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 //                    System.out.println(currentLocation);
+                    System.out.println("successfully sent");
                     client.sendCurrentPosition(currentUserId, currentLocation);
+                    System.out.println("NO ERROR");
                     client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
-
                         @Override
                         public void onMessageReceived(String message) {
-//                            System.out.println(message + " location");
+                            System.out.println(message + " location");
                             // Successful registration
                             if (message.equals("get updated positions")) {
-//                                System.out.println(message);
+                                System.out.println(message + "+++++++++++");
 //                                System.out.println(client.getPositionList().getUserID());
                                 for (int i = 0; i < client.getPositionList().getUserID().size(); i++) {
 //                                    System.out.println("location " + i);
@@ -164,6 +166,13 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //                                    System.out.println("Index: " + i + ", Value: " + client.getPositionList().getUserID().get(i));
                                 }
 //                                System.out.println(locationList_test);
+                            }
+                            else if (message.equals("survival")) {
+                                if (client.survival.getSurvival() == 0) {
+                                    Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
+                                    intent.putExtra("winner", "cat");
+                                    startActivity(intent);
+                                }
                             }
                         }
 
@@ -208,7 +217,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                             public void onMessageReceived(String message) {
                                 // Successful registration
                                 if (message.equals("get updated pressures")) {
-//                                    System.out.println(message + "-----------");
+                                    System.out.println(message + "-----------");
                                     for (int i = 0; i < client.getPressureList().getUserID().size(); i++) {
 //                                        System.out.println(i);
                                         String userId = client.getPressureList().getUserID().get(i);
@@ -268,7 +277,10 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         mapFragment.getMapAsync(this);
 
         timerTextView = findViewById(R.id.timerTextView);
-
+//        catchButton.setOnClickListener(v -> {
+//            System.out.println("get caught");
+//            client.sendSurvivalUpdate(roomId, 0);
+//        });
 //        // 初始化位置管理器和监听器
 //        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 //        locationListener = new LocationListener() {
@@ -419,28 +431,29 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
     }
     private void updateMarkerLocation(Marker marker, LatLng location) {
-        onSurvivalUpdate();
+//        onSurvivalUpdate();
         if (marker != null && location != null) {
             marker.setPosition(location);
             mymap.animateCamera(CameraUpdateFactory.newLatLng(location));
         }
     }
 
-    private void onSurvivalUpdate() {
+    public void onSurvivalUpdate(View view) {
+        System.out.println("click the button++++++++++++++++++++");
         client.sendSurvivalUpdate(roomId, 0);
-        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
-            @Override
-            public void onMessageReceived(String message) {
-                // Successful registration
-                if (message.equals("survival")) {
-                    if (client.survival.getSurvival() == 0) {
-                        Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
-                        intent.putExtra("winner", "cat");
-                        startActivity(intent);
-                    }
-                }
-            }
-        });
+//        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+//            @Override
+//            public void onMessageReceived(String message) {
+//                // Successful registration
+//                if (message.equals("survival")) {
+//                    if (client.survival.getSurvival() == 0) {
+//                        Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
+//                        intent.putExtra("winner", "cat");
+//                        startActivity(intent);
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
