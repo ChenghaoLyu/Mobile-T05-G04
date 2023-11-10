@@ -100,7 +100,7 @@ public class Create_joinGame_page extends AppCompatActivity {
                 ratPlayers1.put("User1", player1Room1);
 
                 RoomInformation room1 = new RoomInformation(
-                        "000001",
+                        "000003",
                         "HostUser1",
                         "Unimelb",
                         "Classic",
