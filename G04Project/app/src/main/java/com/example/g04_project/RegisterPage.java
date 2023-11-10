@@ -18,12 +18,16 @@ public class RegisterPage extends AppCompatActivity {
     private EditText confirmPasswordEditText;
     private EditText emailEditText;
 
-    WebSocketClient webSocketClient = new WebSocketClient();
+    private WebSocketClient client;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
+
+        MyApp app = (MyApp) getApplication();
+        client = app.getWebSocketClient();
     }
 
     public void openLoginPage(View view) {
@@ -45,53 +49,46 @@ public class RegisterPage extends AppCompatActivity {
 
         // Check empty input
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty()) {
-
             displayToast("Please enter all required fields!");
-            //Toast.makeText(getApplicationContext(), "Please enter all required fields!", Toast.LENGTH_SHORT).show();
             return;
 
         // Invalid email format, show an error message or take appropriate action.
         } else if (!isValidEmail(email)) {
-
             displayToast("Invalid email");
-            //Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
             return;
 
         // Passwords do not match
         } else if (!confirmPassword.equals(password)) {
-
             displayToast("Passwords do not match");
-            //Toast.makeText(getApplicationContext(), "New password and confirm password do not match", Toast.LENGTH_SHORT).show();
             return;
 
         // Password too short
         } else if (password.length() < 8) {
-
             displayToast("Password must be at least 8 digits long");
-            //Toast.makeText(getApplicationContext(), "New password and confirm password do not match", Toast.LENGTH_SHORT).show();
             return;
         }
 
         else {
-            webSocketClient.sendRegistration(username, email, password);
+            client.sendRegistration(username, email, password);
         }
 
 
-//        MyApp app = (MyApp) getApplication();
-//        client = app.getWebSocketClient();
-        webSocketClient.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
             @Override
             public void onMessageReceived(String message) {
                 // Successful registration
-                if (message.equals("Registration Successful")) {
+                if (message.equals("Validation Successful")) {
                     Intent intent = new Intent(view.getContext(), HomePage.class);
                     startActivity(intent);
 
                 // Incorrect validation, show an error message or take appropriate action.
-                } else {
-
-                    displayToast("Registration fails. Please try again!");
-                    //Toast.makeText(getApplicationContext(), "Invalid user name or password", Toast.LENGTH_SHORT).show();
+                } else if (message.equals("Validation Fail")) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayToast("Registration fails. Email already exists. Please try again!");
+                        }
+                    });
                 }
             }
         });

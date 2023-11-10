@@ -38,6 +38,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.8")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-location:20.0.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

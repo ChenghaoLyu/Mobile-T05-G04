@@ -32,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.internal.ICameraUpdateFactoryDelegate;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
@@ -54,13 +55,14 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
     private TextView tvPlayerCount, tvCatCount, tvMouseCount, tvDuration;
     private LinearLayout layout_cat_mouse, layoutMap, layoutPrivatePassword;
     private Spinner location_name;
-    public String final_location = "none";
+    public String final_location = "null";
     public TimePicker timePicker;
     public double[] final_coor = new double[]{-37.79917143220294, 144.96114830091392};
-    public String final_mode, finalNumericPassword, final_duration, final_startTime;
+    public String final_mode = "null", finalNumericPassword, final_duration, final_startTime;
     public boolean isPrivate;
+    public boolean isOngoing = false;
     public Integer final_player, final_cat, final_mouse;
-    public String user_id = "test1", room_id = "000001", final_privacy;
+    public String user_id, userName, room_id = "000001", final_privacy = "null";
     public ConcurrentHashMap<String, Player> cat_list, rat_list, ready_list;
     private Player host;
 
@@ -71,6 +73,11 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_create_newgame_page);
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
+        user_id = client.getAccount().getUserID();
+        userName = client.getAccount().getUserName();
+
+        System.out.println(user_id);
+        System.out.println(userName);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -155,19 +162,20 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
                 if (!final_location.equals("Choose Place")){
                     layoutMap.setVisibility(View.VISIBLE);
                 }
-                if (final_location.equals("unimelb")){
+                if (final_location.equals("Unimelb")){
                     final_coor = new double[]{-37.79917143220294, 144.96114830091392};
                 } else if (final_location.equals("Monash")) {
                     final_coor = new double[]{-37.9105, 145.1362};
+                }else if (final_location.equals("RMIT")) {
+                    final_coor = new double[]{-37.8082139,144.9637764};
                 }
                 // 在这里，您可以根据选择的值执行任何操作。例如，显示一个Toast消息：
 //                Toast.makeText(parent.getContext(), "Selected: " + final_coor[0], Toast.LENGTH_SHORT).show();
                 if (mymap != null) {  // 确保地图已经初始化
                     mymap.clear();
-                    if(!final_location.equals("Choose Place")) {
+                    if(final_location.equals("Unimelb")) {
                         String[] stringArray = getResources().getStringArray(R.array.melb_uni_corners);
                         List<LatLng> melbUniCorners = new ArrayList<>();
-
 // 解析字符串为LatLng对象
                         for (String coord : stringArray) {
                             String[] latLng = coord.split(",");
@@ -184,6 +192,17 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
 
 
 //                        mymap.addMarker(new MarkerOptions().position(chosen_location).title("unimelb"));
+                        mymap.addMarker(new MarkerOptions().position(chosen_location).title("Unimelb"));
+                        mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
+                        mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
+                    } else if (final_location.equals("Monash")) {
+                        LatLng chosen_location = new LatLng(final_coor[0], final_coor[1]);
+                        mymap.addMarker(new MarkerOptions().position(chosen_location).title("Monash"));
+                        mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
+                        mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
+                    }else if (final_location.equals("RMIT")) {
+                        LatLng chosen_location = new LatLng(final_coor[0], final_coor[1]);
+                        mymap.addMarker(new MarkerOptions().position(chosen_location).title("RMIT"));
                         mymap.moveCamera(CameraUpdateFactory.newLatLng(chosen_location));
                         mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
                     }
@@ -310,13 +329,23 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
 //        final_mode
 //        final_privacy
         final_player = Integer.parseInt(tvPlayerCount.getText().toString());
-//        final_duration
+        final_duration = tvDuration.getText().toString();
         final_cat = Integer.parseInt(tvCatCount.getText().toString());
         final_mouse = Integer.parseInt(tvMouseCount.getText().toString());
-        System.out.println("start");
         finalNumericPassword = numericPasswordEditText.getText().toString();
+        timePicker = findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(true); // 设置为24小时制
+        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                // 这里处理用户选择的时间
+                String selectedTime = String.format("%02d:%02d", hourOfDay, minute);
+                final_startTime = selectedTime;
+//                        Toast.makeText(Create_newgame_page.this, "Selected Time: " + selectedTime, Toast.LENGTH_SHORT).show();
+            }
+        });
         // Check empty input
-        if (Objects.equals(final_location, "none") || final_mode.isEmpty() || final_duration.isEmpty()|| final_startTime.isEmpty()) {
+        if (final_privacy.equals("null") || final_mode.equals("null") || final_location.equals("null")) {
             LayoutInflater inflater = getLayoutInflater();
             View customToastView = inflater.inflate(R.layout.item_toast, null);
 
@@ -354,23 +383,24 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             ready_list = new ConcurrentHashMap<>();
             cat_list = new ConcurrentHashMap<>();
             rat_list = new ConcurrentHashMap<>();
-            host = new Player(user_id, room_id, 1);
-            cat_list.put(user_id, host);
+            host = new Player(user_id, userName);
+            host.setRoomID(room_id);
+            host.setHost();
             System.out.println("sending");
             client.sendRoomInformation(room_id, user_id, final_location, final_mode, final_duration, finalNumericPassword,
-                    final_cat, 0, final_mouse, 0, final_startTime, isPrivate, cat_list, rat_list, ready_list);
+                    final_cat, 0, final_mouse, 0, final_startTime, isPrivate, isOngoing, cat_list, rat_list, ready_list);
         }
-        Toast.makeText(Create_newgame_page.this, "finish fill the form", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(Create_newgame_page.this, "finish fill the form", Toast.LENGTH_SHORT).show();
 
         client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
             @Override
             public void onMessageReceived(String message) {
                 // Successful registration
-                if (!message.isEmpty()) {
+                if (message.equals("Successfully create room")) {
                     System.out.println(message);
                     RoomInformation roomInformation = new RoomInformation(room_id, user_id, final_location, final_mode, final_duration,
                             finalNumericPassword, final_cat, 0, final_mouse, 0, final_startTime,
-                            isPrivate, cat_list, rat_list, ready_list);
+                            isPrivate, isOngoing, cat_list, rat_list, ready_list);
                     RoomManager.getInstance().setRoom(roomInformation);
                     PlayerManager.getInstance().setPlayer(host);
 //                    Toast.makeText(Create_newgame_page.this, message, Toast.LENGTH_SHORT).show();

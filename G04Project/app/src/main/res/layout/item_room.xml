@@ -18,6 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Room ID: 123"
+            android:fontFamily="@font/lores15_bold"
             app:layout_constraintEnd_toStartOf="@id/gameModeImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,7 +28,7 @@
             android:id="@+id/catSymbol"
             android:layout_width="22dp"
             android:layout_height="20dp"
-            android:src="@drawable/cat"
+            android:src="@drawable/cat_avatar_pixel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/roomId"
             app:layout_constraintBottom_toTopOf="@id/location" />
@@ -36,8 +37,9 @@
             android:id="@+id/catCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="12dp"
             android:text=": 1/2    "
+            android:fontFamily="@font/lores15_bold"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@id/catSymbol"
             app:layout_constraintTop_toBottomOf="@id/roomId" />
@@ -46,7 +48,7 @@
             android:id="@+id/mouseSymbol"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/mouse"
+            android:src="@drawable/rat_avatar_pixel"
             app:layout_constraintStart_toEndOf="@id/catCount"
             app:layout_constraintTop_toBottomOf="@id/roomId"
             app:layout_constraintBottom_toTopOf="@id/location" />
@@ -55,8 +57,9 @@
             android:id="@+id/mouseCount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="12dp"
             android:text=": 4/5"
+            android:fontFamily="@font/lores15_bold"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@id/mouseSymbol"
             app:layout_constraintEnd_toStartOf="@id/gameModeImage"
@@ -65,8 +68,9 @@
             android:id="@+id/location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="8dp"
             android:text="Location: Central Park"
+            android:fontFamily="@font/lores15_bold"
             app:layout_constraintEnd_toStartOf="@id/gameModeImage"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,8 +80,9 @@
             android:id="@+id/startTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="8dp"
             android:text="Start Time: 3:00 PM"
+            android:fontFamily="@font/lores15_bold"
             app:layout_constraintEnd_toStartOf="@id/gameModeImage"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,17 +92,30 @@
             android:id="@+id/duration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="8dp"
             android:text="Duration: 1 hour"
+            android:fontFamily="@font/lores15_bold"
             app:layout_constraintEnd_toStartOf="@id/gameModeImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/startTime" />
+
+        <TextView
+            android:id="@+id/privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Privacy: Public"
+            android:fontFamily="@font/lores15_bold"
+            app:layout_constraintEnd_toStartOf="@id/gameModeImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/duration" />
 
         <TextView
             android:id="@+id/gameModeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Game Mode  "
+            android:fontFamily="@font/lores15_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/roomId" />
 
@@ -105,7 +123,7 @@
             android:id="@+id/gameModeImage"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/mode_image1"
+            android:src="@drawable/classic_mode"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/gameModeLabel"
             app:layout_constraintBottom_toTopOf="@id/joinButton"/>
@@ -115,6 +133,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="JOIN"
+            android:fontFamily="@font/lores15_bold"
+            android:textSize="16sp"
+            android:textColor="@color/light_green"
+            app:backgroundTint="@color/dark_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

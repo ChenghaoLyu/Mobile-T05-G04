@@ -4,6 +4,10 @@ class Message(BaseModel):
     type: str
     data: dict
 
+class PositionList(BaseModel):
+    userId: list
+    position: list
+
 class UserLocation(BaseModel):
     userId: str
     latitude: float

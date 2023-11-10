@@ -20,12 +20,7 @@ public class LoginPage extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 123;
     private EditText emailEditText;
     private EditText passwordEditText;
-
     private WebSocketClient client;
-
-    // Create an instance of WebSocketClient
-    WebSocketClient webSocketClient = new WebSocketClient();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,21 +51,16 @@ public class LoginPage extends AppCompatActivity {
 
         // Check empty input
         if (password.isEmpty() || email.isEmpty()) {
-
             displayToast("Please enter all required fields!");
-            //Toast.makeText(getApplicationContext(), "Please enter all required fields!", Toast.LENGTH_SHORT).show();
             return;
 
-            // Invalid email format, show an error message or take appropriate action.
+        // Invalid email format, show an error message or take appropriate action.
         } else if (!isValidEmail(email)) {
-
             displayToast("Invalid email, please try again!");
-            //Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
             return;
 
         } else {
-            displayToast("Validating");
-            webSocketClient.sendValidation(email, password);
+            client.sendValidation(email, password);
         }
 
         client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
@@ -78,15 +68,18 @@ public class LoginPage extends AppCompatActivity {
             public void onMessageReceived(String message) {
                 // Passwords match, proceed with registration or the next step.
                 if (message.equals("Validation Successful")) {
-                    displayToast("Login Successful");
                     Intent intent = new Intent(view.getContext(), HomePage.class);
                     startActivity(intent);
 
-                // Incorrect validation, show an error message or take appropriate action.
-                } else {
 
-                    displayToast("Invalid email or password, please try again!");
-                    //Toast.makeText(getApplicationContext(), "Invalid user name or password", Toast.LENGTH_SHORT).show();
+                // Incorrect validation, show an error message or take appropriate action.
+                } else if (message.equals("Validation Fail")) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayToast("Invalid email or password, please try again!");
+                        }
+                    });
                 }
             }
         });
@@ -127,8 +120,5 @@ public class LoginPage extends AppCompatActivity {
     private void showPermissionDeniedMessage() {
         // Display a message explaining why the permission is necessary.
         displayToast("Location permission is required to use this app. Please grant the permission in app settings.");
-
-        // Exit the app by finishing the current activity.
-//        finish();
     }
 }

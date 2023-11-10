@@ -10,28 +10,49 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="back"
+        android:text="@string/back"
+        android:fontFamily="@font/lores15_bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="16sp"
+        android:textColor="@color/grey"
+        app:backgroundTint="@color/light_green" />
 
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/lores15_bold"
         android:queryHint="Search room ID here..."
         app:layout_constraintStart_toEndOf="@id/filterButton"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/refreshButton"
         app:layout_constraintTop_toTopOf="@id/filterButton" />
 
+    <Button
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lores15_bold"
+        android:text="Refresh"
+        app:layout_constraintStart_toEndOf="@id/searchView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/filterButton"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/grey"/>
     <Button
         android:id="@+id/filterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:fontFamily="@font/lores15_bold"
         android:text="Filter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/backButton"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/grey" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -68,13 +89,13 @@
                 android:id="@+id/location1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location 1" />
+                android:text="Unimelb" />
 
             <CheckBox
                 android:id="@+id/location3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location 3" />
+                android:text="Central" />
 
         </LinearLayout>
 
@@ -87,7 +108,7 @@
                 android:id="@+id/location2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location 2" />
+                android:text="Monash" />
 
         </LinearLayout>
 
@@ -117,14 +138,14 @@
             android:id="@+id/mode1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mode 1"
+            android:text="Classic"
             app:layout_constraintBaseline_toBaselineOf="@id/location1"/>
 
         <CheckBox
             android:id="@+id/mode2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mode 2"
+            android:text="Zombie"
             app:layout_constraintBaseline_toBaselineOf="@id/location2"/>
 
     </LinearLayout>

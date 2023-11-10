@@ -8,5 +8,7 @@
     <color name="ivory">#F8FAEC</color>
     <color name="brick_red">#D96248</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="light_yellow">#fffec8</color>
+    <color name="dark_yellow">#fdfa72</color>
 
 </resources>

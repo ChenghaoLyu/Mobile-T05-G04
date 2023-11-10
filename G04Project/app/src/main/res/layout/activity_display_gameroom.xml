@@ -10,9 +10,13 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="back"
+        android:text="@string/back"
+        android:fontFamily="@font/lores15_bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="16sp"
+        android:textColor="@color/grey"
+        app:backgroundTint="@color/light_green" />
 
     <TextView
         android:id="@+id/roomIdTextView"
@@ -38,8 +42,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:flexWrap="wrap"
-        app:alignItems="stretch"
-        app:alignContent="stretch"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="flex_start"
         app:layout_constraintTop_toBottomOf="@id/catsLabel"
         app:layout_constraintStart_toStartOf="parent">
     </com.google.android.flexbox.FlexboxLayout>
@@ -58,19 +63,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:flexWrap="wrap"
-        app:alignItems="stretch"
-        app:alignContent="stretch"
+        app:flexDirection="row"
+        app:alignItems="center"
+        app:justifyContent="flex_start"
         app:layout_constraintTop_toBottomOf="@id/ratsLabel"
         app:layout_constraintStart_toStartOf="parent">
     </com.google.android.flexbox.FlexboxLayout>
 
     <Button
         android:id="@+id/readyButton"
-        android:layout_width="wrap_content"
+        android:layout_width="200sp"
         android:layout_height="wrap_content"
         android:text="Ready"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="100dp"/>
+        android:layout_margin="150dp"
+        android:fontFamily="@font/lores15_bold"
+        android:textSize="18sp"
+        android:textColor="@color/grey"
+        app:backgroundTint="@color/light_green"/>
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:text="Start Game!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="100dp"
+        android:fontFamily="@font/lores15_bold"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/dark_green"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

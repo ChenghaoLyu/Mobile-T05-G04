@@ -49,6 +49,9 @@
             android:name=".Create_newgame_page"
             android:exported="false" />
         <activity
+            android:name=".GameFinishPage"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
