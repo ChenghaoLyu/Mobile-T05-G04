@@ -174,7 +174,6 @@ public class WebSocketClient {
         sendMessage("registration", userInformation);
     }
 
-
     public void start() {
         client = new OkHttpClient();
 

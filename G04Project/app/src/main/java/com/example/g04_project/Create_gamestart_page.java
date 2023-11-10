@@ -91,6 +91,8 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 
     private ArrayList<Player> fake_players = new ArrayList<>();
     private int aliveRats;
+    private boolean isCat;
+    private String roomId;
 //    public ConcurrentHashMap<String, Marker> marker_list;
 
 
@@ -106,7 +108,13 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         System.out.println(currentUserId);
 
         Intent receivedIntent = getIntent();
-        aliveRats = receivedIntent.getIntExtra("requiredRats", 0);
+
+        aliveRats = receivedIntent.getIntExtra("requiredRats", 1);
+        isCat = receivedIntent.getBooleanExtra("isCat", true);
+        if (!isCat) {
+            Button button = findViewById(R.id.caught);
+            button.setVisibility(View.VISIBLE);
+        }
 
         fake_users.add("user1");
         fake_users.add("testPlayer");
@@ -173,16 +181,6 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //                            updateMarkerLocation(markerList_test.get(user), testLocation);
 //                        }
                         updateMarkerLocation(markerList_test.get(user), locationList_test.get(user));
-
-                        if (!user.isCat()) {
-                            Button button = findViewById(R.id.caught);
-                            button.setVisibility(View.VISIBLE);
-                        }
-                        if (user.isCat() && aliveRats == 0) {
-                            Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
-                            intent.putExtra("winner", "cat");
-                            startActivity(intent);
-                        }
                     }
 //                    updateMarkerLocation(myMarker, currentLocation);
 //                    System.out.println("fiinish update0");
@@ -325,6 +323,9 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         countDownTimer.start();
     }
 
+    public void onSurvivalRatsChanged() {
+
+    }
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mymap = googleMap;

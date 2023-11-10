@@ -102,6 +102,8 @@ public class DisplayGameRoomPage extends AppCompatActivity {
 
                         Intent intent = new Intent(this, Create_gamestart_page.class);
                         intent.putExtra("requiredRats", currentRoom.getRequiredRat());
+                        intent.putExtra("roomId", currentRoom.getRoomId());
+                        intent.putExtra("isCat", player.isCat());
                         startActivity(intent);
                     } else {
                         displayToast("Some players are not ready! ");
@@ -121,6 +123,7 @@ public class DisplayGameRoomPage extends AppCompatActivity {
                     PlayerManager.getInstance().setPlayer(player);
 
                     Intent intent = new Intent(this, Create_gamestart_page.class);
+                    intent.putExtra("isCat", player.isCat());
                     intent.putExtra("requiredRats", currentRoom.getRequiredRat());
                     startActivity(intent);
                 } else {
