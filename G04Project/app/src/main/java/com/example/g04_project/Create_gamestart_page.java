@@ -115,8 +115,8 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
             button.setVisibility(View.VISIBLE);
         }
 
-        fake_users.add("user1");
-        fake_users.add("testPlayer");
+        fake_users.add("Dino0001");
+        fake_users.add("BroJoKer0000");
 
         markerList_test = new ConcurrentHashMap<>();
         locationList_test = new ConcurrentHashMap<>();
@@ -137,7 +137,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                     Location location = locationResult.getLastLocation();
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 //                    System.out.println(currentLocation);
-                    client.sendCurrentPosition("testPlayer", currentLocation);
+                    client.sendCurrentPosition(currentUserId, currentLocation);
                     client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
 
                         @Override
@@ -197,7 +197,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                     if(count == 20){
                         currentPressure += pressure;
                         currentPressure /= 20;
-                        client.sendCurrentPressure("testPlayer", currentPressure);
+                        client.sendCurrentPressure(currentUserId, currentPressure);
 //                        System.out.println("current pressure: " + currentPressure);
                         currentPressure = 0;
                         count = 0;
@@ -225,7 +225,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 
                         });
                         for (String user : fake_users) {
-                            if (!user.equals("testPlayer")){
+                            if (!user.equals(currentUserId)){
                                 System.out.println("pressure level: " + pressureList_test.get(user));
                                 if (pressureList_test.get(user) == 1){
                                     markerList_test.get(user).setIcon(ratHigherIcon);
@@ -399,7 +399,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //        }
         for (String user : fake_users) {
 //            System.out.println(user);
-            if (user.equals("testPlayer")){
+            if (user.equals(currentUserId)){
                 myMarker = mymap.addMarker(new MarkerOptions().position(chosen_location).title(user).icon(catSelfIcon));
                 markerList_test.put(user,myMarker);
                 locationList_test.put(user, chosen_location);
