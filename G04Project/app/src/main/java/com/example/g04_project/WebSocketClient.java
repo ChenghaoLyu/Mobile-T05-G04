@@ -36,6 +36,7 @@ public class WebSocketClient {
     public AllRoomsInfo rooms = new AllRoomsInfo();
     public PositionList positionList = new PositionList();
     public PressureList pressureList = new PressureList();
+    public Survival survival;
 
     private Runnable locationUpdateRunnable = new Runnable() {
         @Override
@@ -74,6 +75,13 @@ public class WebSocketClient {
         userInformation.put("password", password);
 
         sendMessage("validation", userInformation);
+    }
+
+    public void sendSurvivalUpdate(String roomId, int loss) {
+        Map<String, Object> survivalUpdate = new HashMap<>();
+        survivalUpdate.put("roomId", roomId);
+        survivalUpdate.put("loss", String.valueOf(loss));
+        sendMessage("survival", survivalUpdate);
     }
 
     public void sendRoomInformation(String roomId, String userId, String locationName, String modeName, String duration, String password,
@@ -254,21 +262,27 @@ public class WebSocketClient {
                     } else if ("game start".equals(message.getType())) {
                         listener.onMessageReceived("game starts");
 
-                    } else if ("updated positions".equals(message.getType())){
+                    } else if ("updated positions".equals(message.getType())) {
                         positionList = new Gson().fromJson(new Gson().toJson(message.getData()), PositionList.class);
                         listener.onMessageReceived("get updated positions");
 
-                    }else if ("updated pressure".equals(message.getType())){
+                    } else if ("updated pressure".equals(message.getType())) {
                         System.out.println("received pressure list");
                         pressureList = new Gson().fromJson(new Gson().toJson(message.getData()), PressureList.class);
                         listener.onMessageReceived("get updated pressures");
 
-                    }else if ("successfully update room".equals(message.getType())){
+                    } else if ("successfully update room".equals(message.getType())) {
                         System.out.println("received update room");
                         updatedRoom = new Gson().fromJson(new Gson().toJson(message.getData()), RoomInformation.class);
                         listener.onMessageReceived("get updated room");
 
-                    }else {
+                    } else if ("survival".equals(message.getType())) {
+                    System.out.println("RECEIVE SURVIVAL");
+                    System.out.println(message);
+                    survival = new Gson().fromJson(new Gson().toJson(message.getData()), Survival.class);
+                    listener.onMessageReceived("survival");
+
+                    } else {
                         listener.onMessageReceived("wrong_message_type");
                     }
                 } catch (JsonSyntaxException e) {

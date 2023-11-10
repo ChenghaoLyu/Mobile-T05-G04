@@ -89,8 +89,8 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     private BitmapDescriptor catSelfIcon, catHigherIcon, catLowerIcon, catCommonIcon
             , ratSelfIcon, ratHigherIcon, ratLowerIcon, ratCommonIcon;
 
-    private int aliveRats;
     private boolean isCat;
+    private String roomId;
 
 //    public ConcurrentHashMap<String, Marker> marker_list;
 
@@ -108,7 +108,9 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 
         Intent receivedIntent = getIntent();
 
-        aliveRats = receivedIntent.getIntExtra("requiredRats", 1);
+        roomId = receivedIntent.getStringExtra("roomId");
+        System.out.println("SEND SURVIVAL ING");
+        client.sendSurvivalUpdate(roomId, 0);
         isCat = receivedIntent.getBooleanExtra("isCat", true);
         if (!isCat) {
             Button button = findViewById(R.id.caught);
@@ -305,7 +307,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
             public void onFinish() {
                 timerTextView.setText("00:00");
                 Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
-                if (aliveRats > 0) {
+                if (client.survival.getSurvival() > 0) {
                     intent.putExtra("winner", "rat");
                 } else {
                     intent.putExtra("winner", "cat");
@@ -417,12 +419,30 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         mymap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
     }
     private void updateMarkerLocation(Marker marker, LatLng location) {
+        onSurvivalUpdate();
         if (marker != null && location != null) {
             marker.setPosition(location);
             mymap.animateCamera(CameraUpdateFactory.newLatLng(location));
         }
-
     }
+
+    private void onSurvivalUpdate() {
+        client.sendSurvivalUpdate(roomId, 0);
+        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+            @Override
+            public void onMessageReceived(String message) {
+                // Successful registration
+                if (message.equals("survival")) {
+                    if (client.survival.getSurvival() == 0) {
+                        Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
+                        intent.putExtra("winner", "cat");
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -460,9 +480,9 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     }
 
     public void openGameFinishPage(View view) {
-        aliveRats = aliveRats - 1;
+        client.sendSurvivalUpdate(roomId, 1);
         Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
-        if (aliveRats == 0) {
+        if (client.survival.getSurvival() == 0) {
             intent.putExtra("winner", "cat");
         } else {
             intent.putExtra("winner", "tbc");
