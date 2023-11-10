@@ -38,12 +38,12 @@ rooms_dict = {}
 rooms_dict[room_test["roomId"]] = room_test
 
 position_test = {
-    "testPlayer": [-37.7982, 144.9594],
-    "user1" : [-37.7962, 144.9594]
+    "BroJoker0000": [-37.7982, 144.9594],
+    "Dino0001" : [-37.7962, 144.9594]
 }
 pressure_test = {
-    "testPlayer": 1004.1,
-    "user1": 1004.1
+    "BroJoKer0000": 1004.1,
+    "Dino0001": 1004.1
 }
 # position_test2 = {
 #     "user1" : [-37.7962, 144.9594]
@@ -157,9 +157,9 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     # print(message)
                     test_userId = message.data.get("userId")
                     position_test[test_userId] = [message.data.get("latitude"), message.data.get("longitude")]
-                    for userid_ in position_test.keys():
-                        if userid_ != test_userId:
-                            position_test[userid_] = [message.data.get("latitude") + 0.002, message.data.get("longitude")]
+                    # for userid_ in position_test.keys():
+                    #     if userid_ != test_userId:
+                    #         position_test[userid_] = [message.data.get("latitude") + 0.002, message.data.get("longitude")]
                     positionList = {
                         "userId" : list(position_test.keys()), 
                         "position" : list(position_test.values())
