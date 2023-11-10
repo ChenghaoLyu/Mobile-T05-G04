@@ -27,6 +27,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.Manifest;
 import android.widget.Toast;
@@ -87,6 +88,9 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     public String currentUserId;
     private BitmapDescriptor catSelfIcon, catHigherIcon, catLowerIcon, catCommonIcon
             , ratSelfIcon, ratHigherIcon, ratLowerIcon, ratCommonIcon;
+
+    private ArrayList<Player> fake_players = new ArrayList<>();
+    private int aliveRats;
 //    public ConcurrentHashMap<String, Marker> marker_list;
 
 
@@ -101,9 +105,16 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         currentUserId = client.getAccount().getUserID();
         System.out.println(currentUserId);
 
+        Intent receivedIntent = getIntent();
+        aliveRats = receivedIntent.getIntExtra("requiredRats", 0);
+
         fake_users.add("user1");
         fake_users.add("testPlayer");
 
+        Player player1 = new Player("playerId1", "player1");
+        Player player2 = new Player("playerId2", "player2");
+        fake_players.add(player1);
+        fake_players.add(player2);
 
         markerList_test = new ConcurrentHashMap<>();
         locationList_test = new ConcurrentHashMap<>();
@@ -119,7 +130,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                if(locationResult != null) {
+                if (locationResult != null) {
                     Log.d("LocationTest", "Location updates");
                     Location location = locationResult.getLastLocation();
                     LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -153,7 +164,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                         }
 
                     });
-                    for (String user : fake_users) {
+                    for (Player user : fake_players) {
 //                        if (user.equals("testPlayer")){
 //                            updateMarkerLocation(markerList_test.get(user), currentLocation);
 //                        }
@@ -162,11 +173,19 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //                            updateMarkerLocation(markerList_test.get(user), testLocation);
 //                        }
                         updateMarkerLocation(markerList_test.get(user), locationList_test.get(user));
+
+                        if (!user.isCat()) {
+                            Button button = findViewById(R.id.caught);
+                            button.setVisibility(View.VISIBLE);
+                        }
+                        if (user.isCat() && aliveRats == 0) {
+                            startActivity(new Intent(Create_gamestart_page.this, GameFinishPage.class));
+                        }
                     }
 //                    updateMarkerLocation(myMarker, currentLocation);
 //                    System.out.println("fiinish update0");
                     mymap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation));
-                }else{
+                } else {
                     Log.d("LocationTest", "Location updates fail: null");
                 }
             }
@@ -436,5 +455,9 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
         }
     }
 
+    public void openGameFinishPage(View view) {
+        aliveRats = aliveRats - 1;
+        startActivity(new Intent(this, GameFinishPage.class));
+    }
 
 }

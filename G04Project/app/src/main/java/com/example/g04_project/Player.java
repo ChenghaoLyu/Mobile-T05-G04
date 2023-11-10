@@ -46,6 +46,14 @@ public class Player implements Serializable {
         }
     }
 
+    public boolean isCat() {
+        if (this.team == TEAM_CAT) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void setRoomID(String id) {
         this.roomId = id;
     }
