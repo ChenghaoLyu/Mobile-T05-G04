@@ -48,7 +48,9 @@
         app:layout_constraintBottom_toTopOf="@+id/createGame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:inputType="none"
+        android:background="@android:color/transparent" />
 
     <Button
         android:id="@+id/createGame"

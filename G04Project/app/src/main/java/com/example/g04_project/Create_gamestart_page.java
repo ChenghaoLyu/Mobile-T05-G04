@@ -179,7 +179,9 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                             button.setVisibility(View.VISIBLE);
                         }
                         if (user.isCat() && aliveRats == 0) {
-                            startActivity(new Intent(Create_gamestart_page.this, GameFinishPage.class));
+                            Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
+                            intent.putExtra("winner", "cat");
+                            startActivity(intent);
                         }
                     }
 //                    updateMarkerLocation(myMarker, currentLocation);
@@ -310,6 +312,13 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
             @Override
             public void onFinish() {
                 timerTextView.setText("00:00");
+                Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
+                if (aliveRats > 0) {
+                    intent.putExtra("winner", "rat");
+                } else {
+                    intent.putExtra("winner", "cat");
+                }
+                startActivity(intent);
             }
         };
 
@@ -457,7 +466,13 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 
     public void openGameFinishPage(View view) {
         aliveRats = aliveRats - 1;
-        startActivity(new Intent(this, GameFinishPage.class));
+        Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
+        if (aliveRats == 0) {
+            intent.putExtra("winner", "cat");
+        } else {
+            intent.putExtra("winner", "tbc");
+        }
+        startActivity(intent);
     }
 
 }
