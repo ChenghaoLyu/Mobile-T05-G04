@@ -31,7 +31,7 @@ public class WebSocketClient {
     private Handler handler = new Handler();
     private String uniqueID = UUID.randomUUID().toString();
     public Account account = new Account();
-    public RoomInformation room;
+    public RoomInformation room, updatedRoom;
     public AllRoomsInfo rooms = new AllRoomsInfo();
     public PositionList positionList = new PositionList();
     public PressureList pressureList = new PressureList();
@@ -104,6 +104,37 @@ public class WebSocketClient {
         System.out.println(roomInformation.get("startTime"));
         System.out.println(roomInformation.get("hostId"));
         sendMessage("room_information", roomInformation);
+    }
+
+    public void sendUpdateRoomInformation(String roomId, String userId, String locationName, String modeName, String duration, String password,
+                                    int catNumber, int currCatNum, int ratNumber, int currRatNum,
+                                    String startTime, boolean isPrivate, boolean isOngoing,
+                                    ConcurrentHashMap<String, Player> cat_list,
+                                    ConcurrentHashMap<String, Player> rat_list,
+                                    ConcurrentHashMap<String, Player> ready_list) {
+        // 获取位置信息（这里只是一个示例，你可能需要从GPS或其他位置服务获取实际的位置数据）
+
+        Map<String, Object> roomInformation = new HashMap<>();
+        roomInformation.put("roomId", roomId);
+        roomInformation.put("hostId", userId);
+        roomInformation.put("locationName", locationName);
+        roomInformation.put("modeName", modeName);
+        roomInformation.put("duration", duration);
+        roomInformation.put("password", password);
+        roomInformation.put("requiredCat", catNumber);
+        roomInformation.put("requiredRat", ratNumber);
+        roomInformation.put("currentCat", currCatNum);
+        roomInformation.put("currentRat", currRatNum);
+        roomInformation.put("catPlayers", cat_list);
+        roomInformation.put("ratPlayers", rat_list);
+        roomInformation.put("readyList", ready_list);
+        roomInformation.put("startTime", startTime);
+        roomInformation.put("isPrivate", isPrivate);
+        roomInformation.put("isOnGoing", isOngoing);
+        System.out.println("{{{{{{{}}}}}}}");
+        System.out.println(roomInformation.get("startTime"));
+        System.out.println(roomInformation.get("hostId"));
+        sendMessage("update_room_information", roomInformation);
     }
 
     public void sendGetRoomRequest(String roomId) {
@@ -227,6 +258,11 @@ public class WebSocketClient {
                         pressureList = new Gson().fromJson(new Gson().toJson(message.getData()), PressureList.class);
                         listener.onMessageReceived("get updated pressures");
 
+                    }else if ("successfully update room".equals(message.getType())){
+                        System.out.println("received update room");
+                        updatedRoom = new Gson().fromJson(new Gson().toJson(message.getData()), RoomInformation.class);
+                        listener.onMessageReceived("get updated room");
+
                     }else {
                         listener.onMessageReceived("wrong_message_type");
                     }
@@ -285,5 +321,8 @@ public class WebSocketClient {
     }
     public PressureList getPressureList(){
         return pressureList;
+    }
+    public RoomInformation getUpdatedRoom(){
+        return updatedRoom;
     }
 }
