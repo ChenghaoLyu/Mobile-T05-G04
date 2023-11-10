@@ -29,6 +29,7 @@ class ConnectionManager:
                 await self.active_connections[socket_id].send_text(message.json())
             elif message.type == "get all updated rooms":
                 print("response")
+                print(message.json())
                 await self.active_connections[socket_id].send_text(message.json())
             elif message.type == "updated positions":
                 await self.active_connections[socket_id].send_text(message.json())
@@ -47,6 +48,8 @@ class ConnectionManager:
             if m.type == "updated positions":
                     for socket_id, connection in self.active_connections.items():
                     # for connection in self.active_connections.values():
+                        print("------")
+                        print(m.json())
                         await connection.send_text(m.json())
             if m.type == "updated pressure":
                     # print("sent pressure")

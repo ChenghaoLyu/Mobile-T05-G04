@@ -13,6 +13,10 @@ public class Player implements Serializable {
     private static final int TEAM_CAT = 1;
     private static final int TEAM_RAT = 2;
 
+    public Player(){
+
+    }
+
     public Player(String userId, String userName) {
         this.userId = userId;
         this.userName = userName;

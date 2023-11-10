@@ -13,6 +13,9 @@ public class RoomInformation implements Serializable {
     private String startTime;
     private boolean isPrivate;
     private boolean isOngoing;
+    public RoomInformation(){
+
+    }
 
     public RoomInformation(String roomId, String hostId, String locationName, String modeName, String duration, String password,
                            int requiredCat, int currentCat, int requiredRat, int currentRat,
