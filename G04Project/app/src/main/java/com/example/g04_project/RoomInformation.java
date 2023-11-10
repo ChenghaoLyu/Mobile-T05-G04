@@ -159,7 +159,7 @@ public class RoomInformation implements Serializable {
     public String toString() {
         return "RoomInformation{" +
                 "roomId='" + roomId + '\'' +
-                ", hostId='" + hostId + '\'' +
+                ", hostId='" + hostId +
                 ", locationName=" + locationName +
                 ", modeName=" + modeName +
                 ", duration=" + duration +

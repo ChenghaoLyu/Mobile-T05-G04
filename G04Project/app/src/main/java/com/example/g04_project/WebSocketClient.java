@@ -98,7 +98,9 @@ public class WebSocketClient {
         roomInformation.put("startTime", startTime);
         roomInformation.put("isPrivate", isPrivate);
         roomInformation.put("isOnGoing", isOngoing);
-
+        System.out.println("{{{{{{{}}}}}}}");
+        System.out.println(roomInformation.get("startTime"));
+        System.out.println(roomInformation.get("hostId"));
         sendMessage("room_information", roomInformation);
     }
 
@@ -144,7 +146,7 @@ public class WebSocketClient {
         client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://13.55.228.219:8080/ws/" + uniqueID)
+                .url("ws://10.0.2.2:8080/ws/" + uniqueID)
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {

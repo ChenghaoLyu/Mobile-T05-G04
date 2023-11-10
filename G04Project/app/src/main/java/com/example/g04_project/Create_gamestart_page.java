@@ -148,7 +148,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //                                            ", " + client.getPositionList().getPosition().get(i).get(1));
 //                                    System.out.println("Index: " + i + ", Value: " + client.getPositionList().getUserID().get(i));
                                 }
-                                System.out.println(locationList_test);
+//                                System.out.println(locationList_test);
                             }
                         }
 
@@ -185,6 +185,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                         currentPressure += pressure;
                         currentPressure /= 20;
                         client.sendCurrentPressure("testPlayer", currentPressure);
+//                        System.out.println("current pressure: " + currentPressure);
                         currentPressure = 0;
                         count = 0;
                         client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
@@ -192,7 +193,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                             public void onMessageReceived(String message) {
                                 // Successful registration
                                 if (message.equals("get updated pressures")) {
-                                    System.out.println(message + "-----------");
+//                                    System.out.println(message + "-----------");
                                     for (int i = 0; i < client.getPressureList().getUserID().size(); i++) {
 //                                        System.out.println(i);
                                         String userId = client.getPressureList().getUserID().get(i);
@@ -202,16 +203,17 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //                                        System.out.println(ishigher);
 //                                        System.out.println(pressureList_test);
                                         pressureList_test.replace(userId, ishigher);
-                                        System.out.println("error3");
+//                                        System.out.println("error3");
                                     }
-                                    System.out.println("-------");
-                                    System.out.println(pressureList_test);
+//                                    System.out.println("-------");
+//                                    System.out.println(pressureList_test);
                                 }
                             }
 
                         });
                         for (String user : fake_users) {
                             if (!user.equals("testPlayer")){
+                                System.out.println("pressure level: " + pressureList_test.get(user));
                                 if (pressureList_test.get(user) == 1){
                                     markerList_test.get(user).setIcon(ratHigherIcon);
                                     System.out.println("Higher");

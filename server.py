@@ -13,22 +13,22 @@ accounts = {
     "example@mail.com": ["password1","BroJoKer", "0000", "BroJoKer0000"],
     "example2@mail.com": ["password2", "Dino", "0001", "Dino0001"]
 }
-room_test = {'roomId': '777777', 
-             'hostId': 'Dino0001',
+room_test = {'modeName': 'Classic',
+             'requiredRat': 1, 
              'locationName': 'Unimelb', 
-             'modeName': 'Classic', 
-             'duration': '30', 
+             'currRatNum': 0,
+             'isOngoing': False,
+             'hostId': 'Dino0001',
+             'isPrivate': True,
+             'roomId': '777777', 
+             'duration': '30',
              'password': '000000',
              'requiredCat': 1, 
-             'requiredRat': 1, 
-             'currCatNum': 0, 
-             'currRatNum': 0, 
-             'catPlayers': {}, 
-             'ratPlayers': {}, 
-             'readyList': {}, 
-             'startTime': '23:04', 
-             'isPrivate': True, 
-             'isOngoing': False
+             'ratPlayers': {},
+             'catPlayers': {},  
+             'currCatNum': 0,    
+             'startTime': '23:04',  
+             'readyList': {}
 }
 
 room_list = []
@@ -122,9 +122,10 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                 elif message.type == "room_information":
                     print("receive roomInformation")
                     print(message)
-                    room_list.append(message.data)
-                    for i in range(len(room_list)):
-                        print(room_list[i])
+                    rooms_dict[message.data.get("roomId")] = message.data
+                    for i in rooms_dict.keys():
+                        print(i)
+                        print(rooms_dict[i])
                     message.type = "successfully create room"
                     await manager.send_to_user(socket_id, message)
 

@@ -97,11 +97,11 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.classic) {
-                    final_mode = "classic";
+                    final_mode = "Classic";
 //                    Toast.makeText(Create_newgame_page.this, "You selected Classic", Toast.LENGTH_SHORT).show();
                 } else if (checkedId == R.id.zombie) {
 //                    Toast.makeText(Create_newgame_page.this, "You selected Zombie", Toast.LENGTH_SHORT).show();
-                    final_mode = "zombie";
+                    final_mode = "Zombie";
                 }
             }
         });
@@ -333,17 +333,6 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
         final_cat = Integer.parseInt(tvCatCount.getText().toString());
         final_mouse = Integer.parseInt(tvMouseCount.getText().toString());
         finalNumericPassword = numericPasswordEditText.getText().toString();
-        timePicker = findViewById(R.id.timePicker);
-        timePicker.setIs24HourView(true); // 设置为24小时制
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                // 这里处理用户选择的时间
-                String selectedTime = String.format("%02d:%02d", hourOfDay, minute);
-                final_startTime = selectedTime;
-//                        Toast.makeText(Create_newgame_page.this, "Selected Time: " + selectedTime, Toast.LENGTH_SHORT).show();
-            }
-        });
         // Check empty input
         if (final_privacy.equals("null") || final_mode.equals("null") || final_location.equals("null")) {
             LayoutInflater inflater = getLayoutInflater();
@@ -367,7 +356,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             View customToastView = inflater.inflate(R.layout.item_toast, null);
 
             TextView customToastTextView = customToastView.findViewById(R.id.customToastText);
-            customToastTextView.setText("Private Room Password must be at least 6 digits long" + String.valueOf(finalNumericPassword.length()));
+            customToastTextView.setText("Private Room Password must be at least 6 digits long");
 
             Toast customToast = new Toast(getApplicationContext());
             customToast.setDuration(Toast.LENGTH_SHORT); // Set the duration as needed
@@ -387,6 +376,7 @@ public class Create_newgame_page extends AppCompatActivity implements OnMapReady
             host.setRoomID(room_id);
             host.setHost();
             System.out.println("sending");
+            System.out.println("final start time: " + final_startTime);
             client.sendRoomInformation(room_id, user_id, final_location, final_mode, final_duration, finalNumericPassword,
                     final_cat, 0, final_mouse, 0, final_startTime, isPrivate, isOngoing, cat_list, rat_list, ready_list);
         }
