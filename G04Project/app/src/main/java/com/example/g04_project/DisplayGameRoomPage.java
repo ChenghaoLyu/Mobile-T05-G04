@@ -67,20 +67,21 @@ public class DisplayGameRoomPage extends AppCompatActivity {
             button.setVisibility(View.VISIBLE);
         }
 
-        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
-            @Override
-            public void onMessageReceived(String message) {
-                if (message.equals("game start")) {
-                    System.out.println(message);
-                    Intent intent = new Intent(DisplayGameRoomPage.this, Create_gamestart_page.class);
-                    intent.putExtra("requiredRats", currentRoom.getRequiredRat());
-                    intent.putExtra("roomId", currentRoom.getRoomId());
-                    intent.putExtra("isCat", player.isCat());
-                    startActivity(intent);
-                }
-            }
-
-        });
+//        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+//            @Override
+//            public void onMessageReceived(String message) {
+//                System.out.println("gamestart: " + message);
+//                if (message.equals("game starts")) {
+//                    System.out.println("fffffffffffff" + message);
+//                    Intent intent = new Intent(DisplayGameRoomPage.this, Create_gamestart_page.class);
+//                    intent.putExtra("requiredRats", currentRoom.getRequiredRat());
+//                    intent.putExtra("roomId", currentRoom.getRoomId());
+//                    intent.putExtra("isCat", player.isCat());
+//                    startActivity(intent);
+//                }
+//            }
+//
+//        });
 
         backButton.setOnClickListener(v -> {
             player.setRoomID(null);
@@ -93,13 +94,18 @@ public class DisplayGameRoomPage extends AppCompatActivity {
         });
 
         startButton.setOnClickListener(v -> {
+            System.out.println("lllllll");
             if (player.isHost()) {
+                System.out.println("host start");
                 if (currentRoom.isFull()) { // 人齐了
+                    System.out.println("Full start");
                     if (currentRoom.getReadyList().size() // 全员准备
                             == currentRoom.getRequiredCat() + currentRoom.getRequiredRat()) {
+                        System.out.println("ready start");
 
                         currentRoom.setOngoing(true);
                         //TODO: send request to start game for all players in the room
+                        System.out.println("sent game start");
                         client.sendStartNotification(client.getAccount().getUserID());
                         
                         RoomManager.getInstance().setRoom(currentRoom);
@@ -245,6 +251,14 @@ public class DisplayGameRoomPage extends AppCompatActivity {
                     currentRoom = client.getUpdatedRoom();
                     catPlayers = currentRoom.getCatPlayers();
                     ratPlayers = currentRoom.getRatPlayers();
+                }
+                else if (message.equals("game starts")) {
+                    System.out.println(message);
+                    Intent intent = new Intent(DisplayGameRoomPage.this, Create_gamestart_page.class);
+                    intent.putExtra("requiredRats", currentRoom.getRequiredRat());
+                    intent.putExtra("roomId", currentRoom.getRoomId());
+                    intent.putExtra("isCat", player.isCat());
+                    startActivity(intent);
                 }
             }
 

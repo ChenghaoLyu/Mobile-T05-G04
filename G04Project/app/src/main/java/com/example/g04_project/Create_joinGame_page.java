@@ -166,6 +166,7 @@ public class Create_joinGame_page extends AppCompatActivity {
                 System.out.println("aaaaaa");
 
                 if (!rooms.isEmpty()) {
+                    System.out.println("woyouroom");
                     roomsRecyclerView.setVisibility(View.VISIBLE);
                     emptyMessageTextView.setVisibility(View.GONE);
                 }

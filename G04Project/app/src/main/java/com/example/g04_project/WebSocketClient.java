@@ -252,6 +252,7 @@ public class WebSocketClient {
                         listener.onMessageReceived("All updated rooms received");
 
                     } else if ("game start".equals(message.getType())) {
+                        System.out.println("shoudaole");
                         listener.onMessageReceived("game starts");
 
                     } else if ("updated positions".equals(message.getType())){
