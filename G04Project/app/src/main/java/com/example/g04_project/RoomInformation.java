@@ -8,7 +8,7 @@ public class RoomInformation implements Serializable {
     private String roomId, hostId, locationName, modeName, duration, password;
 
     //TODO: playerNumber
-    private int playerNumber, requiredCat, currentCat, requiredRat, currentRat;
+    private int playerNumber, requiredCat, currentCat, requiredRat, currentRat, survival;
     private ConcurrentHashMap<String, Player> catPlayers, ratPlayers, readyList;
     private String startTime;
     private boolean isPrivate;
@@ -39,6 +39,7 @@ public class RoomInformation implements Serializable {
         this.startTime = startTime;
         this.isPrivate = privacy;
         this.isOngoing = isOngoing;
+        this.survival = requiredRat;
     }
 
     // Getter and Setter methods for each attribute
@@ -184,6 +185,7 @@ public class RoomInformation implements Serializable {
                 ", startTime=" + startTime +
                 ", privacy=" + isPrivate +
                 ", isOngoing=" + isOngoing +
+                ", survival=" + requiredRat +
                 '}';
     }
 }

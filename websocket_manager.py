@@ -23,6 +23,8 @@ class ConnectionManager:
         if socket_id in self.active_connections:
             if message.type == "account":
                 await self.active_connections[socket_id].send_text(message.json())
+            elif message.type == "survival":
+                await self.active_connections[socket_id].send_text(message.json())
             elif message.type == "successfully create room":
                 await self.active_connections[socket_id].send_text(message.json())
             elif message.type == "get current room":

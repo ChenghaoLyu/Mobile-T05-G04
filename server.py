@@ -28,7 +28,8 @@ room_test = {'modeName': 'Classic',
              'catPlayers': {"Iris0002":{"userId":"Dino0001", "userName":"Iris", "isHost": True, "isReady": False}},  
              'currentCat': 1,    
              'startTime': '23:04',  
-             'readyList': {}
+             'readyList': {},
+             'survival': 1
 }
 
 room_list = []
@@ -118,6 +119,20 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     else:
                         print("Registration fails, repetitive email")
                         await websocket.send_text("Validation Fail")
+
+                elif message.type == "survival":
+                    roomId = message.data.get("roomId")
+                    loss = int(message.data.get("loss"))
+                    i = 0
+                    for room in room_list:
+                        if room['roomId'] == roomId:
+                            survival = {"survival": room['survival'] - loss}
+                            room_list[i]["survival"] = room['survival'] - loss
+                            message.data = survival
+                            message.type = "survival"
+                            await manager.send_to_user(socket_id, message)
+                            break
+                        i = i + 1
 
                 elif message.type == "room_information":
                     print("receive roomInformation")
