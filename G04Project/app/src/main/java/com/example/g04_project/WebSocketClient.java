@@ -15,6 +15,8 @@ import okhttp3.Request;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
+import java.util.UUID;
+
 
 public class WebSocketClient {
 
@@ -22,6 +24,7 @@ public class WebSocketClient {
     private WebSocket webSocket;
     private OnMessageReceivedListener listener;
     private Handler handler = new Handler();
+    private String uniqueID = UUID.randomUUID().toString();
     private Runnable locationUpdateRunnable = new Runnable() {
         @Override
         public void run() {
@@ -104,7 +107,7 @@ public class WebSocketClient {
         client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://13.55.228.219:8080/ws/user123")
+                .url("ws://13.55.228.219:8080/ws/" + uniqueID)
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {
