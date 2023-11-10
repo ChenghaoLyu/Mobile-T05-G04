@@ -118,7 +118,12 @@ public class RoomInformation implements Serializable {
     public ConcurrentHashMap<String, Player> getRatPlayers() { return ratPlayers;}
     public ConcurrentHashMap<String, Player> getReadyList() { return readyList;}
 
-
+    public void setCatPlayers(Player player) {
+        catPlayers.put(player.getPlayerId(), player);
+    }
+    public void setRatPlayers(Player player) {
+        ratPlayers.put(player.getPlayerId(), player);
+    }
     public String getStartTime() {
         return startTime;
     }
@@ -135,7 +140,7 @@ public class RoomInformation implements Serializable {
         catPlayers.put(player.getPlayerId(), player);
         currentCat += 1;
         if (ratPlayers.containsKey(player.getPlayerId())) {
-            ratPlayers.remove(player.getPlayerId(), player);
+            ratPlayers.remove(player.getPlayerId());
             currentRat -= 1;
         }
     }
@@ -144,8 +149,10 @@ public class RoomInformation implements Serializable {
         ratPlayers.put(player.getPlayerId(), player);
         currentRat += 1;
         if (catPlayers.containsKey(player.getPlayerId())) {
-            catPlayers.remove(player.getPlayerId(), player);
+            catPlayers.remove(player.getPlayerId());
             currentCat -= 1;
+            System.out.println("catPlayers: " + catPlayers.size());
+            System.out.println("currCat: " + currentCat);
         }
     }
 
