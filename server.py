@@ -152,6 +152,10 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     print("received request")
                     await manager.send_to_user(socket_id,message)
 
+                elif message.type == "notify_game_start":
+                    message.type = "game start"
+                    await manager.send_to_user(socket_id,message)
+
                 elif message.type == "current_position":
                     # print("received current position")
                     # print(message)

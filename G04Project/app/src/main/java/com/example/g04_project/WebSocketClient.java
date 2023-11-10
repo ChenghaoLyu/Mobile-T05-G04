@@ -1,5 +1,6 @@
 package com.example.g04_project;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
 
@@ -149,6 +150,12 @@ public class WebSocketClient {
         sendMessage("request_all_rooms_information", request);
     }
 
+    public void sendStartNotification(String userId) {
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("userId", userId);
+        sendMessage("notify_game_start", notification);
+    }
+
     public void sendCurrentPosition(String userId, LatLng location){
         Map<String, Object> currentPosition = new HashMap<>();
         currentPosition.put("userId", userId);
@@ -233,20 +240,19 @@ public class WebSocketClient {
                     } else if ("successfully create room".equals(message.getType())) {
                         listener.onMessageReceived("Successfully create room");
 
-                    } else if ("get current room".equals(message.getType())) {
-                        System.out.println("get room");
-                        room = new Gson().fromJson(new Gson().toJson(message.getData()), RoomInformation.class);
-                        listener.onMessageReceived("Current room received");
-
                     } else if ("get all updated rooms".equals(message.getType())) {
                         System.out.println("get all rooms");// TODO
                         String jsonRooms = new Gson().toJson(message.getData());
-                        Type type = new TypeToken<ConcurrentHashMap<String, RoomInformation>>(){}.getType();
+                        Type type = new TypeToken<ConcurrentHashMap<String, RoomInformation>>() {
+                        }.getType();
                         ConcurrentHashMap<String, RoomInformation> allRooms = new Gson().fromJson(jsonRooms, type);
                         rooms = new AllRoomsInfo();
                         rooms.setRooms(allRooms);
                         System.out.println(rooms.getRooms().size());
                         listener.onMessageReceived("All updated rooms received");
+
+                    } else if ("game start".equals(message.getType())) {
+                        listener.onMessageReceived("game starts");
 
                     } else if ("updated positions".equals(message.getType())){
                         positionList = new Gson().fromJson(new Gson().toJson(message.getData()), PositionList.class);

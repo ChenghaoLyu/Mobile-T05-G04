@@ -67,6 +67,21 @@ public class DisplayGameRoomPage extends AppCompatActivity {
             button.setVisibility(View.VISIBLE);
         }
 
+        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+            @Override
+            public void onMessageReceived(String message) {
+                if (message.equals("game start")) {
+                    System.out.println(message);
+                    Intent intent = new Intent(DisplayGameRoomPage.this, Create_gamestart_page.class);
+                    intent.putExtra("requiredRats", currentRoom.getRequiredRat());
+                    intent.putExtra("roomId", currentRoom.getRoomId());
+                    intent.putExtra("isCat", player.isCat());
+                    startActivity(intent);
+                }
+            }
+
+        });
+
         backButton.setOnClickListener(v -> {
             player.setRoomID(null);
             onBackPressed();
@@ -84,32 +99,17 @@ public class DisplayGameRoomPage extends AppCompatActivity {
                             == currentRoom.getRequiredCat() + currentRoom.getRequiredRat()) {
 
                         currentRoom.setOngoing(true);
-                        client.sendRoomInformation(currentRoom.getRoomId(), currentRoom.getHostId(),
-                                currentRoom.getLocationName(),
-                                currentRoom.getModeName(),
-                                currentRoom.getDuration(),
-                                currentRoom.getPassword(),
-                                currentRoom.getRequiredCat(),
-                                currentRoom.getCurrentCat(),
-                                currentRoom.getRequiredRat(),
-                                currentRoom.getCurrentRat(),
-                                currentRoom.getStartTime(),
-                                currentRoom.isPrivate(),
-                                currentRoom.isOngoing(),
-                                currentRoom.getCatPlayers(),
-                                currentRoom.getRatPlayers(),
-                                currentRoom.getReadyList());
                         //TODO: send request to start game for all players in the room
-
+                        client.sendStartNotification(client.getAccount().getUserID());
                         
                         RoomManager.getInstance().setRoom(currentRoom);
                         PlayerManager.getInstance().setPlayer(player);
 
-                        Intent intent = new Intent(this, Create_gamestart_page.class);
-                        intent.putExtra("requiredRats", currentRoom.getRequiredRat());
-                        intent.putExtra("roomId", currentRoom.getRoomId());
-                        intent.putExtra("isCat", player.isCat());
-                        startActivity(intent);
+//                        Intent intent = new Intent(this, Create_gamestart_page.class);
+//                        intent.putExtra("requiredRats", currentRoom.getRequiredRat());
+//                        intent.putExtra("roomId", currentRoom.getRoomId());
+//                        intent.putExtra("isCat", player.isCat());
+//                        startActivity(intent);
                     } else {
                         displayToast("Some players are not ready! ");
 //                        Toast.makeText(DisplayGameRoomPage.this,
@@ -127,10 +127,10 @@ public class DisplayGameRoomPage extends AppCompatActivity {
                     RoomManager.getInstance().setRoom(currentRoom);
                     PlayerManager.getInstance().setPlayer(player);
 
-                    Intent intent = new Intent(this, Create_gamestart_page.class);
-                    intent.putExtra("isCat", player.isCat());
-                    intent.putExtra("requiredRats", currentRoom.getRequiredRat());
-                    startActivity(intent);
+//                    Intent intent = new Intent(this, Create_gamestart_page.class);
+//                    intent.putExtra("isCat", player.isCat());
+//                    intent.putExtra("requiredRats", currentRoom.getRequiredRat());
+//                    startActivity(intent);
                 } else {
                     displayToast("Only host can start the game!");
                     //Toast.makeText(DisplayGameRoomPage.this, "Only host can start the game!",

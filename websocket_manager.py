@@ -38,15 +38,15 @@ class ConnectionManager:
                     for socket_id, connection in self.active_connections.items():
                     # for connection in self.active_connections.values():
                         await connection.send_text(message.json())
+            elif message.type == "game start":
+                for socket_id, connection in self.active_connections.items():
+                # for connection in self.active_connections.values():
+                    await connection.send_text(message.json())
     async def broadcast(self, socket_id: str, message: str):
         
         try:
             m = Message.parse_raw(message)
             print(m.type)
-            if m.type == "game start":
-                for socket_id, connection in self.active_connections.items():
-                # for connection in self.active_connections.values():
-                    await connection.send_text(m.json())
             if m.type == "user_location":
                 for socket_id, connection in self.active_connections.items():
                 # for connection in self.active_connections.values():
