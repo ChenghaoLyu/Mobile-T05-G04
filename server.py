@@ -192,8 +192,8 @@ async def websocket_route(socket_id: str, websocket: WebSocket):
                     await manager.broadcast(socket_id,message.json())
                     # await manager.send_to_user(socket_id, message)
                 elif message.type == "current_pressure":
-                    # print("received current pressure")
-                    # print(message)
+                    print("received current pressure")
+                    print(message.data)
                     test_userId = message.data.get("userId")
                     pressure_test[test_userId] = message.data.get("currentPressure")
                     pressure_result = []
