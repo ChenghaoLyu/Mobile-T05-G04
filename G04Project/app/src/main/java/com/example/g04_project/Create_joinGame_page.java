@@ -148,7 +148,7 @@ public class Create_joinGame_page extends AppCompatActivity {
                         readyList2
                 );
 
-                rooms.put("000001", room1);
+                rooms.put("000003", room1);
                 rooms.put("000002", room2);
                 System.out.println(rooms.size());
                 System.out.println(rooms.get("777777").getRoomId());
