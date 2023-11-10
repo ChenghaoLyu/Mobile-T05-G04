@@ -280,7 +280,7 @@ public class WebSocketClient {
                     } else if ("survival".equals(message.getType())) {
                         System.out.println("RECEIVE SURVIVAL");
                         System.out.println(message);
-                        survival = new Gson().fromJson(new Gson().toJson(message.getData()), Survival.class);
+//                        survival = new Gson().fromJson(new Gson().toJson(message.getData()), Survival.class);
                         listener.onMessageReceived("survival");
 
                     } else {

@@ -168,11 +168,11 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 //                                System.out.println(locationList_test);
                             }
                             else if (message.equals("survival")) {
-                                if (client.survival.getSurvival() == 0) {
-                                    Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
-                                    intent.putExtra("winner", "cat");
-                                    startActivity(intent);
-                                }
+//                                if (client.survival.getSurvival() == 0) {
+                                Intent intent = new Intent(Create_gamestart_page.this, GameFinishPage.class);
+                                intent.putExtra("winner", "cat");
+                                startActivity(intent);
+//                                }
                             }
                         }
 
