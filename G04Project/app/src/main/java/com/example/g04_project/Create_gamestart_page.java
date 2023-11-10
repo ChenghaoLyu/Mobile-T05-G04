@@ -88,7 +88,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     public String currentUserId;
     private BitmapDescriptor catSelfIcon, catHigherIcon, catLowerIcon, catCommonIcon
             , ratSelfIcon, ratHigherIcon, ratLowerIcon, ratCommonIcon;
-    
+
     private int aliveRats;
     private boolean isCat;
 

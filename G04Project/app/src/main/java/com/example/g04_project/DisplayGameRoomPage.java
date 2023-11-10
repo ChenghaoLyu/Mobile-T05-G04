@@ -62,6 +62,11 @@ public class DisplayGameRoomPage extends AppCompatActivity {
             displayJoinTeamBtn(ratsContainer, TEAM_RAT);
         }
 
+        if (player.isHost()) {
+            Button button = findViewById(R.id.startButton);
+            button.setVisibility(View.VISIBLE);
+        }
+
         backButton.setOnClickListener(v -> {
             player.setRoomID(null);
             onBackPressed();
