@@ -179,7 +179,7 @@ public class WebSocketClient {
         client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("ws://10.0.2.2:8080/ws/" + uniqueID)
+                .url("ws://13.55.228.219:8080/ws/" + uniqueID)
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {

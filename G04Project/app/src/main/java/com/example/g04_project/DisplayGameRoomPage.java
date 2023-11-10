@@ -229,6 +229,8 @@ public class DisplayGameRoomPage extends AppCompatActivity {
                 if (message.equals("get updated room")) {
                     System.out.println(message);
                     currentRoom = client.getUpdatedRoom();
+                    catPlayers = currentRoom.getCatPlayers();
+                    ratPlayers = currentRoom.getRatPlayers();
                 }
             }
 
