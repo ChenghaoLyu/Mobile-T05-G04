@@ -88,11 +88,10 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
     public String currentUserId;
     private BitmapDescriptor catSelfIcon, catHigherIcon, catLowerIcon, catCommonIcon
             , ratSelfIcon, ratHigherIcon, ratLowerIcon, ratCommonIcon;
-
-    private ArrayList<Player> fake_players = new ArrayList<>();
+    
     private int aliveRats;
     private boolean isCat;
-    private String roomId;
+
 //    public ConcurrentHashMap<String, Marker> marker_list;
 
 
@@ -118,11 +117,6 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
 
         fake_users.add("user1");
         fake_users.add("testPlayer");
-
-        Player player1 = new Player("playerId1", "player1");
-        Player player2 = new Player("playerId2", "player2");
-        fake_players.add(player1);
-        fake_players.add(player2);
 
         markerList_test = new ConcurrentHashMap<>();
         locationList_test = new ConcurrentHashMap<>();
@@ -172,7 +166,7 @@ public class Create_gamestart_page extends AppCompatActivity implements OnMapRea
                         }
 
                     });
-                    for (Player user : fake_players) {
+                    for (String user : fake_users) {
 //                        if (user.equals("testPlayer")){
 //                            updateMarkerLocation(markerList_test.get(user), currentLocation);
 //                        }
