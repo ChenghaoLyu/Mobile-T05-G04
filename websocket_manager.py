@@ -56,6 +56,11 @@ class ConnectionManager:
                     for socket_id, connection in self.active_connections.items():
                     # for connection in self.active_connections.values():
                         await connection.send_text(m.json())
+            if m.type == "successfully update room":
+                    # print("sent pressure")
+                    for socket_id, connection in self.active_connections.items():
+                    # for connection in self.active_connections.values():
+                        await connection.send_text(m.json())
         except ValidationError as e:
             pass
         # try:

@@ -2,6 +2,7 @@ package com.example.g04_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.gms.maps.model.LatLng;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -206,19 +207,8 @@ public class DisplayGameRoomPage extends AppCompatActivity {
 
     // Refresh the display of players based on their new ready status
     private void refreshPlayerDisplay() {
-        catsContainer.removeAllViews();
-        ratsContainer.removeAllViews();
 
-        displayPlayers(catPlayers, catsContainer);
-        if (currentRoom.getCurrentCat() < currentRoom.getRequiredCat()) {
-            displayJoinTeamBtn(catsContainer, TEAM_CAT);
-        }
-        displayPlayers(ratPlayers, ratsContainer);
-        if (currentRoom.getCurrentRat() < currentRoom.getRequiredRat()) {
-            displayJoinTeamBtn(ratsContainer, TEAM_RAT);
-        }
-
-        client.sendRoomInformation(currentRoom.getRoomId(), currentRoom.getHostId(),
+        client.sendUpdateRoomInformation(currentRoom.getRoomId(), currentRoom.getHostId(),
                 currentRoom.getLocationName(),
                 currentRoom.getModeName(),
                 currentRoom.getDuration(),
@@ -233,6 +223,26 @@ public class DisplayGameRoomPage extends AppCompatActivity {
                 currentRoom.getCatPlayers(),
                 currentRoom.getRatPlayers(),
                 currentRoom.getReadyList());
+        client.setOnMessageReceivedListener(new WebSocketClient.OnMessageReceivedListener() {
+            @Override
+            public void onMessageReceived(String message) {
+                if (message.equals("get updated room")) {
+                    currentRoom = client.getUpdatedRoom();
+                }
+            }
+
+        });
+        catsContainer.removeAllViews();
+        ratsContainer.removeAllViews();
+
+        displayPlayers(catPlayers, catsContainer);
+        if (currentRoom.getCurrentCat() < currentRoom.getRequiredCat()) {
+            displayJoinTeamBtn(catsContainer, TEAM_CAT);
+        }
+        displayPlayers(ratPlayers, ratsContainer);
+        if (currentRoom.getCurrentRat() < currentRoom.getRequiredRat()) {
+            displayJoinTeamBtn(ratsContainer, TEAM_RAT);
+        }
     }
 
     private void displayToast(String msg) {
