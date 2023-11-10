@@ -12,6 +12,8 @@ import android.widget.Toast;
 import android.util.Patterns;
 public class GameFinishPage extends AppCompatActivity {
     private WebSocketClient client;
+    private String winner;
+    private EditText winnerPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,17 @@ public class GameFinishPage extends AppCompatActivity {
 
         MyApp app = (MyApp) getApplication();
         client = app.getWebSocketClient();
+        Intent receivedIntent = getIntent();
+        winner = receivedIntent.getStringExtra("winner");
+        winnerPlayer = findViewById(R.id.winnerPlayer);
+
+        if (winner.equals("rat")) {
+            winnerPlayer.setText("the Rats!");
+        } else if (winner.equals("cat")) {
+            winnerPlayer.setText("the Cats!");
+        } else {
+            winnerPlayer.setText("TBC...");
+        }
     }
 
     public void goToHome(View view) {
