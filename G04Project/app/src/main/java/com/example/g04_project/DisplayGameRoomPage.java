@@ -210,6 +210,12 @@ public class DisplayGameRoomPage extends AppCompatActivity {
 
     private void switchReadyStatus() {
         player.switchReadyStatus();
+        int team = player.getTeam();
+        if (team == 1) {
+            currentRoom.setCatPlayers(player);
+        } else if (team == 2) {
+            currentRoom.setRatPlayers(player);
+        }
         currentRoom.addReadyList(player);
     }
 
